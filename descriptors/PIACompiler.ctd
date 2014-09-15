@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool version="1.0.0.dev"
+		name="PIACompilerTesting"
+		category="general"
+		docurl="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">
+	
+	<executableName>java</executableName>
+	<description><![CDATA[Compile PIA intermediate XML file from raw search engine results.]]></description>
+	<manual><![CDATA[Compile PIA intermediate XML file from raw search engine results.]]></manual>
+	
+	<cli>
+		<!-- the cli elements will be ordered in this way -->
+		<clielement optionIdentifier="" required="false" isList="false">
+			<mapping referenceName="java.vmsettings" />
+		</clielement>
+		
+		<!-- this element gets no binding, it is the called Java class -->
+		<clielement optionIdentifier="de.mpc.pia.intermediate.compiler.PIACompiler"
+				required="true" isList="false"/>
+		
+		<clielement optionIdentifier="-infile" required="true" isList="true">
+			<mapping referenceName="java.infile" />
+		</clielement>
+		
+		<clielement optionIdentifier="-outfile" required="true" isList="false">
+			<mapping referenceName="java.outfile" />
+		</clielement>
+	</cli>
+	
+	<PARAMETERS version="1.6.2"
+			xsi:noNamespaceSchemaLocation="http://open-ms.sourceforge.net/schemas/Param_1_6_2.xsd"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<ITEM name="version"
+				type="string"
+				value="1.0.0.dev"
+				description="Version of the tool that generated this parameters file."
+				advanced="true"
+				required="false" />
+		
+		<NODE name="java"
+				description="Compile PIA intermediate XML file from search engine results.">
+			<ITEM name="vmsettings"
+					type="string"
+					value="-Xmx8G"
+					description="Additional Java settings, like giving Java a big enough amount of memory."
+					advanced="true"
+					required="true" />
+			
+			<ITEMLIST name="infile"
+					type="input-file"
+					description="Search engine result files to compile into PIA-XML file."
+					advanced="false"
+					required="true"
+					supported_formats="*.mzid,*.dat,*.msf,*.t.xml,*.xml,*.idxml"/>
+			
+			<ITEM name="outfile"
+					type="output-file"
+					description="The generated PIA-XML file."
+					advanced="false"
+					required="true"
+					supported_formats="*.pia.xml" />
+		</NODE>
+	</PARAMETERS>
+</tool>

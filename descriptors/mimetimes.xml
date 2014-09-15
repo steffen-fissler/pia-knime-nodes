@@ -1,0 +1,9 @@
+<mimetypes xmlns="https://github.com/mpc-bioinformatics/pia/mimetypes">
+    <mimetype name="Mascot DAT file" binary="false" ext="DAT" description="Mascot DAT file"/>
+    <mimetype name="Thermo MSF file" binary="true" ext="MSF" description="Thermo Magellan Storage File (ProteomeDiscoverer file)"/>
+    <mimetype name="Tandem XML file" binary="false" ext="XML" description="X\!Tandem search result XML file"/>
+    <mimetype name="Tandem XML file" binary="false" ext="T.XML" description="X\!Tandem search result XML file"/>
+    <mimetype name="PIA XML file" binary="false" ext="PIA.XML" description="PIA intermediate XML file"/>
+    <mimetype name="PIA XML file" binary="false" ext="XML" description="PIA intermediate XML file"/>
+    <mimetype name="XML" binary="false" ext="XML" description="Extended Markup Language"/>
+</mimetypes>
