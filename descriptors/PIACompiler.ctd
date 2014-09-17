@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tool version="1.0.0.dev"
-		name="PIACompilerTesting"
+		name="PIACompiler"
 		category="general"
 		docurl="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">
 	
@@ -11,7 +11,7 @@
 	<cli>
 		<!-- the cli elements will be ordered in this way -->
 		<clielement optionIdentifier="" required="false" isList="false">
-			<mapping referenceName="java.vmsettings" />
+			<mapping referenceName="PIACompiler.vmsettings" />
 		</clielement>
 		
 		<!-- this element gets no binding, it is the called Java class -->
@@ -19,11 +19,11 @@
 				required="true" isList="false"/>
 		
 		<clielement optionIdentifier="-infile" required="true" isList="true">
-			<mapping referenceName="java.infile" />
+			<mapping referenceName="PIACompiler.infile" />
 		</clielement>
 		
 		<clielement optionIdentifier="-outfile" required="true" isList="false">
-			<mapping referenceName="java.outfile" />
+			<mapping referenceName="PIACompiler.outfile" />
 		</clielement>
 	</cli>
 	
@@ -37,7 +37,7 @@
 				advanced="true"
 				required="false" />
 		
-		<NODE name="java"
+		<NODE name="PIACompiler"
 				description="Compile PIA intermediate XML file from search engine results.">
 			<ITEM name="vmsettings"
 					type="string"
