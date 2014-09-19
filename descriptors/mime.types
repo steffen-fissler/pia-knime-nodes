@@ -1,6 +1,8 @@
-application/x-mascot-dat dat
-application/x-thermo-magellan-storage-file msf
-application/x-tandem-xml t.xml xml
-application/x-mzidentml mzid 
-application/x-pia-xml pia.xml xml
-application/xml xml
+application/x-MZIDENTML mzid mzIdentML
+application/x-MASCOTDAT dat
+application/x-MAGELLANSTORAGEFILE msf
+application/x-TANDEMXML tandem.xml t.xml xml
+application/x-IDXML idxml
+application/x-PIAXML pia.xml
+text/CSV csv
+application/x-MZTAB mzTab

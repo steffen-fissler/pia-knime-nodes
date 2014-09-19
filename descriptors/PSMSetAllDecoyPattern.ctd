@@ -29,13 +29,6 @@
 	<PARAMETERS version="1.6.2"
 			xsi:noNamespaceSchemaLocation="http://open-ms.sourceforge.net/schemas/Param_1_6_2.xsd"
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-		<ITEM name="version"
-				type="string"
-				value="1.0.0.dev"
-				description="Version of the tool that generated this parameters file."
-				advanced="true"
-				required="false" />
-		
         <NODE description="Sets the regular expression used for decoy detection or if 'searchengine' is given as pattern, assumes a decoy search directly performed by the search engine." name="PSMSetAllDecoyPattern">
             <ITEM value="-Xmx1G" advanced="true" required="false" description="Additional Java settings, like giving Java a big enough amount of memory." type="string" name="vmsettings"/>
             <ITEM value="" advanced="false" required="true" supported_formats="*.xml" description="Path to the file, which contains the build pipeline until this step." type="input-file" name="paramFile"/>
