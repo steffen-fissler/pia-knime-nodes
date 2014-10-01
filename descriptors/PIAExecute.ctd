@@ -58,6 +58,11 @@
 				optionIdentifier="-writeInformation">
 			<mapping referenceName="PIAExecute.information.fileNameInfos"/>
 		</clielement>
+		
+		<clielement required="false" isList="false"
+				optionIdentifier="-calculateInformation">
+			<mapping referenceName="PIAExecute.information.calculateInformation"/>
+		</clielement>
     </cli>
     
 	<PARAMETERS version="1.6.2"
@@ -219,6 +224,13 @@
 						required="false"
 						description="file for file information"
 						supported_formats="*.txt"/>
+				<ITEM name="calculateInformation"
+						type="string"
+						value=""
+						advanced="false"
+						required="false"
+						description="calculate additional information (e.g. information for different FDR thresholds)"
+						restrictions="yes,no"/>
 			</NODE>
 		</NODE>
 	</PARAMETERS>
