@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool version="1.0.0.dev"
+		name="ProteinCalculateFDR"
+		category="protein"
+		docurl="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">
+	
+	<executableName>java</executableName>
+	<description><![CDATA[Calculates the FDR with the given parameters. The first parameter is the decoy strategy, either accessionpattern or inherit (cautious with this). The second is the decoy regular expression.]]></description>
+	<manual><![CDATA[Calculates the FDR with the given parameters. The first parameter is the decoy strategy, either accessionpattern or inherit (cautious with this). The second is the decoy regular expression.]]></manual>
+	
+    <cli>
+        <clielement required="false" isList="false" optionIdentifier="">
+            <mapping referenceName="ProteinCalculateFDR.vmsettings"/>
+        </clielement>
+        <clielement required="true" isList="false" optionIdentifier="de.mpc.pia.modeller.PIAModeller"/>
+        <clielement required="true" isList="false" optionIdentifier="-paramFile">
+            <mapping referenceName="ProteinCalculateFDR.paramFile"/>
+        </clielement>
+        <clielement required="true" isList="false" optionIdentifier="-paramOutFile">
+            <mapping referenceName="ProteinCalculateFDR.paramOutFile"/>
+        </clielement>
+        <clielement required="true" isList="false" optionIdentifier="-append"/>
+        <clielement required="true" isList="false" optionIdentifier="ProteinCalculateFDR"/>
+        <clielement required="false" isList="false" optionIdentifier="">
+            <mapping referenceName="ProteinCalculateFDR.decoy strategy"/>
+        </clielement>
+        <clielement required="false" isList="false" optionIdentifier="">
+            <mapping referenceName="ProteinCalculateFDR.decoy pattern"/>
+        </clielement>
+    </cli>
+    
+	<PARAMETERS version="1.6.2"
+			xsi:noNamespaceSchemaLocation="http://open-ms.sourceforge.net/schemas/Param_1_6_2.xsd"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <NODE description="Calculates the FDR with the given parameters. The first parameter is the decoy strategy, either accessionpattern or inherit (cautious with this). The second is the decoy regular expression." name="ProteinCalculateFDR">
+            <ITEM value="-Xmx1G" advanced="true" required="false" description="Additional Java settings, like giving Java a big enough amount of memory." type="string" name="vmsettings"/>
+            <ITEM value="" advanced="false" required="true" supported_formats="*.xml" description="Path to the file, which contains the build pipeline until this step." type="input-file" name="paramFile"/>
+            <ITEM value="" advanced="false" required="true" supported_formats="*.xml" description="Path to the file, which will contain the pipeline with added filters." type="output-file" name="paramOutFile"/>
+            <ITEM value="" advanced="false" required="true" restrictions="accessionpattern,inherit" description="Use accessionpattern to use a regular expression to identify decoys. inherit is not recommended" type="string" name="decoy strategy"/>
+            <ITEM value="s.*" advanced="false" required="true" description="" type="string" name="decoy pattern"/>
+        </NODE>
+    </PARAMETERS>
+</tool>
