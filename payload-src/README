@@ -6,7 +6,6 @@ and shipped for the corresponding environment.
 Environments are:
   win_32
   win_64
-  mac_32
   mac_64
   lnx_32
   lnx_64
