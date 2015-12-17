@@ -1,0 +1,1066 @@
+[16-Dec-2015 17:08:10 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[16-Dec-2015 17:09:21 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:09:23 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:11:05 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:13:04 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:14:20 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:16:06 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:16:55 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:17:19 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:19:08 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:19:59 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:21:14 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:21:55 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:22:27 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:23:11 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:26:23 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:27:07 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:28:52 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:31:18 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:31:53 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:33:29 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:34:08 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:34:33 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:35:34 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:36:20 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:36:21 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:36:21 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:36:21 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:36:26 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:36:26 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:36:26 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:36:26 - INFO] "clusters sorted: 1771" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:36:26 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:36:26 - INFO] " <thread 8 has no more work after 516 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 3 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 2 has no more work after 379 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 4 has no more work after 489 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 1 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 7 has no more work after 127 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 5 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] " <thread 6 has no more work after 257 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:36:26 - INFO] "start writing the XML file /tmp/PIACompiler630431196/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:36:26 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:37:32 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:37:33 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:37:33 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:37:33 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:37:38 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:37:38 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:37:38 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:37:38 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:37:38 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:37:38 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:37:38 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:37:38 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:37:38 - INFO] " <thread 2 has no more work after 20 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 5 has no more work after 356 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 7 has no more work after 331 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 6 has no more work after 325 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 1 has no more work after 175 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 3 has no more work after 409 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 8 has no more work after 52 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] " <thread 4 has no more work after 188 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:37:38 - INFO] "start writing the XML file /tmp/PIACompiler1123215145/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:37:38 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:44:09 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:44:10 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:44:10 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:44:10 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:44:15 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:44:15 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:44:15 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:44:15 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:44:15 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:44:15 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:44:15 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:44:15 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:44:15 - INFO] " <thread 4 has no more work after 467 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 3 has no more work after 6 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 7 has no more work after 91 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 6 has no more work after 372 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 5 has no more work after 292 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 1 has no more work after 124 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 2 has no more work after 240 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] " <thread 8 has no more work after 264 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:15 - INFO] "start writing the XML file /tmp/PIACompiler881867254/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:44:16 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:44:16 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:44:19 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:44:19 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:44:19 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:44:19 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:44:19 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:44:19 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:44:19 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:44:19 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:44:19 - INFO] " <thread 3 has no more work after 448 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 5 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 1 has no more work after 433 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 4 has no more work after 491 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 2 has no more work after 484 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:44:19 - INFO] "start writing the XML file /tmp/PIACompiler1079192086/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:44:19 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:50:26 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:50:27 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:50:27 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:50:27 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:50:32 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:50:32 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:50:32 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:50:32 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:50:32 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:50:32 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:50:32 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:50:32 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:50:32 - INFO] " <thread 1 has no more work after 692 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 7 has no more work after 462 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 6 has no more work after 98 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 4 has no more work after 82 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 3 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 2 has no more work after 37 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] " <thread 5 has no more work after 484 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:32 - INFO] "start writing the XML file /tmp/PIACompiler1991479740/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:50:33 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:50:33 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:50:36 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:50:36 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:50:36 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:50:36 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:50:36 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:50:36 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:50:36 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:50:36 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:50:36 - INFO] " <thread 6 has no more work after 17 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 1 has no more work after 2 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 4 has no more work after 6 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 2 has no more work after 1784 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 3 has no more work after 42 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] " <thread 5 has no more work after 5 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:50:36 - INFO] "start writing the XML file /tmp/PIACompiler135967552/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:50:37 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:57:34 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:57:35 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:57:35 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:57:35 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:57:39 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:57:39 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:57:39 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:57:40 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:57:40 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:57:40 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:57:40 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:57:40 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:57:40 - INFO] " <thread 4 has no more work after 753 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 1 has no more work after 100 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 2 has no more work after 2 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 8 has no more work after 79 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 6 has no more work after 108 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 3 has no more work after 37 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 5 has no more work after 290 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] " <thread 7 has no more work after 487 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:40 - INFO] "start writing the XML file /tmp/PIACompiler192331064/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:57:40 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:57:40 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:57:43 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:57:43 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:57:43 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:57:44 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:57:44 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:57:44 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:57:44 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:57:44 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:57:44 - INFO] " <thread 6 has no more work after 520 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 5 has no more work after 2 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 2 has no more work after 475 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 7 has no more work after 373 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 4 has no more work after 485 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 3 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 1 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:57:44 - INFO] "start writing the XML file /tmp/PIACompiler1923555823/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:57:44 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:58:39 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 10:58:39 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:58:39 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:58:39 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 10:58:44 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:58:44 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:58:44 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:58:44 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:58:44 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:58:44 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:58:44 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:58:44 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:58:44 - INFO] " <thread 2 has no more work after 626 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 7 has no more work after 10 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 1 has no more work after 43 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 8 has no more work after 411 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 5 has no more work after 7 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 3 has no more work after 8 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 4 has no more work after 361 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] " <thread 6 has no more work after 390 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:44 - INFO] "start writing the XML file /tmp/PIACompiler242474004/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:58:45 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 10:58:45 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:58:48 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:58:48 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:58:48 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 10:58:49 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 10:58:49 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 10:58:49 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 10:58:49 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 10:58:49 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 10:58:49 - INFO] " <thread 4 has no more work after 348 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 7 has no more work after 147 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 5 has no more work after 115 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 1 has no more work after 213 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 8 has no more work after 21 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 6 has no more work after 255 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 3 has no more work after 415 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] " <thread 2 has no more work after 342 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 10:58:49 - INFO] "start writing the XML file /tmp/PIACompiler451579075/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 10:58:49 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:03:58 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:03:59 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:03:59 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:03:59 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:04:03 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:03 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:03 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:04 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:04 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:04 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:04:04 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:04:04 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:04:04 - INFO] " <thread 2 has no more work after 360 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 6 has no more work after 92 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 7 has no more work after 214 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 8 has no more work after 346 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 1 has no more work after 375 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 5 has no more work after 260 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 3 has no more work after 24 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] " <thread 4 has no more work after 185 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:04 - INFO] "start writing the XML file /tmp/PIACompiler657869618/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:04:04 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:04:04 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:08 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:08 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:08 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:08 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:08 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:08 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:04:08 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:04:08 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:04:08 - INFO] " <thread 5 has no more work after 13 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 2 has no more work after 782 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 4 has no more work after 520 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 1 has no more work after 541 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 3 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:08 - INFO] "start writing the XML file /tmp/PIACompiler441162691/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:04:08 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:04:30 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:04:31 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:31 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:04:31 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:04:36 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:36 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:36 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:36 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:36 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:36 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:04:36 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:04:36 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:04:36 - INFO] " <thread 1 has no more work after 2 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 5 has no more work after 339 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 3 has no more work after 326 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 7 has no more work after 272 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 8 has no more work after 98 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 4 has no more work after 625 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] " <thread 2 has no more work after 194 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:36 - INFO] "start writing the XML file /tmp/PIACompiler2115322559/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:04:36 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:04:37 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:40 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:40 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:40 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:04:40 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:04:40 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:04:40 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:04:40 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:04:40 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:04:40 - INFO] " <thread 2 has no more work after 629 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 7 has no more work after 5 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 5 has no more work after 32 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 3 has no more work after 491 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 4 has no more work after 103 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 1 has no more work after 534 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] " <thread 6 has no more work after 62 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:04:40 - INFO] "start writing the XML file /tmp/PIACompiler2012909822/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:04:41 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:09:02 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:09:03 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:09:03 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:09:03 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:09:07 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:09:07 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:09:07 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:09:07 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:09:07 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:09:07 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:09:07 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:09:07 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:09:07 - INFO] " <thread 7 has no more work after 69 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 5 has no more work after 220 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 3 has no more work after 608 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 4 has no more work after 190 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 2 has no more work after 218 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 6 has no more work after 246 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 1 has no more work after 287 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] " <thread 8 has no more work after 18 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:07 - INFO] "start writing the XML file /tmp/PIACompiler1997554060/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:09:08 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:09:08 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:09:11 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:09:11 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:09:11 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:09:12 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:09:12 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:09:12 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:09:12 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:09:12 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:09:12 - INFO] " <thread 5 has no more work after 149 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 4 has no more work after 479 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 2 has no more work after 580 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 1 has no more work after 506 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 3 has no more work after 142 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:09:12 - INFO] "start writing the XML file /tmp/PIACompiler585960344/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:09:12 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:10:39 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:10:40 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:10:40 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:10:40 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:10:44 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:10:44 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:10:44 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:10:44 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:10:44 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:10:44 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:10:44 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:10:44 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:10:44 - INFO] " <thread 6 has no more work after 473 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 8 has no more work after 370 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 7 has no more work after 20 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 1 has no more work after 129 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 4 has no more work after 197 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 5 has no more work after 206 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 2 has no more work after 91 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] " <thread 3 has no more work after 370 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:44 - INFO] "start writing the XML file /tmp/PIACompiler27396575/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:10:45 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:10:45 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:10:48 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:10:48 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:10:48 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/testing/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:10:49 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:10:49 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:10:49 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:10:49 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:10:49 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:10:49 - INFO] " <thread 7 has no more work after 542 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 6 has no more work after 21 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 2 has no more work after 408 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 1 has no more work after 2 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 5 has no more work after 10 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 3 has no more work after 459 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] " <thread 4 has no more work after 414 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:10:49 - INFO] "start writing the XML file /tmp/PIACompiler317057508/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:10:49 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:27:05 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:27:06 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:27:06 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:27:06 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 11:27:11 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:27:11 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:27:11 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:27:12 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:27:12 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:27:12 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:27:12 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:27:12 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:27:12 - INFO] " <thread 3 has no more work after 547 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 6 has no more work after 109 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 8 has no more work after 5 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 1 has no more work after 97 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 5 has no more work after 78 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 2 has no more work after 69 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 7 has no more work after 734 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] " <thread 4 has no more work after 217 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:12 - INFO] "start writing the XML file /tmp/PIACompiler951338268/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:27:12 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:27:12 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:27:16 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:27:16 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:27:16 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 11:27:16 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 11:27:16 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 11:27:16 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 11:27:16 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 11:27:16 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 11:27:16 - INFO] " <thread 2 has no more work after 447 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 3 has no more work after 491 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 4 has no more work after 473 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 1 has no more work after 445 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 5 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 11:27:16 - INFO] "start writing the XML file /tmp/PIACompiler712374593/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 11:27:16 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 11:41:53 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 11:43:05 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:30:17 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:30:18 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:18 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:30:18 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:30:22 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:22 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:22 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:23 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:23 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:23 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:30:23 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:30:23 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:30:23 - INFO] " <thread 8 has no more work after 80 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 6 has no more work after 3 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 1 has no more work after 86 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 7 has no more work after 81 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 4 has no more work after 602 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 2 has no more work after 748 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 5 has no more work after 172 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] " <thread 3 has no more work after 84 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:23 - INFO] "start writing the XML file /tmp/PIACompiler140025411/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:30:23 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:30:23 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:26 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:26 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:26 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:27 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:27 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:27 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:30:27 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:30:27 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:30:27 - INFO] " <thread 6 has no more work after 40 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 1 has no more work after 439 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 3 has no more work after 465 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 4 has no more work after 404 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 2 has no more work after 508 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 5 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:27 - INFO] "start writing the XML file /tmp/PIACompiler1827307046/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:30:27 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:30:27 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:29 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:29 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:29 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:30:29 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:30:29 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:30:29 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:30:29 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:30:29 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:30:29 - INFO] " <thread 3 has no more work after 321 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 6 has no more work after 495 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 4 has no more work after 249 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 5 has no more work after 293 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 2 has no more work after 181 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 7 has no more work after 41 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 1 has no more work after 276 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:30:29 - INFO] "start writing the XML file /tmp/PIACompiler275473012/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:30:29 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:35:35 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:35:36 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:35:36 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:35:36 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:35:41 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:35:41 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:35:41 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:35:41 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:35:41 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:35:41 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:35:41 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:35:41 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:35:41 - INFO] " <thread 8 has no more work after 223 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 7 has no more work after 267 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 3 has no more work after 393 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 6 has no more work after 162 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 4 has no more work after 354 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 5 has no more work after 261 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 2 has no more work after 147 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] " <thread 1 has no more work after 49 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:35:41 - INFO] "start writing the XML file /tmp/PIACompiler1092652755/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:35:42 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:39:03 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:39:04 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:39:04 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:39:04 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:39:09 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:39:09 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:39:09 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:39:09 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:39:09 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:39:09 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:39:09 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:39:09 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:39:09 - INFO] " <thread 3 has no more work after 44 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 8 has no more work after 396 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 6 has no more work after 328 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 7 has no more work after 284 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 2 has no more work after 64 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 1 has no more work after 86 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 5 has no more work after 316 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] " <thread 4 has no more work after 338 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:39:09 - INFO] "start writing the XML file /tmp/PIACompiler622587584/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:39:10 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:43:57 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:43:58 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:43:58 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:43:58 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:44:02 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:44:02 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:44:02 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:44:03 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:44:03 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:44:03 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:44:03 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:44:03 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:44:03 - INFO] " <thread 8 has no more work after 378 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 5 has no more work after 40 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 6 has no more work after 64 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 4 has no more work after 430 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 3 has no more work after 442 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 7 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 1 has no more work after 44 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] " <thread 2 has no more work after 457 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:44:03 - INFO] "start writing the XML file /tmp/PIACompiler1713357922/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:44:03 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 14:54:02 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 14:54:03 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:54:03 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:54:03 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 14:54:08 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:54:08 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:54:08 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 14:54:09 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 14:54:09 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 14:54:09 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 14:54:09 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 14:54:09 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 14:54:09 - INFO] " <thread 2 has no more work after 282 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 8 has no more work after 370 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 1 has no more work after 490 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 7 has no more work after 83 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 4 has no more work after 107 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 5 has no more work after 63 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 6 has no more work after 3 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] " <thread 3 has no more work after 458 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 14:54:09 - INFO] "start writing the XML file /tmp/PIACompiler2056350102/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 14:54:09 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 15:03:46 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 15:03:47 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:03:47 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:03:47 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:03:52 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:03:52 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:03:52 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:03:52 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:03:52 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:03:52 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 15:03:52 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 15:03:52 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 15:03:52 - INFO] " <thread 2 has no more work after 429 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 8 has no more work after 290 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 7 has no more work after 220 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 1 has no more work after 205 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 4 has no more work after 268 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 3 has no more work after 20 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 6 has no more work after 298 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] " <thread 5 has no more work after 126 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:03:52 - INFO] "start writing the XML file /tmp/PIACompiler920317437/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 15:03:52 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 15:06:35 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 15:06:36 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:06:36 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:06:36 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:06:41 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:06:41 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:06:41 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:06:42 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:06:42 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:06:42 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 15:06:42 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 15:06:42 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 15:06:42 - INFO] " <thread 2 has no more work after 56 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 3 has no more work after 393 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 7 has no more work after 451 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 4 has no more work after 659 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 6 has no more work after 65 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 1 has no more work after 91 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 5 has no more work after 135 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] " <thread 8 has no more work after 6 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:06:42 - INFO] "start writing the XML file /tmp/PIACompiler1397681448/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 15:06:42 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 15:09:03 - INFO] "Found WebKit version 2.4.9." (org.eclipse.swt.browser.BrowserInitializer:146)
+[17-Dec-2015 15:09:04 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:04 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:09:04 - WARN] "MzIdentML Configuration file: bundleresource://32.fwk13326370:31/defaultMzIdentMLElement.cfg.xml" (uk.ac.ebi.jmzidml.MzIdentMLElement:1100)
+[17-Dec-2015 15:09:09 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:09 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:09 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:09 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:09 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:09 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 15:09:09 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 15:09:09 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 15:09:09 - INFO] " <thread 4 has no more work after 479 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 5 has no more work after 241 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 2 has no more work after 547 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 3 has no more work after 7 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 7 has no more work after 1 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 6 has no more work after 84 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 1 has no more work after 385 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] " <thread 8 has no more work after 112 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:09 - INFO] "start writing the XML file /tmp/PIACompiler2030305130/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 15:09:09 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 15:09:10 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:13 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:13 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:13 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:13 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:13 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:13 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 15:09:13 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 15:09:13 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 15:09:13 - INFO] " <thread 3 has no more work after 490 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 2 has no more work after 19 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 4 has no more work after 443 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 5 has no more work after 443 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 1 has no more work after 461 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 6 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 7 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:13 - INFO] "start writing the XML file /tmp/PIACompiler90900388/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 15:09:13 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
+[17-Dec-2015 15:09:13 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:17 - INFO] "inserted new: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:17 - INFO] "have now: 
+	2004 peptides
+	2308 peptide spectrum matches
+	2044 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:17 - INFO] "'/home/julian/workspace-knime-sdk/de.mpc.pia.knime.nodes.testing/bin/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid' seems to be a mzIdentML file" (de.mpc.pia.intermediate.compiler.parser.InputFileParserFactory:323)
+[17-Dec-2015 15:09:17 - INFO] "inserted new: 
+	109 peptides
+	170 peptide spectrum matches
+	87 accessions" (de.mpc.pia.intermediate.compiler.parser.MzIdentMLFileParser:633)
+[17-Dec-2015 15:09:17 - INFO] "have now: 
+	2113 peptides
+	2478 peptide spectrum matches
+	2131 accessions" (de.mpc.pia.intermediate.compiler.PIACompiler:214)
+[17-Dec-2015 15:09:17 - INFO] "start sorting clusters" (de.mpc.pia.intermediate.compiler.PIACompiler:551)
+[17-Dec-2015 15:09:17 - INFO] "clusters sorted: 1856" (de.mpc.pia.intermediate.compiler.PIACompiler:579)
+[17-Dec-2015 15:09:17 - INFO] "Using 8 threads." (de.mpc.pia.intermediate.compiler.PIACompiler:674)
+[17-Dec-2015 15:09:17 - INFO] " <thread 2 has no more work after 207 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 1 has no more work after 858 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 4 has no more work after 253 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 7 has no more work after 78 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 6 has no more work after 90 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 5 has no more work after 149 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 8 has no more work after 0 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] " <thread 3 has no more work after 221 clusters> " (de.mpc.pia.intermediate.compiler.CompilerWorkerThread:79)
+[17-Dec-2015 15:09:17 - INFO] "start writing the XML file /tmp/PIACompiler186692255/compilation.pia.xml" (de.mpc.pia.intermediate.compiler.PIACompiler:810)
+[17-Dec-2015 15:09:17 - INFO] "writing done" (de.mpc.pia.intermediate.compiler.PIACompiler:896)
