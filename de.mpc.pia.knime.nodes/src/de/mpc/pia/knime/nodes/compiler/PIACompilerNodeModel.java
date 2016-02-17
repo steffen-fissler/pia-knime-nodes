@@ -1,10 +1,18 @@
 package de.mpc.pia.knime.nodes.compiler;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +27,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.knime.core.data.filestore.FileStore;
+import org.knime.core.data.filestore.FileStoreFactory;
+import org.knime.core.data.filestore.FileStorePortObject;
 import org.knime.core.data.uri.IURIPortObject;
 import org.knime.core.data.uri.URIContent;
 import org.knime.core.data.uri.URIPortObject;
@@ -32,6 +43,7 @@ import org.knime.core.node.port.PortType;
 import de.mpc.pia.intermediate.compiler.PIACompiler;
 import de.mpc.pia.intermediate.piaxml.FilesListXML;
 import de.mpc.pia.intermediate.piaxml.PIAInputFileXML;
+import de.mpc.pia.knime.nodes.filestore.FileStorePIAXMLPortObject;
 import de.mpc.pia.knime.nodes.utils.FileHelper;
 import uk.ac.ebi.jmzidml.model.mzidml.AbstractParam;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftware;
@@ -43,6 +55,7 @@ import uk.ac.ebi.jmzidml.model.mzidml.SpectrumIdentificationProtocol;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.ModelContent;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
@@ -62,7 +75,7 @@ public class PIACompilerNodeModel extends NodeModel {
             .getLogger(PIACompilerNodeModel.class);
 
     /** the settings key for the compilations name */
-    static final String CFGKEY_NAME = "Count";
+    static final String CFGKEY_NAME = "Name";
 
     /** initial default count value. */
     static final String DEFAULT_NAME = "";
@@ -73,6 +86,10 @@ public class PIACompilerNodeModel extends NodeModel {
 
     /** the name of the created PIA XML file */
     private String piaXmlFileName;
+
+
+    /** the basic save name of the compilation  */
+    private static final String piaXmlBaseName = "compilation.pia.xml";
 
 
     /**
@@ -120,16 +137,22 @@ public class PIACompilerNodeModel extends NodeModel {
 
         File dir = FileHelper.createTempDirectory("PIACompiler");
 
-        String filename = dir.getAbsolutePath() + File.separator + "compilation.pia.xml";
-        piaCompiler.writeOutXML(filename);
-        // set the piaXmlFileName after eriting the file
-        piaXmlFileName = filename;
+        File outFile = new File(dir, piaXmlBaseName);
+        piaCompiler.writeOutXML(outFile.getAbsolutePath());
 
-        URIPortObject outExportFilePort = new URIPortObject(
-                new URIPortObjectSpec(new String[]{"pia.xml"}),
-                Arrays.asList(new URIContent(new File(piaXmlFileName).toURI(), "pia.xml")));
+        // set the piaXmlFileName after writing the file
+        piaXmlFileName = outFile.getAbsolutePath();
 
-        return new PortObject[]{outExportFilePort};
+
+        FileStoreFactory fileStoreFactory = FileStoreFactory.createNotInWorkflowFileStoreFactory();
+        FileStore fileStore = fileStoreFactory.createFileStore(outFile.getName());
+        List<FileStore> storeList = new ArrayList<FileStore>();
+        storeList.add(fileStore);
+        FileStorePIAXMLPortObject piaXMLFileObject = new FileStorePIAXMLPortObject(storeList, outFile);
+
+        piaXmlFileName = piaXMLFileObject.getFileName();
+
+        return new PortObject[]{piaXMLFileObject};
     }
 
 
@@ -190,16 +213,19 @@ public class PIACompilerNodeModel extends NodeModel {
      * {@inheritDoc}
      */
     @Override
-    protected void loadInternals(final File internDir, final ExecutionMonitor exec)
+    protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
             throws IOException, CanceledExecutionException {
+        // TODO: load the standard and error output data here
     }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void saveInternals(final File internDir, final ExecutionMonitor exec)
+    protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
             throws IOException, CanceledExecutionException {
+        // TODO: save the standard and error output data here
     }
 
 

@@ -1,4 +1,4 @@
-package de.mpc.pia.knime.nodes.piadefault;
+package de.mpc.pia.knime.nodes.analysis;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
@@ -10,15 +10,15 @@ import org.knime.core.node.NodeView;
  *
  * @author Julian Uszkoreit
  */
-public class PIADefaultNodeFactory 
-        extends NodeFactory<PIADefaultNodeModel> {
+public class PIAAnalysisNodeFactory 
+        extends NodeFactory<PIAAnalysisNodeModel> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PIADefaultNodeModel createNodeModel() {
-        return new PIADefaultNodeModel();
+    public PIAAnalysisNodeModel createNodeModel() {
+        return new PIAAnalysisNodeModel();
     }
 
     /**
@@ -33,9 +33,9 @@ public class PIADefaultNodeFactory
      * {@inheritDoc}
      */
     @Override
-    public NodeView<PIADefaultNodeModel> createNodeView(final int viewIndex,
-            final PIADefaultNodeModel nodeModel) {
-        return new PIADefaultNodeView(nodeModel);
+    public NodeView<PIAAnalysisNodeModel> createNodeView(final int viewIndex,
+            final PIAAnalysisNodeModel nodeModel) {
+        return new PIAAnalysisNodeView(nodeModel);
     }
 
     /**
@@ -51,7 +51,7 @@ public class PIADefaultNodeFactory
      */
     @Override
     public NodeDialogPane createNodeDialogPane() {
-        return new PIADefaultNodeDialog();
+        return new PIAAnalysisNodeDialog();
     }
 
 }

@@ -1,4 +1,4 @@
-package de.mpc.pia.knime.nodes.piadefault;
+package de.mpc.pia.knime.nodes.analysis;
 
 import org.knime.core.node.NodeView;
 
@@ -8,14 +8,14 @@ import org.knime.core.node.NodeView;
  *
  * @author Julian Uszkoreit
  */
-public class PIADefaultNodeView extends NodeView<PIADefaultNodeModel> {
+public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
 
     /**
      * Creates a new view.
      * 
-     * @param nodeModel The model (class: {@link PIADefaultNodeModel})
+     * @param nodeModel The model (class: {@link PIAAnalysisNodeModel})
      */
-    protected PIADefaultNodeView(final PIADefaultNodeModel nodeModel) {
+    protected PIAAnalysisNodeView(final PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
 
         // TODO instantiate the components of the view here.
@@ -30,8 +30,8 @@ public class PIADefaultNodeView extends NodeView<PIADefaultNodeModel> {
 
         // TODO retrieve the new model from your nodemodel and 
         // update the view.
-        PIADefaultNodeModel nodeModel = 
-            (PIADefaultNodeModel)getNodeModel();
+        PIAAnalysisNodeModel nodeModel = 
+            (PIAAnalysisNodeModel)getNodeModel();
         assert nodeModel != null;
         
         // be aware of a possibly not executed nodeModel! The data you retrieve

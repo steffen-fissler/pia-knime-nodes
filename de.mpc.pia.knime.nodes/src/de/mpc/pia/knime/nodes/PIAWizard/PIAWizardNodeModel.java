@@ -38,6 +38,8 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 
+import de.mpc.pia.knime.nodes.PIAAnalysisModel;
+import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.score.FDRData;
 
@@ -61,18 +63,18 @@ public class PIAWizardNodeModel extends NodeModel {
 			new SettingsModelDoubleBounded(PIASettings.FDR_THRESHOLD.getKey(), PIASettings.FDR_THRESHOLD.getDefaultDouble(), 0, 1);
 	
 	private final SettingsModelString m_fdr_decoy_strategy =
-			new SettingsModelString(PIASettings.DECOY_STRATEGY.getKey(), PIASettings.DECOY_STRATEGY.getDefaultString());
+			new SettingsModelString(PIASettings.ALL_DECOY_STRATEGY.getKey(), PIASettings.ALL_DECOY_STRATEGY.getDefaultString());
 	private final SettingsModelString m_fdr_decoy_pattern =
-			new SettingsModelString(PIASettings.DECOY_PATTERN.getKey(), PIASettings.DECOY_PATTERN.getDefaultString());
+			new SettingsModelString(PIASettings.ALL_DECOY_PATTERN.getKey(), PIASettings.ALL_DECOY_PATTERN.getDefaultString());
 	private final SettingsModelInteger m_fdr_used_identifications =
-			new SettingsModelInteger(PIASettings.USED_IDENTIFICATIONS.getKey(), PIASettings.USED_IDENTIFICATIONS.getDefaultInteger());
+			new SettingsModelInteger(PIASettings.ALL_USED_IDENTIFICATIONS.getKey(), PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger());
 	
 	private final SettingsModelStringArray m_fdr_preferred_scores =
-			new SettingsModelStringArray(PIASettings.PREFERRED_SCORES.getKey(), PIASettings.PREFERRED_SCORES.getDefaultStringArray());
+			new SettingsModelStringArray(PIASettings.FDR_PREFERRED_SCORES.getKey(), PIASettings.FDR_PREFERRED_SCORES.getDefaultStringArray());
 	
 	
 	/** the model, which holds all the data */
-	private PIAViewModel m_piaViewModel;
+	private PIAAnalysisModel m_piaViewModel;
 	
 	
 	/**
@@ -112,17 +114,17 @@ public class PIAWizardNodeModel extends NodeModel {
 		
 		
 		// create the view model
-		m_piaViewModel = new PIAViewModel(piaModeller);
+		m_piaViewModel = new PIAAnalysisModel(piaModeller);
 		
 		// set the settings
 		m_piaViewModel.addSetting(PIASettings.CREATE_PSMSETS.getKey(), m_create_psmsets.getBooleanValue());
 		m_piaViewModel.addSetting(PIASettings.FDR_THRESHOLD.getKey(), m_fdr_threshold.getDoubleValue());
 		
-		m_piaViewModel.addSetting(PIASettings.DECOY_STRATEGY.getKey(), m_fdr_decoy_strategy.getStringValue());
-		m_piaViewModel.addSetting(PIASettings.DECOY_PATTERN.getKey(), m_fdr_decoy_pattern.getStringValue());
-		m_piaViewModel.addSetting(PIASettings.USED_IDENTIFICATIONS.getKey(), m_fdr_used_identifications.getIntValue());
+		m_piaViewModel.addSetting(PIASettings.ALL_DECOY_STRATEGY.getKey(), m_fdr_decoy_strategy.getStringValue());
+		m_piaViewModel.addSetting(PIASettings.ALL_DECOY_PATTERN.getKey(), m_fdr_decoy_pattern.getStringValue());
+		m_piaViewModel.addSetting(PIASettings.ALL_USED_IDENTIFICATIONS.getKey(), m_fdr_used_identifications.getIntValue());
 		
-		m_piaViewModel.addSetting(PIASettings.PREFERRED_SCORES.getKey(), m_fdr_preferred_scores.getStringArrayValue());
+		m_piaViewModel.addSetting(PIASettings.FDR_PREFERRED_SCORES.getKey(), m_fdr_preferred_scores.getStringArrayValue());
 		
 		// execute the PSM level
 		m_piaViewModel.executePSMOperations();
@@ -157,10 +159,10 @@ public class PIAWizardNodeModel extends NodeModel {
 	
 	
 	/**
-	 * Getter for the {@link PIAViewModel}.
+	 * Getter for the {@link PIAAnalysisModel}.
 	 * @return
 	 */
-	protected PIAViewModel getPIAViewModel() {
+	protected PIAAnalysisModel getPIAViewModel() {
 		return m_piaViewModel;
 	}
 	

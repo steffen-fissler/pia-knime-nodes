@@ -14,12 +14,22 @@
    -->
    
    <extension point="org.knime.workbench.repository.nodes">
-      <node category-path="/community/PIA" factory-class="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory" id="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"/>
-<node category-path="/community/PIA" factory-class="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory" id="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"/>
+      <node
+            category-path="/community/PIA"
+            deprecated="false"
+            factory-class="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"
+            id="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"/>
 <node
       category-path="/community/PIA"
-      factory-class="de.mpc.pia.knime.nodes.piadefault.PIADefaultNodeFactory"
-      id="de.mpc.pia.knime.nodes.piadefault.PIADefaultNodeFactory"/>
+      deprecated="false"
+      factory-class="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"
+      id="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"/>
+<node
+      category-path="/community/PIA"
+      deprecated="false"
+      factory-class="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory"
+      id="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory">
+</node>
 </extension>
    <extension point="org.knime.workbench.repository.categories">
       <category icon="src/de/mpc/pia/knime/nodes/pia_logo_small.png" level-id="PIA" name="PIA" path="/community">
