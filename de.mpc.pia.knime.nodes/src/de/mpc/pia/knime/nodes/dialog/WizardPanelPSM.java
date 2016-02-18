@@ -47,7 +47,6 @@ import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.score.FDRData;
 import de.mpc.pia.modeller.score.ScoreModel;
 import de.mpc.pia.modeller.score.ScoreModelEnum;
-import de.mpc.pia.visualization.VisualizePSM;
 
 public class WizardPanelPSM extends JPanel implements ActionListener {
 
@@ -655,6 +654,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 			// >> the information data --------------------
 
 			// >> draw PPM deviation ----------------------
+			/*
 			VisualizePSM vPSM = new VisualizePSM(piaViewModel.getPSMModeller());
 
 			HistogramDataset hd = vPSM.getPPMHistogramData(0l, piaViewModel.getPSMModeller().isCombinedFDRScoreCalculated());
@@ -698,6 +698,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 			c.gridx = 1;
 			c.gridy = 0;
 			overviewPanel.add(ppmPanel, c);
+			*/
 			// << draw PPM deviation ----------------------
 
 			cFDRPanel.gridx = 0;

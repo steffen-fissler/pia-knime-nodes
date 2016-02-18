@@ -5,7 +5,6 @@ Bundle-SymbolicName: de.mpc.pia.knime; singleton:=true
 Bundle-Version: 1.0.1.qualifier
 Bundle-ClassPath: pia-knime.jar,
  libs/pia-1.0.1-SNAPSHOT.jar,
- libs/pia-visualization-0.0.1-SNAPSHOT.jar,
  libs/lib/avalon-framework-4.1.3.jar,
  libs/lib/BaseLib-0.0.1-SNAPSHOT.jar,
  libs/lib/bcmail-jdk14-138.jar,
@@ -66,7 +65,14 @@ Bundle-ClassPath: pia-knime.jar,
  libs/lib/xtandem-parser-1.7.18.jar,
  libs/lib/xxindex-0.14.jar,
  libs/lib/jcommon-1.0.23.jar,
- libs/lib/jfreechart-1.0.19.jar
+ libs/lib/jfreechart-1.0.19.jar,
+ libs/lib/collections-generic-4.01.jar,
+ libs/lib/colt-1.2.0.jar,
+ libs/lib/concurrent-1.3.4.jar,
+ libs/lib/jung-algorithms-2.0.1.jar,
+ libs/lib/jung-api-2.0.1.jar,
+ libs/lib/jung-graph-impl-2.0.1.jar,
+ libs/lib/jung-visualization-2.0.1.jar
 Bundle-Activator: de.mpc.pia.knime.nodes.PIANodesPlugin
 Bundle-Vendor: Julian Uszkoreit
 Require-Bundle: org.eclipse.core.runtime,

@@ -3,6 +3,8 @@ package de.mpc.pia.knime.nodes.analysis;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,8 @@ import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.data.uri.IURIPortObject;
 import org.knime.core.data.uri.URIContent;
+import org.knime.core.data.uri.URIPortObject;
+import org.knime.core.data.uri.URIPortObjectSpec;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -147,7 +151,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 new PortType[] { BufferedDataTable.TYPE,
                         BufferedDataTable.TYPE,
                         BufferedDataTable.TYPE,
-                        /*, IURIPortObject.TYPE*/ });
+                        IURIPortObject.TYPE });
     }
 
 
@@ -241,12 +245,33 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
 
         // TODO: export one level to one selected file format
+        // here the export should happen...
+        String exportFile = "/dev/null";
+        List<URIContent> outExportFile = new ArrayList<URIContent>();
+
+        if ((exportFile != null) && Files.exists(new File(exportFile).toPath(), new LinkOption[]{})) {
+            outExportFile.add(new URIContent(new File(exportFile).toURI(), "idXML"));
+            /*
+                    TODO: output the errors here
+                    setExternalOutput(externalOutput);
+                    setExternalErrorOutput(externalErrorOutput);
+             */
+        } else {
+            /*
+                    TODO: output the errors here
+                    setFailedExternalOutput(externalOutput);
+                    setFailedExternalErrorOutput(externalErrorOutput);
+             */
+            throw new Exception("Error while executing PIA Wizard.");
+        }
+        URIPortObject outExportFilePort = new URIPortObject(outExportFile);
 
         // TODO: make calculation of each level selectable
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
-                proteinContainer.getTable()};
+                proteinContainer.getTable(),
+                outExportFilePort};
     }
 
 
@@ -267,13 +292,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs)
             throws InvalidSettingsException {
-        PortObjectSpec[] out_spec = new PortObjectSpec[3];
+        PortObjectSpec[] out_spec = new PortObjectSpec[4];
 
         out_spec[0] = getPSMTableSpec();
         out_spec[1] = getPeptideTableSpec();
         out_spec[2] = getProteinTableSpec();
-
-        //out_spec[3] = new URIPortObjectSpec(new String[]{"csv", "mzIdentML", "mzTab"});
+        out_spec[3] = new URIPortObjectSpec(new String[]{"csv", "mzIdentML", "mzTab"});
 
         return out_spec;
     }

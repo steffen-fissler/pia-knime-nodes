@@ -1,5 +1,6 @@
 package de.mpc.pia.knime.nodes.visualization;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
@@ -9,6 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,7 +21,10 @@ import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.ui.RefineryUtilities;
+
 import de.mpc.pia.intermediate.Accession;
+import de.mpc.pia.intermediate.Group;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.visualization.peptides.PeptideTableModel;
@@ -26,9 +32,29 @@ import de.mpc.pia.knime.nodes.visualization.proteins.ProteinTableModel;
 import de.mpc.pia.knime.nodes.visualization.psms.PSMSetTableModel;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
+import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
 import de.mpc.pia.modeller.score.ScoreModel;
+import de.mpc.pia.visualization.graph.AmbiguityGroupVisualizationHandler;
+import de.mpc.pia.visualization.graph.ProteinLayout;
+import de.mpc.pia.visualization.graph.ProteinVertexBorderColorTransformer;
+import de.mpc.pia.visualization.graph.ProteinVertexFillColorTransformer;
+import de.mpc.pia.visualization.graph.ProteinVertexLabeller;
+import de.mpc.pia.visualization.graph.ProteinVertexShapeTransformer;
+import de.mpc.pia.visualization.graph.ProteinVisualizationGraphHandler;
+import de.mpc.pia.visualization.graph.VertexObject;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
+import edu.uci.ics.jung.graph.DirectedGraph;
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
+import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.decorators.EdgeShape;
+import edu.uci.ics.jung.visualization.picking.MultiPickedState;
+import edu.uci.ics.jung.visualization.picking.PickedState;
 
 
 public class ProteinsVisualizationPanel extends JPanel implements ListSelectionListener {
@@ -62,6 +88,9 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
     /** the panel for the PSM information */
     private JPanel psmsPanel;
+
+    /** the right side of the panel shows the visualization of the cluster */
+    private JSplitPane protTableClusterPane;
 
     /** whether modifications are considered in peptide inference */
     private boolean considerModifications;
@@ -136,14 +165,14 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         // PSMSetTable >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel psmSetsPanel = new JPanel();
         psmSetsPanel.setLayout(new BoxLayout(psmSetsPanel, BoxLayout.Y_AXIS));
-        psmSetsPanel.setPreferredSize(new Dimension(400, 200));
+        psmSetsPanel.setPreferredSize(new Dimension(600, 200));
 
         psmSetsPanel.add(new JLabel("PSM sets"));
 
         psmSetTableModel = new PSMSetTableModel(null);
 
         psmSetTable = new JTable(psmSetTableModel);
-        psmSetTable.setPreferredScrollableViewportSize(new Dimension(400, 200));
+        psmSetTable.setPreferredScrollableViewportSize(new Dimension(600, 200));
         psmSetTable.setFillsViewportHeight(true);
         psmSetTable.setDefaultRenderer(Double.class, new ReportTableCellRenderer());
         psmSetTable.setDefaultRenderer(List.class, new ReportTableCellRenderer());
@@ -170,16 +199,24 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
         JSplitPane psmsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 psmSetsPanel, psmsContainerPanel);
-        psmsSplitPane.setDividerLocation(0.8);
         psmsSplitPane.setAlignmentX(CENTER_ALIGNMENT);
 
         proteinBottomInfos.add(psmsSplitPane);
 
-        JSplitPane protTableTopSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                proteinScrollPane, proteinBottomInfos);
-        this.add(protTableTopSplitPane);
+
+        JPanel clusterVisualizationPanelDummy = new JPanel();
+        clusterVisualizationPanelDummy.setPreferredSize(new Dimension(300, 200));
+
+        protTableClusterPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                proteinScrollPane, clusterVisualizationPanelDummy);
+
+        JSplitPane protTopBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                protTableClusterPane, proteinBottomInfos);
+        this.add(protTopBottomSplitPane);
 
 
+        psmsSplitPane.setDividerLocation(0.7);
+        protTableClusterPane.setDividerLocation(0.3);
         // TODO: onclick show the peptide -> psms -> trees
     }
 
@@ -257,6 +294,22 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
         peptideTableModel.updatePeptideList(protein.getPeptides(),
                 considerModifications, true, peptideScoreNameMap);
+
+
+        // TODO: take the actual selections and groups/subgroups etc. into account
+        ReportPeptide anyPeptide = protein.getPeptides().get(0);
+        PSMReportItem anyPSM = anyPeptide.getPSMs().get(0);
+        Group anyGroup = anyPSM.getPeptide().getGroup();
+
+        AmbiguityGroupVisualizationHandler visGraph = new AmbiguityGroupVisualizationHandler(anyGroup,
+                null, null,
+                null, null,
+                null, null,
+                null);
+
+        GraphZoomScrollPane panel = new GraphZoomScrollPane(visGraph.getVisualizationViewer());
+
+        protTableClusterPane.setRightComponent(panel);
     }
 
 
@@ -291,8 +344,6 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
             psmsPanel.removeAll();
             return;
         }
-
-        System.err.println("updateSelectedPSMSet " + psmSetIdx);
 
         ReportPSMSet psmSet = psmSetTableModel.getPSMSetAt(psmSetIdx);
 
