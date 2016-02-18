@@ -525,10 +525,20 @@ public class PIAAnalysisNodeModel extends NodeModel {
             psmCells.add(new IntCell(psm.getMissedCleavages()));
 
             // source ID
-            psmCells.add(new StringCell(psm.getSourceID()));
+            String sourceID = psm.getSourceID();
+            if (sourceID == null) {
+                psmCells.add(DataType.getMissingCell());
+            } else {
+                psmCells.add(new StringCell(psm.getSourceID()));
+            }
 
             // spectrum title
-            psmCells.add(new StringCell(psm.getSpectrumTitle()));
+            String title = psm.getSpectrumTitle();
+            if (title == null) {
+                psmCells.add(DataType.getMissingCell());
+            } else {
+                psmCells.add(new StringCell(psm.getSpectrumTitle()));
+            }
 
             // number of identifications
             if (m_psm_analysis_file_id.getIntValue() == 0) {
