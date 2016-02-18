@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.knime.base.node.io.filereader.DataCellFactory;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -23,7 +22,6 @@ import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.DoubleCell.DoubleCellFactory;
 import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.StringCell;
-import org.knime.core.data.def.StringCell.StringCellFactory;
 import org.knime.core.data.uri.IURIPortObject;
 import org.knime.core.data.uri.URIContent;
 import org.knime.core.node.BufferedDataContainer;
@@ -43,13 +41,8 @@ import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
-import de.mpc.pia.modeller.protein.inference.ProteinInferenceFactory.ProteinInferenceMethod;
-import de.mpc.pia.modeller.protein.scoring.ProteinScoringFactory.ScoringType;
-import de.mpc.pia.modeller.protein.scoring.settings.PSMForScoring;
 import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
-import de.mpc.pia.modeller.score.ScoreModelEnum;
-import uk.ac.ebi.pride.jmztab.model.ProteinColumn;
 
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -247,7 +240,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 m_protein_filters.getStringArrayValue());
         BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
 
-
         // TODO: export one level to one selected file format
 
         // TODO: make calculation of each level selectable
@@ -263,9 +255,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      */
     @Override
     protected void reset() {
-        // TODO Code executed on reset.
-        // Models build during execute are cleared here.
-        // Also data handled in load/saveInternals will be erased here.
+        // executed on reset.
 
         analysisModel = null;
     }
@@ -659,9 +649,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
         List<DataColumnSpec> protCols = new ArrayList<DataColumnSpec>();
         protCols.add(new DataColumnSpecCreator("Accessions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
-        protCols.add(new DataColumnSpecCreator("score", DoubleCell.TYPE).createSpec());
+        protCols.add(new DataColumnSpecCreator("Score", DoubleCell.TYPE).createSpec());
 
-        protCols.add(new DataColumnSpecCreator("coverages", ListCell.getCollectionType(DoubleCell.TYPE)).createSpec());
+        protCols.add(new DataColumnSpecCreator("Coverages", ListCell.getCollectionType(DoubleCell.TYPE)).createSpec());
 
         protCols.add(new DataColumnSpecCreator("nrPeptides", IntCell.TYPE).createSpec());
         protCols.add(new DataColumnSpecCreator("nrPSMs", IntCell.TYPE).createSpec());
@@ -749,5 +739,28 @@ public class PIAAnalysisNodeModel extends NodeModel {
         return container;
     }
 
+
+    /**
+     * Getter for the analysis model
+     * @return
+     */
+    public PIAAnalysisModel getAnalysisModel() {
+        return analysisModel;
+    }
+
+
+    /**
+     * Returns the list of filtered proteins
+     *
+     * @return
+     */
+    public List<ReportProtein> getFilteredProteinList() {
+        if (analysisModel != null) {
+            return analysisModel.getFilteredReportProteins(
+                m_protein_filters.getStringArrayValue());
+        }
+
+        return null;
+    }
 }
 

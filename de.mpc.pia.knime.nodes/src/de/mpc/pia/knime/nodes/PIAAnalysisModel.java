@@ -103,7 +103,7 @@ public class PIAAnalysisModel {
     }
 
 
-    private String getSettingString(PIASettings setting) {
+    public String getSettingString(PIASettings setting) {
         Object value = getSetting(setting);
         if (value instanceof String) {
             return (String)value;
@@ -112,7 +112,7 @@ public class PIAAnalysisModel {
     }
 
 
-    private String[] getSettingStringArray(PIASettings setting) {
+    public String[] getSettingStringArray(PIASettings setting) {
         Object value = getSetting(setting);
         if (value instanceof String[]) {
             return (String[])value;
@@ -121,7 +121,7 @@ public class PIAAnalysisModel {
     }
 
 
-    private Double getSettingDouble(PIASettings setting) {
+    public Double getSettingDouble(PIASettings setting) {
         Object value = getSetting(setting);
         if (value instanceof Double) {
             return (Double)value;
@@ -130,7 +130,7 @@ public class PIAAnalysisModel {
     }
 
 
-    private Integer getSettingInteger(PIASettings setting) {
+    public Integer getSettingInteger(PIASettings setting) {
         Object value = getSetting(setting);
         if (value instanceof Integer) {
             return (Integer)value;
@@ -139,7 +139,7 @@ public class PIAAnalysisModel {
     }
 
 
-    private Boolean getSettingBoolean(PIASettings setting) {
+    public Boolean getSettingBoolean(PIASettings setting) {
         Object value = getSetting(setting);
         if (value instanceof Boolean) {
             return (Boolean)value;
