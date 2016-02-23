@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PIA nodes for KNIME Workbench
-Bundle-SymbolicName: de.mpc.pia.knime; singleton:=true
+Bundle-SymbolicName: de.mpc.pia.knime.nodes; singleton:=true
 Bundle-Version: 1.0.1.qualifier
 Bundle-ClassPath: pia-knime.jar,
  libs/pia-1.0.1-SNAPSHOT.jar,
