@@ -2,21 +2,20 @@ package de.mpc.pia.knime.nodes.compiler;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -27,24 +26,26 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.knime.core.data.filestore.FileStore;
-import org.knime.core.data.filestore.FileStoreFactory;
-import org.knime.core.data.filestore.FileStorePortObject;
-import org.knime.core.data.uri.IURIPortObject;
-import org.knime.core.data.uri.URIContent;
-import org.knime.core.data.uri.URIPortObject;
-import org.knime.core.data.uri.URIPortObjectSpec;
+import org.knime.core.data.DataCell;
+import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.DataColumnSpecCreator;
+import org.knime.core.data.DataRow;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.DataType;
+import org.knime.core.data.RowIterator;
+import org.knime.core.data.StringValue;
+import org.knime.core.data.blob.BinaryObjectCellFactory;
+import org.knime.core.data.blob.BinaryObjectDataCell;
+import org.knime.core.data.blob.BinaryObjectDataValue;
+import org.knime.core.data.def.DefaultRow;
+import org.knime.core.node.BufferedDataContainer;
+import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.port.PortType;
 
 import de.mpc.pia.intermediate.compiler.PIACompiler;
 import de.mpc.pia.intermediate.piaxml.FilesListXML;
 import de.mpc.pia.intermediate.piaxml.PIAInputFileXML;
-import de.mpc.pia.knime.nodes.filestore.FileStorePIAXMLPortObject;
-import de.mpc.pia.knime.nodes.utils.FileHelper;
 import uk.ac.ebi.jmzidml.model.mzidml.AbstractParam;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftware;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftwareList;
@@ -55,9 +56,9 @@ import uk.ac.ebi.jmzidml.model.mzidml.SpectrumIdentificationProtocol;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
-import org.knime.core.node.ModelContent;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
+import org.knime.core.node.NodeSettings;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 
@@ -74,50 +75,76 @@ public class PIACompilerNodeModel extends NodeModel {
     protected static final NodeLogger logger = NodeLogger
             .getLogger(PIACompilerNodeModel.class);
 
+    /** the settings key for the input files */
+    protected static final String CFGKEY_INPUT_COLUMN = "Input files";
     /** the settings key for the compilations name */
-    static final String CFGKEY_NAME = "Name";
+    protected static final String CFGKEY_NAME = "Name";
 
-    /** initial default count value. */
-    static final String DEFAULT_NAME = "";
+    /** initial default for the input files column */
+    protected static final String DEFAULT_INPUT_COLUMN = "URL";
+    /** initial default for the compilation name */
+    protected static final String DEFAULT_NAME = "compilation";
 
+    /** the model of the input files' URLs */
+    private final SettingsModelString m_input_column =
+            new SettingsModelString(PIACompilerNodeModel.CFGKEY_INPUT_COLUMN, PIACompilerNodeModel.DEFAULT_INPUT_COLUMN);
     /** the model of the compilation's name */
     private final SettingsModelString m_name =
             new SettingsModelString(PIACompilerNodeModel.CFGKEY_NAME, PIACompilerNodeModel.DEFAULT_NAME);
 
-    /** the name of the created PIA XML file */
-    private String piaXmlFileName;
+    /** information parsed from the created PIA XML file */
+    private String informationString;
 
 
-    /** the basic save name of the compilation  */
-    private static final String piaXmlBaseName = "compilation.pia.xml";
+    private static final String INTERNALS_INFORMATION = "informationString";
+    private static final String INTERNALS_FILE_NAME = "piaCompilerInternals";
 
 
     /**
      * Constructor for the node model.
      */
     protected PIACompilerNodeModel() {
-        super(new PortType[]{ IURIPortObject.TYPE },
-                new PortType[] { IURIPortObject.TYPE });
-
-        piaXmlFileName = null;
+        super(1, 1);
     }
 
 
     /**
      * {@inheritDoc}
+     * @throws URISyntaxException
+     * @throws IOException
      */
     @Override
-    protected PortObject[] execute(final PortObject[] inObjects,
-            final ExecutionContext exec) throws Exception {
-        piaXmlFileName = null;
+    protected BufferedDataTable[] execute(final BufferedDataTable[] inData,
+            final ExecutionContext exec) throws IOException  {
         PIACompiler piaCompiler = new PIACompiler();
 
         // get the input files
-        IURIPortObject filePort = (IURIPortObject) inObjects[0];
-        List<URIContent> uris = filePort.getURIContents();
-        for (URIContent uric : uris) {
-            URI uri = uric.getURI();
-            File file = new File(uri);
+        RowIterator row_it = inData[0].iterator();
+        int url_idx  = inData[0].getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
+
+        while (row_it.hasNext()) {
+            DataRow row = row_it.next();
+            DataCell urlCell = row.getCell(url_idx);
+
+            String fileURL = ((StringValue) urlCell).getStringValue();
+            File file = null;
+            try {
+                // try with URL encoding
+                URL url = new URL(fileURL);
+                file = new File(url.toURI());
+            } catch (Exception e) {
+                file = null;
+            }
+
+            if ((file == null) || !file.exists() || !file.canRead()) {
+                // try with "normal" file name
+                file = new File(fileURL);
+            }
+
+            if ((file == null) || !file.exists() || !file.canRead()) {
+                throw new  IOException("Could not open file: " + fileURL);
+            }
+
             String fileName = file.getAbsolutePath();
             String name = file.getName();
 
@@ -125,34 +152,45 @@ public class PIACompilerNodeModel extends NodeModel {
         }
 
         piaCompiler.buildClusterList();
-
         piaCompiler.buildIntermediateStructure();
 
         // set the compilations name (if given)
         String piaName = m_name.getStringValue();
         if ((piaName != null) && (piaName.trim().length() > 0)) {
             piaCompiler.setName(piaName);
-            logger.debug("set name of compilation to '" + piaName + "'");
+        } else {
+            piaCompiler.setName(DEFAULT_NAME);
         }
 
-        File dir = FileHelper.createTempDirectory("PIACompiler");
 
-        File outFile = new File(dir, piaXmlBaseName);
-        piaCompiler.writeOutXML(outFile.getAbsolutePath());
+        // write the file directly into the binary cell object, zipping it along the way
+        PipedInputStream fileStream = new PipedInputStream();
+        PipedOutputStream out = new PipedOutputStream(fileStream);
 
-        // set the piaXmlFileName after writing the file
-        piaXmlFileName = outFile.getAbsolutePath();
+        GZIPOutputStream zip = new GZIPOutputStream(out);
+
+        new Thread(
+                new Runnable() {
+                    public void run() {
+                        piaCompiler.writeOutXML(zip);
+                    }
+                }
+        ).start();
+
+        BinaryObjectCellFactory bofactory = new BinaryObjectCellFactory(exec);
+        DataCell zippedXMLFileCell = bofactory.create(fileStream);
+
+        List<DataCell> dataCells = new ArrayList<DataCell>();
+        dataCells.add(zippedXMLFileCell);
 
 
-        FileStoreFactory fileStoreFactory = FileStoreFactory.createNotInWorkflowFileStoreFactory();
-        FileStore fileStore = fileStoreFactory.createFileStore(outFile.getName());
-        List<FileStore> storeList = new ArrayList<FileStore>();
-        storeList.add(fileStore);
-        FileStorePIAXMLPortObject piaXMLFileObject = new FileStorePIAXMLPortObject(storeList, outFile);
+        BufferedDataContainer container = exec.createDataContainer(createTableSpec());
+        container.addRowToTable(new DefaultRow(piaCompiler.getName(), dataCells));
+        container.close();
 
-        piaXmlFileName = piaXMLFileObject.getFileName();
+        informationString = parseZippedXMLFileInformation(zippedXMLFileCell);
 
-        return new PortObject[]{piaXMLFileObject};
+        return new BufferedDataTable[]{container.getTable()};
     }
 
 
@@ -161,7 +199,7 @@ public class PIACompilerNodeModel extends NodeModel {
      */
     @Override
     protected void reset() {
-        piaXmlFileName = null;
+        informationString = null;
     }
 
 
@@ -169,12 +207,28 @@ public class PIACompilerNodeModel extends NodeModel {
      * {@inheritDoc}
      */
     @Override
-    protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs)
+    protected DataTableSpec[] configure(final DataTableSpec[] inSpecs)
             throws InvalidSettingsException {
-        PortObjectSpec[] out_spec = new PortObjectSpec[1];
-        out_spec[0] = new URIPortObjectSpec(new String[]{"pia.xml"});
+        DataTableSpec[] tableSpec = new DataTableSpec[1];
+        tableSpec[0] = createTableSpec();
 
-        return out_spec;
+        return tableSpec;
+    }
+
+
+    /**
+     * Creates the returned table specifications
+     *
+     * @return
+     */
+    private DataTableSpec createTableSpec() {
+        DataType type = DataType.getType(BinaryObjectDataCell.class);
+
+        List<DataColumnSpec> compilerCols = new ArrayList<DataColumnSpec>();
+        compilerCols.add(new DataColumnSpecCreator("gzipped PIA XML file", type).createSpec());
+        DataTableSpec compilerSpecTable = new DataTableSpec(compilerCols.toArray(new DataColumnSpec[]{}));
+
+        return compilerSpecTable;
     }
 
 
@@ -183,8 +237,8 @@ public class PIACompilerNodeModel extends NodeModel {
      */
     @Override
     protected void saveSettingsTo(final NodeSettingsWO settings) {
+        m_input_column.saveSettingsTo(settings);
         m_name.saveSettingsTo(settings);
-
     }
 
 
@@ -194,6 +248,7 @@ public class PIACompilerNodeModel extends NodeModel {
     @Override
     protected void loadValidatedSettingsFrom(final NodeSettingsRO settings)
             throws InvalidSettingsException {
+        m_input_column.loadSettingsFrom(settings);
         m_name.loadSettingsFrom(settings);
     }
 
@@ -204,8 +259,8 @@ public class PIACompilerNodeModel extends NodeModel {
     @Override
     protected void validateSettings(final NodeSettingsRO settings)
             throws InvalidSettingsException {
+        m_input_column.validateSettings(settings);
         m_name.validateSettings(settings);
-
     }
 
 
@@ -213,9 +268,13 @@ public class PIACompilerNodeModel extends NodeModel {
      * {@inheritDoc}
      */
     @Override
-    protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+    protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
             throws IOException, CanceledExecutionException {
-        // TODO: load the standard and error output data here
+        File f = new File(nodeInternDir, INTERNALS_FILE_NAME);
+        FileInputStream fis = new FileInputStream(f);
+
+        NodeSettingsRO settings = NodeSettings.loadFromXML(fis);
+        informationString = settings.getString(INTERNALS_INFORMATION, null);
     }
 
 
@@ -223,26 +282,30 @@ public class PIACompilerNodeModel extends NodeModel {
      * {@inheritDoc}
      */
     @Override
-    protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+    protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
             throws IOException, CanceledExecutionException {
-        // TODO: save the standard and error output data here
+        NodeSettings settings = new NodeSettings(INTERNALS_FILE_NAME);
+        settings.addString(INTERNALS_INFORMATION, informationString);
+
+        File f = new File(nodeInternDir, INTERNALS_FILE_NAME);
+        FileOutputStream fos = new FileOutputStream(f);
+        settings.saveToXML(fos);
     }
 
 
     /**
-     * Parses some file information from the created PIA XML file and writes
-     * it into the returned String.
+     * Returns information about the GZipped PIA XML file
      */
-    public String parseXMLFileInformation() {
-        if (piaXmlFileName == null) {
-            return null;
+    private String parseZippedXMLFileInformation(DataCell dataCell) {
+        BinaryObjectDataValue boDataCell = null;
+        if (dataCell instanceof BinaryObjectDataValue) {
+            boDataCell = (BinaryObjectDataValue) dataCell;
+        } else {
+            return "Wrong object class, expected BinaryObjectDataValue, is " + dataCell.getClass().getCanonicalName();
         }
 
         StringBuffer textSB = new StringBuffer();
         String projectName = null;
-
-        textSB.append("Filename: ");
-        textSB.append(piaXmlFileName);
 
         XMLInputFactory xmlif = null;
         XMLStreamReader xmlr = null;
@@ -252,9 +315,12 @@ public class PIACompilerNodeModel extends NodeModel {
         AnalysisSoftwareList softwareList = null;
 
         try {
+            InputStream fileStream = boDataCell.openInputStream();
+            InputStream gzipStream = new GZIPInputStream(fileStream);
+
             // set up a StAX reader
             xmlif = XMLInputFactory.newInstance();
-            xmlr = xmlif.createXMLStreamReader(new FileReader(piaXmlFileName));
+            xmlr = xmlif.createXMLStreamReader(gzipStream);
 
             // move to the root element and check its name.
             xmlr.nextTag();
@@ -313,13 +379,12 @@ public class PIACompilerNodeModel extends NodeModel {
                     break;
                 }
             }
-
         } catch (XMLStreamException ex) {
             PIACompilerNodeModel.logger.error("Error while parsing XML file", ex);
         } catch (JAXBException ex) {
             PIACompilerNodeModel.logger.error("Error while parsing XML file", ex);
-        } catch (FileNotFoundException ex) {
-            PIACompilerNodeModel.logger.error("File not found: " + piaXmlFileName, ex);
+        } catch (IOException e) {
+            PIACompilerNodeModel.logger.error("Error while opening binary object", e);
         } finally {
             if (xmlr != null) {
                 try {
@@ -330,7 +395,9 @@ public class PIACompilerNodeModel extends NodeModel {
             }
         }
 
-        // parsing the file is done, process teh information
+
+
+        // parsing the file is done, process the information
         if ((filesList != null) && (softwareList != null)) {
             // create a hashmap for the used software
             HashMap<String, String> softwareMap = new HashMap<String, String>();
@@ -402,11 +469,12 @@ public class PIACompilerNodeModel extends NodeModel {
 
 
     /**
-     * getter for the piaXmlFileName
+     * Getter for the information string, which is created on the execution.
+     *
      * @return
      */
-    public String getPiaXMLFileName() {
-        return piaXmlFileName;
+    public String getInformationString() {
+        return informationString;
     }
 }
 

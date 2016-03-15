@@ -27,7 +27,7 @@ public class PIACompilerNodeView extends NodeView<PIACompilerNodeModel> {
     protected PIACompilerNodeView(final PIACompilerNodeModel nodeModel) {
         super(nodeModel);
 
-        informationArea = new JTextArea(nodeModel.parseXMLFileInformation(), 40, 80);
+        informationArea = new JTextArea(nodeModel.getInformationString(), 40, 80);
         JScrollPane scrollpane = new JScrollPane(informationArea);
         informationArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         setComponent(scrollpane);
@@ -43,7 +43,7 @@ public class PIACompilerNodeView extends NodeView<PIACompilerNodeModel> {
                 (PIACompilerNodeModel)getNodeModel();
         assert nodeModel != null;
 
-        informationArea.setText(nodeModel.parseXMLFileInformation());
+        informationArea.setText(nodeModel.getInformationString());
     }
 
 
