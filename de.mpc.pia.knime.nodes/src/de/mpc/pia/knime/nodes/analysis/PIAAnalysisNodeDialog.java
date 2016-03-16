@@ -2,16 +2,22 @@ package de.mpc.pia.knime.nodes.analysis;
 
 import java.util.Map;
 
+import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.StringValue;
 import org.knime.core.node.DataAwareNodeDialogPane;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
+import org.knime.core.node.util.ColumnFilter;
 
 import de.mpc.pia.knime.nodes.PIASettings;
+import de.mpc.pia.knime.nodes.compiler.PIACompilerNodeModel;
 import de.mpc.pia.knime.nodes.dialog.AnalysisDialog;
 
 /**
@@ -40,7 +46,8 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         super();
 
         dialogPanel = new AnalysisDialog();
-        addTab("PIA Analysis", dialogPanel);
+
+        addTab("PIA Analysis", dialogPanel.getPanel());
     }
 
 
@@ -55,7 +62,9 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         // consider modifications
         settings.addBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(),
                 (Boolean)settingsMap.get(PIASettings.CONSIDER_MODIFICATIONS.getKey()));
-
+        // the selected input column
+        settings.addString(PIASettings.CONFIG_INPUT_COLUMN.getKey(),
+                (String)settingsMap.get(PIASettings.CONFIG_INPUT_COLUMN.getKey()));
 
         // used file ID for PSM export
         settings.addInt(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(),
@@ -123,7 +132,7 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
     protected void loadSettingsFrom(NodeSettingsRO settings, PortObjectSpec[] specs)
              throws NotConfigurableException {
         // called, when no prior executed node is connected
-        dialogPanel.applySettings(settings);
+        dialogPanel.applySettings(settings, specs);
     }
 
 
@@ -133,6 +142,16 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         // called, when an executed  node is connected
 
         // TODO: set the available scores from the input file (if they are not in the ScoreModelEnum)
-        dialogPanel.applySettings(settings);
+
+        PortObjectSpec[] specs = new PortObjectSpec[input.length];
+        for (int idx=0; idx < input.length; idx++) {
+            if (input[idx] != null) {
+                specs[idx] = input[idx].getSpec();
+            } else {
+                specs[idx] = null;
+            }
+        }
+
+        dialogPanel.applySettings(settings, specs);
     }
 }

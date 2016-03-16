@@ -1,20 +1,34 @@
 package de.mpc.pia.knime.nodes.analysis;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
+import org.jdesktop.swingx.JXLoginPane.SaveMode;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
+import org.knime.core.data.DataRow;
+import org.knime.core.data.DataTable;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.DataType;
+import org.knime.core.data.RowIterator;
 import org.knime.core.data.RowKey;
+import org.knime.core.data.StringValue;
+import org.knime.core.data.blob.BinaryObjectDataValue;
 import org.knime.core.data.collection.CollectionCellFactory;
 import org.knime.core.data.collection.ListCell;
 import org.knime.core.data.def.BooleanCell;
@@ -38,10 +52,12 @@ import org.knime.core.node.defaultnodesettings.SettingsModelStringArray;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
+import org.relaxng.datatype.Datatype;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
+import de.mpc.pia.knime.nodes.compiler.PIACompilerNodeModel;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
@@ -76,6 +92,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
     /** storing model for whether modifications should be used to distinguish peptides */
     private final SettingsModelBoolean m_consider_modifications =
             new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
+    /** the model of the input files' URLs */
+    private final SettingsModelString m_input_column =
+            new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
 
 
     /** the file ID for the PSM analysis */
@@ -142,13 +161,19 @@ public class PIAAnalysisNodeModel extends NodeModel {
     /** the analysis model, if it is created yet */
     private PIAAnalysisModel analysisModel;
 
+    /** temporary created file, delete on reset */
+    private File piaTmpFile;
+
 
     /**
      * Constructor for the node model.
      */
     protected PIAAnalysisNodeModel() {
-        super(new PortType[]{ IURIPortObject.TYPE },
-                new PortType[] { BufferedDataTable.TYPE,
+        super(
+                new PortType[]{ BufferedDataTable.TYPE_OPTIONAL,
+                        IURIPortObject.TYPE_OPTIONAL,
+                        IURIPortObject.TYPE_OPTIONAL},
+                new PortType[]{ BufferedDataTable.TYPE,
                         BufferedDataTable.TYPE,
                         BufferedDataTable.TYPE,
                         IURIPortObject.TYPE });
@@ -163,17 +188,53 @@ public class PIAAnalysisNodeModel extends NodeModel {
             final ExecutionContext exec) throws Exception {
         String piaXmlFileName = null;
 
-        // get the input files
-        IURIPortObject filePort = (IURIPortObject) inObjects[0];
-        List<URIContent> uris = filePort.getURIContents();
-        for (URIContent uric : uris) {
-            URI uri = uric.getURI();
-            File file = new File(uri);
-            piaXmlFileName = file.getAbsolutePath();
+        // get the input file from the first port, first object
+        if ((m_input_column.getStringValue() != null) && (inObjects[0] != null)) {
+            DataTable table = (DataTable)inObjects[0];
+            RowIterator row_it = table.iterator();
+            int inputIdx = table.getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
+            while (row_it.hasNext()) {
+                DataRow row = row_it.next();
+                DataCell dataCell = row.getCell(inputIdx);
 
-            if (piaXmlFileName != null) {
-                break;
+                piaXmlFileName = getFilenameFromTableCell(dataCell);
+
+                if (piaXmlFileName != null) {
+                    if (row_it.hasNext()) {
+                        logger.warn("Only the first suitable entry in the datatable is used.");
+                    }
+                    break;
+                }
             }
+        }
+
+        // get the input file from the file port input (if not set before)
+        IURIPortObject filePort = (IURIPortObject) inObjects[1];
+        if (filePort != null) {
+            List<URIContent> uris = filePort.getURIContents();
+            ListIterator<URIContent> uriIter = uris.listIterator();
+
+            if ((piaXmlFileName != null) && (uris.size() > 0)) {
+                logger.warn("The file from datatable is used preferentially, if table and port are available");
+            } else {
+                while (uriIter.hasNext()) {
+                    URI uri = uriIter.next().getURI();
+                    File file = new File(uri);
+                    piaXmlFileName = file.getAbsolutePath();
+
+                    if (piaXmlFileName != null) {
+                        if (uriIter.hasNext()) {
+                            logger.warn("Only the first suitable entry in the port is used.");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (piaXmlFileName == null) {
+            throw new Exception("No PIA XML file given! Provide either by "
+                    + "datatable (e.g. from PIA Compiler or List Files) or port (Input File)");
         }
 
         // create modeller and load the file
@@ -262,11 +323,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
                     setFailedExternalOutput(externalOutput);
                     setFailedExternalErrorOutput(externalErrorOutput);
              */
-            throw new Exception("Error while executing PIA Wizard.");
+            throw new Exception("Error while executing PIA Analysis.");
         }
         URIPortObject outExportFilePort = new URIPortObject(outExportFile);
 
         // TODO: make calculation of each level selectable
+
+
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
@@ -283,6 +346,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
         // executed on reset.
 
         analysisModel = null;
+
+        if (piaTmpFile != null) {
+            piaTmpFile.delete();
+        }
     }
 
 
@@ -310,6 +377,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
     protected void saveSettingsTo(final NodeSettingsWO settings) {
         m_create_psm_sets.saveSettingsTo(settings);
         m_consider_modifications.saveSettingsTo(settings);
+        m_input_column.saveSettingsTo(settings);
 
         m_psm_analysis_file_id.saveSettingsTo(settings);
         m_calculate_all_fdr.saveSettingsTo(settings);
@@ -340,6 +408,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             throws InvalidSettingsException {
         m_create_psm_sets.loadSettingsFrom(settings);
         m_consider_modifications.loadSettingsFrom(settings);
+        m_input_column.loadSettingsFrom(settings);
 
         m_psm_analysis_file_id.loadSettingsFrom(settings);
         m_calculate_all_fdr.loadSettingsFrom(settings);
@@ -370,6 +439,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             throws InvalidSettingsException {
         m_create_psm_sets.validateSettings(settings);
         m_consider_modifications.validateSettings(settings);
+        m_input_column.validateSettings(settings);
 
         m_psm_analysis_file_id.validateSettings(settings);
         m_calculate_all_fdr.validateSettings(settings);
@@ -424,7 +494,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
         // and user settings saved through saveSettingsTo - is all taken care
         // of). Save here only the other internals that need to be preserved
         // (e.g. data used by the views).
-
     }
 
 
@@ -473,6 +542,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
      */
     private BufferedDataContainer createPSMContainer(List<PSMReportItem> psmList,
             final ExecutionContext exec) {
+
+        // TODO: use own DataType for representation of PSM, peptides and proteins
+
         BufferedDataContainer container = exec.createDataContainer(getPSMTableSpec());
         Integer psmId = 0;
 
@@ -519,7 +591,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
             psmCells.add(new DoubleCell(psm.getDeltaPPM()));
 
             // retention time
-            psmCells.add(new DoubleCell(psm.getRetentionTime()));
+            Double retentionTime = psm.getRetentionTime();
+            if (retentionTime == null) {
+                psmCells.add(DataType.getMissingCell());
+            } else {
+                psmCells.add(new DoubleCell(retentionTime));
+            }
 
             // charge
             psmCells.add(new IntCell(psm.getMissedCleavages()));
@@ -795,6 +872,74 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         return null;
+    }
+
+
+    /**
+     * Gets the file name of the PIA XML file from the data table cell. If the
+     * cell is a String or URL, return the absolute path. If the cell is a
+     * binary object, gunzip the file temporarily and return the unzipped file
+     * name.
+     *
+     * @param dataCell
+     * @return
+     * @throws IOException
+     */
+    private String getFilenameFromTableCell(DataCell dataCell) throws IOException {
+        String fileName = null;
+
+        if (dataCell.getType().isCompatible(StringValue.class)) {
+            // an URL or file name
+            String fileURL = ((StringValue) dataCell).getStringValue();
+            File file = null;
+            try {
+                // try with URL encoding
+                URL url = new URL(fileURL);
+                file = new File(url.toURI());
+            } catch (Exception e) {
+                file = null;
+            }
+
+            if ((file == null) || !file.exists() || !file.canRead()) {
+                // try with "normal" file name
+                file = new File(fileURL);
+            }
+
+            if ((file != null) && file.exists()) {
+                fileName = file.getAbsolutePath();
+            }
+        } else if (dataCell.getType().isCompatible(BinaryObjectDataValue.class)) {
+            InputStream fileStream = new BufferedInputStream(
+                    ((BinaryObjectDataValue) dataCell).openInputStream());
+            byte[] buffer = new byte[4096];
+
+            fileStream.mark(2);
+            int magic = 0;
+            magic = fileStream.read() & 0xff | ((fileStream.read() << 8) & 0xff00);
+            fileStream.reset();
+
+            if (magic == GZIPInputStream.GZIP_MAGIC) {
+                logger.info("binary input file is gzipped");
+                fileStream = new GZIPInputStream(fileStream);
+            }
+
+            piaTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
+            piaTmpFile.deleteOnExit();
+
+            OutputStream out = new BufferedOutputStream(new FileOutputStream(piaTmpFile, false));
+
+            int count;
+            while ((count = fileStream.read(buffer)) > 0) {
+                    out.write(buffer, 0, count);
+            }
+
+            fileStream.close();
+            out.close();
+
+            fileName = piaTmpFile.getAbsolutePath();
+        }
+
+        return fileName;
     }
 }
 

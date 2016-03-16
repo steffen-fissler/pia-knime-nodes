@@ -1,13 +1,20 @@
 package de.mpc.pia.knime.nodes.visualization.proteins;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.modeller.protein.ReportProtein;
 
 
 public class ProteinTableModel extends AbstractTableModel {
+
+    /** decimal format converter for percentages */
+    private final static DecimalFormat percentageTwoDigits = new DecimalFormat("0.##%");
+
 
     /** the shown data */
     private List<ReportProtein> proteinList;
@@ -34,6 +41,17 @@ public class ProteinTableModel extends AbstractTableModel {
         return proteinList.get(index);
     }
 
+
+    /**
+     * Getter for the complete protein list
+     * @param index
+     * @return
+     */
+    public List<ReportProtein> getProteins() {
+        return proteinList;
+    }
+
+
     @Override
     public int getColumnCount() {
         return colNameValues.length;
@@ -59,7 +77,17 @@ public class ProteinTableModel extends AbstractTableModel {
         case ACCESSIONS:
             return protein.getAccessions();
         case COVERAGES:
-            return "TODO: coverage";
+            List<String> coverages = new ArrayList<>(protein.getAccessions().size());
+            for (Accession acc : protein.getAccessions()) {
+                Double cov = protein.getCoverage(acc.getAccession());
+
+                if ((cov == null) || cov.equals(Double.NaN)) {
+                    coverages.add("NA");
+                } else {
+                    coverages.add(String.valueOf(percentageTwoDigits.format(cov)));
+                }
+            }
+            return coverages;
         case DECOY:
             return protein.getIsDecoy();
         case FDR_Q_VALUE:
@@ -88,7 +116,7 @@ public class ProteinTableModel extends AbstractTableModel {
         case ACCESSIONS:
             return List.class;
         case COVERAGES:
-            return String.class;
+            return List.class;
         case DECOY:
             return String.class;
         case FDR_Q_VALUE:

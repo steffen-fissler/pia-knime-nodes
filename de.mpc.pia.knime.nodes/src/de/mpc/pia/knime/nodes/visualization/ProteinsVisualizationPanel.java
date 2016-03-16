@@ -3,8 +3,12 @@ package de.mpc.pia.knime.nodes.visualization;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -44,6 +48,8 @@ import de.mpc.pia.visualization.graph.ProteinVertexLabeller;
 import de.mpc.pia.visualization.graph.ProteinVertexShapeTransformer;
 import de.mpc.pia.visualization.graph.ProteinVisualizationGraphHandler;
 import de.mpc.pia.visualization.graph.VertexObject;
+import de.mpc.pia.visualization.graph.VertexRelation;
+import de.mpc.protXML.ProteinSummary.ProteinGroup;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.StaticLayout;
@@ -190,7 +196,6 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
         psmsPanel = new JPanel();
         psmsPanel.setLayout(new BoxLayout(psmsPanel, BoxLayout.Y_AXIS));
-        psmsPanel.add(new JLabel("hallo start?"));
 
         JScrollPane psmsScrollPane = new JScrollPane(psmsPanel);
         psmsContainerPanel.add(psmsScrollPane);
@@ -200,12 +205,11 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         JSplitPane psmsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 psmSetsPanel, psmsContainerPanel);
         psmsSplitPane.setAlignmentX(CENTER_ALIGNMENT);
-
         proteinBottomInfos.add(psmsSplitPane);
 
 
         JPanel clusterVisualizationPanelDummy = new JPanel();
-        clusterVisualizationPanelDummy.setPreferredSize(new Dimension(300, 200));
+        clusterVisualizationPanelDummy.setPreferredSize(new Dimension(500, 400));
 
         protTableClusterPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 proteinScrollPane, clusterVisualizationPanelDummy);
@@ -214,10 +218,7 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
                 protTableClusterPane, proteinBottomInfos);
         this.add(protTopBottomSplitPane);
 
-
-        psmsSplitPane.setDividerLocation(0.7);
-        protTableClusterPane.setDividerLocation(0.3);
-        // TODO: onclick show the peptide -> psms -> trees
+        psmsSplitPane.setDividerLocation(0.6);
     }
 
 
@@ -301,15 +302,20 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         PSMReportItem anyPSM = anyPeptide.getPSMs().get(0);
         Group anyGroup = anyPSM.getPeptide().getGroup();
 
+
+        List<Map<VertexRelation, Set<Long>>> relations = calculateVertexRelations(protein);
+
         AmbiguityGroupVisualizationHandler visGraph = new AmbiguityGroupVisualizationHandler(anyGroup,
-                null, null,
-                null, null,
-                null, null,
-                null);
+                relations.get(0),
+                relations.get(1),
+                relations.get(2),
+                protein);
 
         GraphZoomScrollPane panel = new GraphZoomScrollPane(visGraph.getVisualizationViewer());
 
+        int dividerLoc = protTableClusterPane.getDividerLocation();
         protTableClusterPane.setRightComponent(panel);
+        protTableClusterPane.setDividerLocation(dividerLoc);
     }
 
 
@@ -371,5 +377,112 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         psmsPanel.add(Box.createVerticalGlue());
 
         psmsPanel.revalidate();
+    }
+
+
+
+    private List<Map<VertexRelation, Set<Long>>> calculateVertexRelations(ReportProtein protein) {
+        Map<VertexRelation, Set<Long>> relationsAccessions = new HashMap<>();
+        Map<VertexRelation, Set<Long>> relationsPeptides = new HashMap<>();
+        Map<VertexRelation, Set<Long>> relationsSpectra = new HashMap<>();
+        Set<Long> doneAccs = new HashSet<>();
+        Set<Long> donePeps = new HashSet<>();
+        Set<Long> doneSpectra = new HashSet<>();
+
+        // get the same PAGs first
+        List<Set<Long>> proteinsIds = getConnectedIdsOfReportProtein(protein);
+        relationsAccessions.put(VertexRelation.IN_SAME_PAG, proteinsIds.get(0));
+        relationsPeptides.put(VertexRelation.IN_SAME_PAG, proteinsIds.get(1));
+        relationsSpectra.put(VertexRelation.IN_SAME_PAG, proteinsIds.get(2));
+
+        doneAccs.addAll(proteinsIds.get(0));
+        donePeps.addAll(proteinsIds.get(1));
+        doneSpectra.addAll(proteinsIds.get(2));
+
+        // the sub-PAGs
+        Set<Long> setAccs = new HashSet<>();
+        Set<Long> setPeps = new HashSet<>();
+        Set<Long> setSpectra = new HashSet<>();
+        for (ReportProtein subProtein : protein.getSubSets()) {
+            proteinsIds = getConnectedIdsOfReportProtein(subProtein);
+            setAccs.addAll(proteinsIds.get(0));
+            setPeps.addAll(proteinsIds.get(1));
+            setSpectra.addAll(proteinsIds.get(2));
+        }
+        setAccs.removeAll(doneAccs);
+        setPeps.removeAll(donePeps);
+        setSpectra.removeAll(doneSpectra);
+
+        relationsAccessions.put(VertexRelation.IN_SUB_PAG, setAccs);
+        relationsPeptides.put(VertexRelation.IN_SUB_PAG, setPeps);
+        relationsSpectra.put(VertexRelation.IN_SUB_PAG, setSpectra);
+
+        doneAccs.addAll(setAccs);
+        donePeps.addAll(setPeps);
+        doneSpectra.addAll(setSpectra);
+
+        // get parallel PAGs (i.e. all others for now)
+        setAccs = new HashSet<>();
+        setPeps = new HashSet<>();
+        setSpectra = new HashSet<>();
+        for (ReportProtein otherProt : proteinTableModel.getProteins()) {
+            if (doneAccs.contains(otherProt.getAccessions().get(0).getAccession())) {
+                continue;
+            }
+
+            proteinsIds = getConnectedIdsOfReportProtein(otherProt);
+            setAccs.addAll(proteinsIds.get(0));
+            setPeps.addAll(proteinsIds.get(1));
+            setSpectra.addAll(proteinsIds.get(2));
+        }
+        setAccs.removeAll(doneAccs);
+        setPeps.removeAll(donePeps);
+        setSpectra.removeAll(doneSpectra);
+
+        relationsAccessions.put(VertexRelation.IN_PARALLEL_PAG, setAccs);
+        relationsPeptides.put(VertexRelation.IN_PARALLEL_PAG, setPeps);
+        relationsSpectra.put(VertexRelation.IN_PARALLEL_PAG, setSpectra);
+
+        //VertexRelation.IN_SUPER_PAG           no sub-protein can be selected -> not possible now
+        //VertexRelation.IN_UNRELATED_PAG       no sub-protein can be selected -> not possible now
+
+        List<Map<VertexRelation, Set<Long>>> res = new ArrayList<Map<VertexRelation,Set<Long>>>(3);
+        res.add(relationsAccessions);
+        res.add(relationsPeptides);
+        res.add(relationsSpectra);
+
+        return res;
+    }
+
+
+    private List<Set<Long>> getConnectedIdsOfReportProtein(ReportProtein protein) {
+        Set<Long> accs = new HashSet<>();
+        Set<Long> peps = new HashSet<>();
+        Set<Long> spectra = new HashSet<>();
+
+        for (Accession acc : protein.getAccessions()) {
+            accs.add(acc.getID());
+        }
+
+        for (ReportPeptide peptide : protein.getPeptides()) {
+            peps.add(peptide.getPeptide().getID());
+
+            for (PSMReportItem repPSM : peptide.getPSMs()) {
+                if (repPSM instanceof ReportPSM) {
+                    spectra.add(((ReportPSM) repPSM).getSpectrum().getID());
+                } else if (repPSM instanceof ReportPSMSet) {
+                    for (ReportPSM psm : ((ReportPSMSet) repPSM).getPSMs()) {
+                        spectra.add(psm.getSpectrum().getID());
+                    }
+                }
+            }
+        }
+
+        List<Set<Long>> res = new ArrayList<Set<Long>>(3);
+        res.add(accs);
+        res.add(peps);
+        res.add(spectra);
+
+        return res;
     }
 }

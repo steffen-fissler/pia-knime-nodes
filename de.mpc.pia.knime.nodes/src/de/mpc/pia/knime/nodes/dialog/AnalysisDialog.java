@@ -28,12 +28,24 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.StringValue;
+import org.knime.core.data.blob.BinaryObjectDataValue;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeSettingsRO;
+import org.knime.core.node.NotConfigurableException;
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
+import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
+import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.node.port.PortObjectSpec;
+import org.knime.core.node.util.ColumnFilter;
 
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.dialog.renderer.ScoreCellRenderer;
@@ -54,7 +66,7 @@ import de.mpc.pia.modeller.score.ScoreModelEnum;
  * @author julian
  *
  */
-public class AnalysisDialog extends JTabbedPane implements ActionListener {
+public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionListener, ChangeListener {
 
     // TODO: usage of flow variables for the settings
     // TODO: add help/information for the settings from the help properties file
@@ -73,14 +85,13 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
     /** the panel for the protein level analysis settings */
     private JPanel proteinAnalysisPanel;
 
-    /** the panel for the general settings */
-    private JPanel generalSettingsPanel;
-
 
     /** checkbox to select, whether PSM sets should be created */
-    private JCheckBox checkCreatePSMSets;
+    private SettingsModelBoolean checkCreatePSMSets;
     /** checkbox to select, whether modifications are considered to distinguish peptides */
-    private JCheckBox checkConsiderModifications;
+    private SettingsModelBoolean checkConsiderModifications;
+    /** selection box to select the input column */
+    private SettingsModelString inputColumnName;
 
 
     /** text field for the selected file, for which the PSM export should be performed */
@@ -138,6 +149,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
 
 
     public AnalysisDialog() {
+        super();
+
         // general settings are used in other panels, create this first
         initializeGeneralSettingsPanel();
 
@@ -149,16 +162,13 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
 
         initializeProteinPanel();
         this.addTab("proteins", proteinAnalysisPanel);
-
-        this.addTab("general", generalSettingsPanel);
     }
+
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(checkCreatePSMSets)) {
-            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
-        } else if (e.getSource() instanceof JRadioButton) {
+        if (e.getSource() instanceof JRadioButton) {
             JRadioButton radioButton = (JRadioButton)e.getSource();
 
             // decoy pattern can only be edited, if selected decoy strategy is pattern
@@ -183,6 +193,14 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
     }
 
 
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (e.getSource().equals(checkCreatePSMSets)) {
+            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
+        }
+    }
+
+
     /**
      * Creates a map with the current settings
      *
@@ -193,9 +211,11 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
         HashMap<String, Object> settings = new HashMap<String, Object>();
 
         // create PSM sets
-        settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.isSelected());
+        settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.getBooleanValue());
         // consider modifications
-        settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.isSelected());
+        settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.getBooleanValue());
+        // the selected input column
+        settings.put(PIASettings.CONFIG_INPUT_COLUMN.getKey(), inputColumnName.getStringValue());
 
 
         // PSM file ID
@@ -278,16 +298,22 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
     /**
      *
      * @param settings
+     * @throws NotConfigurableException
      */
-    public void applySettings(NodeSettingsRO settings) {
-        // create PSM sets
-        checkCreatePSMSets.setSelected(
-                settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
-        // consider modifications
-        checkConsiderModifications.setSelected(
-                settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
+    public void applySettings(NodeSettingsRO settings, PortObjectSpec[] specs)
+            throws NotConfigurableException {
+        loadSettingsFrom(settings, specs);
 
+        // create PSM sets
+        checkCreatePSMSets.setBooleanValue(
+                settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
+        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
+        // consider modifications
+        checkConsiderModifications.setBooleanValue(
+                settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
+        // the selected input column
+        inputColumnName.setStringValue(
+                settings.getString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString()));
 
         // PSM file ID
         fieldPSMAnalysisFileID.setValue(
@@ -439,7 +465,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
         // CalculateCombinedFDRScore >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score");
         checkCalculateCombinedFDRScore.setSelected(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -849,39 +875,49 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener {
 
 
     /**
-     * Initializes the panel for the general settings
+     * Initializes the panel for the general settings (which is also the main
+     * tab of the DefaultNodeSettingsPane).
      */
     private void initializeGeneralSettingsPanel() {
-        generalSettingsPanel = new JPanel(new GridBagLayout());
+        this.setDefaultTabTitle("general");
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 5, 5, 5);
+        checkCreatePSMSets = new SettingsModelBoolean(PIASettings.CREATE_PSMSETS.getKey(),
+                        PIASettings.CREATE_PSMSETS.getDefaultBoolean());
+        checkCreatePSMSets.addChangeListener(this);
+        addDialogComponent(new DialogComponentBoolean(
+                checkCreatePSMSets,
+                "Create PSM sets"));
 
-        int row = 0;
+        checkConsiderModifications = new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(),
+                PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
+        addDialogComponent(new DialogComponentBoolean(
+                checkConsiderModifications,
+                "consider modifications to distinguish peptides"));
 
-        // CreatePSMSets >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkCreatePSMSets = new JCheckBox("Create PSM sets");
-        checkCreatePSMSets.setSelected(PIASettings.CREATE_PSMSETS.getDefaultBoolean());
-        checkCreatePSMSets.addActionListener(this);
-        c.gridx = 0;
-        c.gridy = row++;
-        c.gridwidth = 1;
-        c.weighty = 0.0;
-        c.weightx = 1.0;
-        generalSettingsPanel.add(checkCreatePSMSets, c);
-        // CreatePSMSets <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-        // ConsiderModifications >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkConsiderModifications = new JCheckBox("consider modifications to distinguish peptides");
-        checkConsiderModifications.setSelected(PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
-        c.gridx = 0;
-        c.gridy = row++;
-        c.gridwidth = 1;
-        c.weighty = 1.0;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.NORTHWEST;
-        generalSettingsPanel.add(checkConsiderModifications, c);
-        // ConsiderModifications <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        inputColumnName = new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(),
+                PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
+        DialogComponentColumnNameSelection inputColumnNameSel = new DialogComponentColumnNameSelection(
+                inputColumnName, "input column", 0, false, true, new ColumnFilter() {
+                    @Override
+                    public boolean includeColumn(DataColumnSpec colSpec) {
+                        if (colSpec.getType().isCompatible(StringValue.class)) {
+                            return true;
+                        } else if (colSpec.getType().isCompatible(BinaryObjectDataValue.class)) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+
+                    @Override
+                    public String allFilteredMsg() {
+                        return "No column with needed data found";
+                    }
+                });
+
+        addDialogComponent(inputColumnNameSel);
     }
+
 }

@@ -32,7 +32,7 @@ public class PIACompilerNodeDialog extends DefaultNodeSettingsPane {
         addDialogComponent(new DialogComponentColumnNameSelection(
                 new SettingsModelString(PIACompilerNodeModel.CFGKEY_INPUT_COLUMN,
                         PIACompilerNodeModel.DEFAULT_INPUT_COLUMN),
-                PIACompilerNodeModel.CFGKEY_INPUT_COLUMN, 0, false, false, new ColumnFilter() {
+                PIACompilerNodeModel.CFGKEY_INPUT_COLUMN, 0, true, false, new ColumnFilter() {
 
                     @Override
                     public boolean includeColumn(DataColumnSpec colSpec) {

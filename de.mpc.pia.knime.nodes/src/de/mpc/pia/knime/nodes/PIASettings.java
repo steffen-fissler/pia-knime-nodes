@@ -43,6 +43,8 @@ public enum PIASettings {
         PROTEIN_SCORING_USED_PSMS(PSMForScoring.ONLY_BEST.getShortName()),
 
         PROTEIN_FILTERS(new String[]{}),
+
+        CONFIG_INPUT_COLUMN((String)null),
 	;
 
 

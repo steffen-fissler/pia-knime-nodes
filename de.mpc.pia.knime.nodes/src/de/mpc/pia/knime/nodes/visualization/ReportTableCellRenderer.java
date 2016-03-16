@@ -51,8 +51,10 @@ public class ReportTableCellRenderer extends DefaultTableCellRenderer {
 
                 if (objItem instanceof Accession) {
                     textSB.append(((Accession) objItem).getAccession());
-                } if (objItem instanceof Number) {
+                } else if (objItem instanceof Number) {
                     textSB.append(getStringOfNumber((Number)objItem));
+                } else if (objItem instanceof String) {
+                    textSB.append(objItem);
                 }
             }
 
