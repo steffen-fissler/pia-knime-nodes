@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +23,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -110,12 +109,13 @@ public class PIACompilerNodeModel extends NodeModel {
 
     /**
      * {@inheritDoc}
-     * @throws URISyntaxException
+     *
      * @throws IOException
+     * @throws InterruptedException
      */
     @Override
     protected BufferedDataTable[] execute(final BufferedDataTable[] inData,
-            final ExecutionContext exec) throws IOException  {
+            final ExecutionContext exec) throws IOException, InterruptedException  {
         PIACompiler piaCompiler = new PIACompiler();
 
         // get the input files
@@ -163,26 +163,26 @@ public class PIACompilerNodeModel extends NodeModel {
         }
 
 
-        // write the file directly into the binary cell object, zipping it along the way
-        PipedInputStream fileStream = new PipedInputStream();
-        PipedOutputStream out = new PipedOutputStream(fileStream);
+        // write the file directly into the binary cell object, gzipping it along the way
+        PipedInputStream inputStream = new PipedInputStream();
 
-        GZIPOutputStream zip = new GZIPOutputStream(out);
+        Runnable writingRunner = new WritingPipeRunnable(logger, inputStream, piaCompiler);
+        Thread writingThread = new Thread(writingRunner);
+        writingThread.start();
 
-        new Thread(
-                new Runnable() {
-                    public void run() {
-                        piaCompiler.writeOutXML(zip);
-                    }
-                }
-        ).start();
 
         BinaryObjectCellFactory bofactory = new BinaryObjectCellFactory(exec);
-        DataCell zippedXMLFileCell = bofactory.create(fileStream);
+        logger.debug("starting creation of dataCell");
+        DataCell zippedXMLFileCell = bofactory.create(inputStream);
+        logger.debug("dataCell created");
+
+        // the stream should be finished after the creation of the dataCell
+        inputStream.close();
+        logger.debug("pipedInputStream closed");
+
 
         List<DataCell> dataCells = new ArrayList<DataCell>();
         dataCells.add(zippedXMLFileCell);
-
 
         BufferedDataContainer container = exec.createDataContainer(createTableSpec());
         container.addRowToTable(new DefaultRow(piaCompiler.getName(), dataCells));
@@ -191,6 +191,49 @@ public class PIACompilerNodeModel extends NodeModel {
         informationString = parseZippedXMLFileInformation(zippedXMLFileCell);
 
         return new BufferedDataTable[]{container.getTable()};
+    }
+
+
+    /**
+     * This class handles the writing of the piaCompiler output to the GZipped
+     * piped input stream.
+     *
+     * @author julian
+     *
+     */
+    private class WritingPipeRunnable implements Runnable {
+
+        private NodeLogger logger;
+
+        private PipedOutputStream outStream;
+        private GZIPOutputStream zipStream;
+        private PIACompiler piaCompiler;
+
+
+        public WritingPipeRunnable(NodeLogger logger, PipedInputStream inStream,
+                PIACompiler piaCompiler) throws IOException {
+            this.logger = logger;
+
+            this.outStream = new PipedOutputStream(inStream);
+            this.zipStream = new GZIPOutputStream(this.outStream);
+            this.piaCompiler = piaCompiler;
+        }
+
+        public void run() {
+            try {
+                piaCompiler.writeOutXML(zipStream);
+
+                zipStream.flush();
+                outStream.flush();
+
+                zipStream.close();
+                logger.debug("zipStream closed");
+                outStream.close();
+                logger.debug("pipedOutputStream closed");
+            } catch (IOException e) {
+                logger.error("Error writing the gzipped file", e);
+            }
+        }
     }
 
 
@@ -307,20 +350,24 @@ public class PIACompilerNodeModel extends NodeModel {
         StringBuffer textSB = new StringBuffer();
         String projectName = null;
 
-        XMLInputFactory xmlif = null;
+        StreamSource inputSource = null;
         XMLStreamReader xmlr = null;
 
         // the files and analysissoftware information is stored in memory (should be small)
         FilesListXML filesList = null;
         AnalysisSoftwareList softwareList = null;
 
+
         try {
-            InputStream fileStream = boDataCell.openInputStream();
-            InputStream gzipStream = new GZIPInputStream(fileStream);
+            InputStream inputStream = boDataCell.openInputStream();
+            inputStream = new GZIPInputStream(inputStream);
+            inputSource = new StreamSource(inputStream);
+
+            PIACompilerNodeModel.logger.debug("opened gzipped file for parsing");
+            XMLInputFactory xif = XMLInputFactory.newInstance();
 
             // set up a StAX reader
-            xmlif = XMLInputFactory.newInstance();
-            xmlr = xmlif.createXMLStreamReader(gzipStream);
+            xmlr = xif.createXMLStreamReader(inputSource);
 
             // move to the root element and check its name.
             xmlr.nextTag();
@@ -381,6 +428,12 @@ public class PIACompilerNodeModel extends NodeModel {
             }
         } catch (XMLStreamException ex) {
             PIACompilerNodeModel.logger.error("Error while parsing XML file", ex);
+
+            if (ex.getNestedException() != null) {
+                PIACompilerNodeModel.logger.error("Error while parsing XML file", ex.getNestedException());
+            } else {
+                PIACompilerNodeModel.logger.error("Error while parsing XML file", ex);
+            }
         } catch (JAXBException ex) {
             PIACompilerNodeModel.logger.error("Error while parsing XML file", ex);
         } catch (IOException e) {
@@ -389,13 +442,23 @@ public class PIACompilerNodeModel extends NodeModel {
             if (xmlr != null) {
                 try {
                     xmlr.close();
-                } catch (XMLStreamException e) {
+                    PIACompilerNodeModel.logger.debug("closed XMLStreamReader");
+                } catch (Exception e) {
                     PIACompilerNodeModel.logger.error("Error while closing XML file", e);
+                }
+            }
+
+            if (inputSource != null) {
+                try {
+                    inputSource.getInputStream().close();
+                    PIACompilerNodeModel.logger.debug("closed InputSource's InputStream");
+                } catch (Exception e) {
+                    PIACompilerNodeModel.logger.error("Error while closing input file/gzip", e);
                 }
             }
         }
 
-
+        PIACompilerNodeModel.logger.debug("Parsed information from text, creating information string.");
 
         // parsing the file is done, process the information
         if ((filesList != null) && (softwareList != null)) {
@@ -463,6 +526,8 @@ public class PIACompilerNodeModel extends NodeModel {
                 }
             }
         }
+
+        PIACompilerNodeModel.logger.debug("Created infromation from zipped PIA XML file.");
 
         return textSB.toString();
     }

@@ -344,11 +344,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void reset() {
         // executed on reset.
-
         analysisModel = null;
 
         if (piaTmpFile != null) {
             piaTmpFile.delete();
+            piaTmpFile = null;
         }
     }
 
@@ -909,32 +909,35 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 fileName = file.getAbsolutePath();
             }
         } else if (dataCell.getType().isCompatible(BinaryObjectDataValue.class)) {
-            InputStream fileStream = new BufferedInputStream(
-                    ((BinaryObjectDataValue) dataCell).openInputStream());
-            byte[] buffer = new byte[4096];
+            // it is a binary file , either GZipped or not
+            InputStream is = new BufferedInputStream(((BinaryObjectDataValue) dataCell).openInputStream());
+            byte[] buffer = new byte[1024];
 
-            fileStream.mark(2);
+            is.mark(2);
             int magic = 0;
-            magic = fileStream.read() & 0xff | ((fileStream.read() << 8) & 0xff00);
-            fileStream.reset();
+            magic = is.read() & 0xff | ((is.read() << 8) & 0xff00);
+            is.reset();
 
             if (magic == GZIPInputStream.GZIP_MAGIC) {
                 logger.info("binary input file is gzipped");
-                fileStream = new GZIPInputStream(fileStream);
+                is = new GZIPInputStream(is);
             }
 
             piaTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
             piaTmpFile.deleteOnExit();
 
-            OutputStream out = new BufferedOutputStream(new FileOutputStream(piaTmpFile, false));
+            FileOutputStream fos = new FileOutputStream(piaTmpFile, false);
 
-            int count;
-            while ((count = fileStream.read(buffer)) > 0) {
-                    out.write(buffer, 0, count);
+            logger.debug("writing unzipped file to " + piaTmpFile.getAbsolutePath());
+            int len;
+            while((len = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len);
             }
-
-            fileStream.close();
-            out.close();
+            //close resources
+            fos.close();
+            logger.debug("outputStream closed");
+            is.close();
+            logger.debug("inputStream closed");
 
             fileName = piaTmpFile.getAbsolutePath();
         }
