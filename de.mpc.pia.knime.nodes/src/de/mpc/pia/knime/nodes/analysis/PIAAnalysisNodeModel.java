@@ -305,31 +305,31 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 m_protein_filters.getStringArrayValue());
         BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
 
+
         // TODO: export one level to one selected file format
-        // here the export should happen...
-        String exportFile = "/dev/null";
+        // TODO: here the export to mzIdentML, mzTab, idXML or CSV should happen...
         List<URIContent> outExportFile = new ArrayList<URIContent>();
 
-        if ((exportFile != null) && Files.exists(new File(exportFile).toPath(), new LinkOption[]{})) {
-            outExportFile.add(new URIContent(new File(exportFile).toURI(), "idXML"));
+        //String exportFile = "/dev/null";
+        //if ((exportFile != null) && Files.exists(new File(exportFile).toPath(), new LinkOption[]{})) {
+        //    outExportFile.add(new URIContent(new File(exportFile).toURI(), "idXML"));
             /*
                     TODO: output the errors here
                     setExternalOutput(externalOutput);
                     setExternalErrorOutput(externalErrorOutput);
              */
-        } else {
+        //} else {
             /*
                     TODO: output the errors here
                     setFailedExternalOutput(externalOutput);
                     setFailedExternalErrorOutput(externalErrorOutput);
              */
-            throw new Exception("Error while executing PIA Analysis.");
-        }
+        //    throw new Exception("Error while executing PIA Analysis.");
+        //}
         URIPortObject outExportFilePort = new URIPortObject(outExportFile);
 
-        // TODO: make calculation of each level selectable
 
-
+        // TODO: make calculation of each level switchable (on/off)
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
@@ -919,6 +919,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             is.reset();
 
             if (magic == GZIPInputStream.GZIP_MAGIC) {
+                // file is gzipped
                 logger.info("binary input file is gzipped");
                 is = new GZIPInputStream(is);
             }

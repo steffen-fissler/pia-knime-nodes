@@ -1,13 +1,18 @@
 package de.mpc.pia.knime.nodes.compiler;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -202,13 +207,12 @@ public class PIACompilerNodeModel extends NodeModel {
      *
      */
     private class WritingPipeRunnable implements Runnable {
-
         private NodeLogger logger;
 
         private PipedOutputStream outStream;
         private GZIPOutputStream zipStream;
         private PIACompiler piaCompiler;
-
+        private OutputStreamWriter osw;
 
         public WritingPipeRunnable(NodeLogger logger, PipedInputStream inStream,
                 PIACompiler piaCompiler) throws IOException {
@@ -216,6 +220,8 @@ public class PIACompilerNodeModel extends NodeModel {
 
             this.outStream = new PipedOutputStream(inStream);
             this.zipStream = new GZIPOutputStream(this.outStream);
+            this.osw = new OutputStreamWriter(this.zipStream, StandardCharsets.UTF_8);
+
             this.piaCompiler = piaCompiler;
         }
 
@@ -223,9 +229,12 @@ public class PIACompilerNodeModel extends NodeModel {
             try {
                 piaCompiler.writeOutXML(zipStream);
 
+                osw.flush();
                 zipStream.flush();
                 outStream.flush();
 
+                osw.close();
+                logger.debug("outputStreamWriter closed");
                 zipStream.close();
                 logger.debug("zipStream closed");
                 outStream.close();
@@ -361,7 +370,8 @@ public class PIACompilerNodeModel extends NodeModel {
         try {
             InputStream inputStream = boDataCell.openInputStream();
             inputStream = new GZIPInputStream(inputStream);
-            inputSource = new StreamSource(inputStream);
+            InputStreamReader isr = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            inputSource = new StreamSource(isr);
 
             PIACompilerNodeModel.logger.debug("opened gzipped file for parsing");
             XMLInputFactory xif = XMLInputFactory.newInstance();
@@ -450,8 +460,10 @@ public class PIACompilerNodeModel extends NodeModel {
 
             if (inputSource != null) {
                 try {
-                    inputSource.getInputStream().close();
-                    PIACompilerNodeModel.logger.debug("closed InputSource's InputStream");
+                    inputSource.getReader().close();
+                    PIACompilerNodeModel.logger.debug("closed InputSource's Reader");
+                    //inputSource.getInputStream().close();
+                    //PIACompilerNodeModel.logger.debug("closed InputSource's stream");
                 } catch (Exception e) {
                     PIACompilerNodeModel.logger.error("Error while closing input file/gzip", e);
                 }
@@ -527,7 +539,7 @@ public class PIACompilerNodeModel extends NodeModel {
             }
         }
 
-        PIACompilerNodeModel.logger.debug("Created infromation from zipped PIA XML file.");
+        PIACompilerNodeModel.logger.debug("Created information from zipped PIA XML file succesfully.");
 
         return textSB.toString();
     }
