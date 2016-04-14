@@ -1,6 +1,5 @@
 package de.mpc.pia.knime.nodes.visualization;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -14,8 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,8 +21,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import org.jfree.ui.RefineryUtilities;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.intermediate.Group;
@@ -41,31 +36,11 @@ import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
 import de.mpc.pia.modeller.score.ScoreModel;
 import de.mpc.pia.visualization.graph.AmbiguityGroupVisualizationHandler;
-import de.mpc.pia.visualization.graph.ProteinLayout;
-import de.mpc.pia.visualization.graph.ProteinVertexBorderColorTransformer;
-import de.mpc.pia.visualization.graph.ProteinVertexFillColorTransformer;
-import de.mpc.pia.visualization.graph.ProteinVertexLabeller;
-import de.mpc.pia.visualization.graph.ProteinVertexShapeTransformer;
-import de.mpc.pia.visualization.graph.ProteinVisualizationGraphHandler;
-import de.mpc.pia.visualization.graph.VertexObject;
 import de.mpc.pia.visualization.graph.VertexRelation;
-import de.mpc.protXML.ProteinSummary.ProteinGroup;
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.algorithms.layout.StaticLayout;
-import edu.uci.ics.jung.graph.DirectedGraph;
-import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
-import edu.uci.ics.jung.graph.util.EdgeType;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape;
-import edu.uci.ics.jung.visualization.picking.MultiPickedState;
-import edu.uci.ics.jung.visualization.picking.PickedState;
 
 
 public class ProteinsVisualizationPanel extends JPanel implements ListSelectionListener {
-
-    // TODO: visualization of sub-protein-groups
 
 
     /** the shown proteins table */
