@@ -86,6 +86,8 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     private JPanel proteinAnalysisPanel;
 
 
+    /** checkbox to select, whether the node should fail, if no decoys were found */
+    private SettingsModelBoolean checkErrorOnNoDecoys;
     /** checkbox to select, whether PSM sets should be created */
     private SettingsModelBoolean checkCreatePSMSets;
     /** checkbox to select, whether modifications are considered to distinguish peptides */
@@ -210,6 +212,8 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     public Map<String, Object> getSettings() {
         HashMap<String, Object> settings = new HashMap<String, Object>();
 
+        // error when no decoys are found
+        settings.put(PIASettings.ERROR_ON_NO_DECOYS.getKey(), checkErrorOnNoDecoys.getBooleanValue());
         // create PSM sets
         settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.getBooleanValue());
         // consider modifications
@@ -304,6 +308,9 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
             throws NotConfigurableException {
         loadSettingsFrom(settings, specs);
 
+        // error when no decoys are found
+        checkErrorOnNoDecoys.setBooleanValue(
+                settings.getBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(), PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean()));
         // create PSM sets
         checkCreatePSMSets.setBooleanValue(
                 settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
@@ -880,6 +887,12 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
      */
     private void initializeGeneralSettingsPanel() {
         this.setDefaultTabTitle("general");
+
+        checkErrorOnNoDecoys = new SettingsModelBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(),
+                PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean());
+        addDialogComponent(new DialogComponentBoolean(
+                checkErrorOnNoDecoys,
+                "Fail on no decoys"));
 
         checkCreatePSMSets = new SettingsModelBoolean(PIASettings.CREATE_PSMSETS.getKey(),
                         PIASettings.CREATE_PSMSETS.getDefaultBoolean());

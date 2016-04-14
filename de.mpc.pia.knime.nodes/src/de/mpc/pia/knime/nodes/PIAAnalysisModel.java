@@ -153,8 +153,10 @@ public class PIAAnalysisModel {
      * <p>
      * If a required setting is not given, the default value is used.
      */
-    public void executePSMOperations() {
+    public List<String> executePSMOperations() {
         // TODO: implement calculation of FDR for single files
+
+        List<String> errorList = new ArrayList<String>();
 
         boolean createPSMSets = getSettingBoolean(PIASettings.CREATE_PSMSETS);
         piaModeller.setCreatePSMSets(createPSMSets);
@@ -191,11 +193,35 @@ public class PIAAnalysisModel {
             piaModeller.getPSMModeller().calculateAllFDR();
         }
 
+        if (getSettingBoolean(PIASettings.CALCULATE_ALL_FDR) &&
+                getSettingBoolean(PIASettings.ERROR_ON_NO_DECOYS)) {
+            long allDecoys = 0;
+            boolean oneFdrNotNull = false;
+            for (Map.Entry<Long, FDRData> fdrDataIt : piaModeller.getPSMModeller().getFileFDRData().entrySet()) {
+                if (fdrDataIt.getKey() != 0L) {
+                    FDRData fdrData = fdrDataIt.getValue();
+                    if (fdrData != null) {
+                        oneFdrNotNull = true;
+                        allDecoys += fdrData.getNrDecoys();
+                    }
+                }
+            }
+
+            if (oneFdrNotNull == false) {
+                errorList.add("FDR could not be calculated for any file.");
+            }
+            if (allDecoys < 1) {
+                errorList.add("No decoy was found, check the pattern used for decoy detection.");
+            }
+        }
+
         // calculate the Combined FDR Score
         if (createPSMSets &&
                 getSettingBoolean(PIASettings.CALCULATE_COMBINED_FDR_SCORE)) {
             piaModeller.getPSMModeller().calculateCombinedFDRScore();
         }
+
+        return errorList;
     }
 
 

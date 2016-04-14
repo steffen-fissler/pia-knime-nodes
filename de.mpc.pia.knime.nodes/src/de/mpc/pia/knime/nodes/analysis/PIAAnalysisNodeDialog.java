@@ -2,22 +2,16 @@ package de.mpc.pia.knime.nodes.analysis;
 
 import java.util.Map;
 
-import org.knime.core.data.DataColumnSpec;
-import org.knime.core.data.StringValue;
 import org.knime.core.node.DataAwareNodeDialogPane;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
-import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.util.ColumnFilter;
 
 import de.mpc.pia.knime.nodes.PIASettings;
-import de.mpc.pia.knime.nodes.compiler.PIACompilerNodeModel;
 import de.mpc.pia.knime.nodes.dialog.AnalysisDialog;
 
 /**
@@ -56,6 +50,9 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         // called, when ok or apply is pressed
         Map<String, Object> settingsMap = dialogPanel.getSettings();
 
+        // decoy pattern for all files
+        settings.addBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(),
+                (Boolean)settingsMap.get(PIASettings.ERROR_ON_NO_DECOYS.getKey()));
         // create PSM sets
         settings.addBoolean(PIASettings.CREATE_PSMSETS.getKey(),
                 (Boolean)settingsMap.get(PIASettings.CREATE_PSMSETS.getKey()));

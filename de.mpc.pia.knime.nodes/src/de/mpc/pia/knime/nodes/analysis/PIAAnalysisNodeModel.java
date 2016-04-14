@@ -1,23 +1,19 @@
 package de.mpc.pia.knime.nodes.analysis;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import org.jdesktop.swingx.JXLoginPane.SaveMode;
+import org.eclipse.core.commands.ExecutionException;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -52,12 +48,10 @@ import org.knime.core.node.defaultnodesettings.SettingsModelStringArray;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
-import org.relaxng.datatype.Datatype;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
-import de.mpc.pia.knime.nodes.compiler.PIACompilerNodeModel;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
@@ -71,7 +65,6 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
-
 
 /**
  * This is the model implementation of PIADefault.
@@ -288,7 +281,19 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
 
         // execute the PSM analysis
-        analysisModel.executePSMOperations();
+        List<String> errorMsgs = analysisModel.executePSMOperations();
+
+        if (errorMsgs.size() > 0) {
+            StringBuilder errors = new StringBuilder();
+            for (String msg : errorMsgs) {
+                if (errors.length() > 0) {
+                    errors.append("; ");
+                }
+                errors.append(msg);
+            }
+            throw new ExecutionException(errors.toString());
+        }
+
         List<PSMReportItem> psmList = analysisModel.getFilteredReportPSMs(
                 m_psm_analysis_file_id.getIntValue(), m_psm_filters.getStringArrayValue());
         BufferedDataContainer psmContainer = createPSMContainer(psmList, exec);
