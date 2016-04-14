@@ -1,7 +1,5 @@
 package de.mpc.pia.knime.nodes.compiler;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -194,6 +192,10 @@ public class PIACompilerNodeModel extends NodeModel {
         container.close();
 
         informationString = parseZippedXMLFileInformation(zippedXMLFileCell);
+
+        if (informationString.trim().length() < 1) {
+            throw new IllegalStateException("The created XML file could not be parsed.");
+        }
 
         return new BufferedDataTable[]{container.getTable()};
     }
