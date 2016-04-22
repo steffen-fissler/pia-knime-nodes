@@ -36,7 +36,6 @@ import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.data.uri.IURIPortObject;
 import org.knime.core.data.uri.URIContent;
-import org.knime.core.data.uri.URIPortObject;
 import org.knime.core.data.uri.URIPortObjectSpec;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
@@ -52,7 +51,9 @@ import org.knime.core.node.port.PortType;
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
+import de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject;
 import de.mpc.pia.modeller.PIAModeller;
+import de.mpc.pia.modeller.exporter.IdXMLExporter;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
@@ -311,27 +312,26 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
 
 
+
+
         // TODO: export one level to one selected file format
         // TODO: here the export to mzIdentML, mzTab, idXML or CSV should happen...
-        List<URIContent> outExportFile = new ArrayList<URIContent>();
 
-        //String exportFile = "/dev/null";
-        //if ((exportFile != null) && Files.exists(new File(exportFile).toPath(), new LinkOption[]{})) {
-        //    outExportFile.add(new URIContent(new File(exportFile).toURI(), "idXML"));
-            /*
-                    TODO: output the errors here
-                    setExternalOutput(externalOutput);
-                    setExternalErrorOutput(externalErrorOutput);
-             */
-        //} else {
-            /*
-                    TODO: output the errors here
-                    setFailedExternalOutput(externalOutput);
-                    setFailedExternalErrorOutput(externalErrorOutput);
-             */
-        //    throw new Exception("Error while executing PIA Analysis.");
-        //}
-        URIPortObject outExportFilePort = new URIPortObject(outExportFile);
+        String ext = "idXML";
+
+
+        FileStoreURIPortObject fsupo = new FileStoreURIPortObject(
+                exec.createFileStore("PIAAnalysis_file_1"));
+
+        String file_basename = "piaExport";
+        File file = fsupo.registerFile(file_basename + "." + ext);
+
+        logger.debug("Storing export to: " + file.getAbsolutePath());
+
+        file.createNewFile();
+        IdXMLExporter exporter = new IdXMLExporter(piaModeller);
+        exporter.exportToIdXML(0L, file, true);
+
 
 
         // TODO: make calculation of each level switchable (on/off)
@@ -339,7 +339,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
                 proteinContainer.getTable(),
-                outExportFilePort};
+                fsupo};
     }
 
 
@@ -369,7 +369,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         out_spec[0] = getPSMTableSpec();
         out_spec[1] = getPeptideTableSpec();
         out_spec[2] = getProteinTableSpec();
-        out_spec[3] = new URIPortObjectSpec(new String[]{"csv", "mzIdentML", "mzTab"});
+        out_spec[3] = new URIPortObjectSpec(new String[]{"csv", "mzIdentML", "mzTab", "idXML"});
 
         return out_spec;
     }

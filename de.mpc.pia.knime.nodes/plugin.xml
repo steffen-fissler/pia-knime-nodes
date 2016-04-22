@@ -65,4 +65,15 @@
       <fileextension name="mzTab"/>
     </mimetype>
   </extension>
+  <extension
+        point="org.knime.core.PortType">
+     <portType
+           hidden="false"
+           name="de.mpc.pia.knime.nodes.filestorage.FileStoreURIPortObject"
+           objectClass="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject"
+           objectSerializer="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObjectSerializer"
+           specClass="org.knime.core.data.uri.URIPortObjectSpec"
+           specSerializer="org.knime.core.data.uri.URIPortObjectSpec$Serializer">
+     </portType>
+  </extension>
 </plugin>
