@@ -41,7 +41,7 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
 
         dialogPanel = new AnalysisDialog();
 
-        addTab("PIA Analysis", dialogPanel.getPanel());
+        addTab("PIA Analysis", dialogPanel);
     }
 
 
@@ -50,6 +50,9 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         // called, when ok or apply is pressed
         Map<String, Object> settingsMap = dialogPanel.getSettings();
 
+        // the selected input column
+        settings.addString(PIASettings.CONFIG_INPUT_COLUMN.getKey(),
+                (String)settingsMap.get(PIASettings.CONFIG_INPUT_COLUMN.getKey()));
         // decoy pattern for all files
         settings.addBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(),
                 (Boolean)settingsMap.get(PIASettings.ERROR_ON_NO_DECOYS.getKey()));
@@ -59,9 +62,12 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         // consider modifications
         settings.addBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(),
                 (Boolean)settingsMap.get(PIASettings.CONSIDER_MODIFICATIONS.getKey()));
-        // the selected input column
-        settings.addString(PIASettings.CONFIG_INPUT_COLUMN.getKey(),
-                (String)settingsMap.get(PIASettings.CONFIG_INPUT_COLUMN.getKey()));
+
+        // the export settings
+        settings.addString(PIASettings.EXPORT_LEVEL.getKey(),
+                (String)settingsMap.get(PIASettings.EXPORT_LEVEL.getKey()));
+        settings.addString(PIASettings.EXPORT_FORMAT.getKey(),
+                (String)settingsMap.get(PIASettings.EXPORT_FORMAT.getKey()));
 
         // used file ID for PSM export
         settings.addInt(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(),

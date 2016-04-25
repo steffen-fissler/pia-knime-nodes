@@ -51,6 +51,8 @@ import org.knime.core.node.port.PortType;
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
+import de.mpc.pia.knime.nodes.dialog.ExportFormats;
+import de.mpc.pia.knime.nodes.dialog.ExportLevels;
 import de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.exporter.IdXMLExporter;
@@ -80,15 +82,22 @@ public class PIAAnalysisNodeModel extends NodeModel {
             NodeLogger.getLogger(PIAAnalysisNodeModel.class);
 
 
+    /** the model of the input files' URLs */
+    private final SettingsModelString m_input_column =
+            new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
     /** storing model for whether PSM sets should be created */
     private final SettingsModelBoolean m_create_psm_sets =
             new SettingsModelBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean());
     /** storing model for whether modifications should be used to distinguish peptides */
     private final SettingsModelBoolean m_consider_modifications =
             new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
-    /** the model of the input files' URLs */
-    private final SettingsModelString m_input_column =
-            new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
+
+    /** export level */
+    private final SettingsModelString m_export_level =
+            new SettingsModelString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString());
+    /** export format */
+    private final SettingsModelString m_export_format =
+            new SettingsModelString(PIASettings.EXPORT_FORMAT.getKey(), PIASettings.EXPORT_FORMAT.getDefaultString());
 
 
     /** the file ID for the PSM analysis */
@@ -187,6 +196,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
             DataTable table = (DataTable)inObjects[0];
             RowIterator row_it = table.iterator();
             int inputIdx = table.getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
+            if (inputIdx < 0) {
+                throw new ExecutionException("Could not find column '" + m_input_column.getStringValue()
+                        + "' in input table. Settings must be reconfigured.");
+            }
             while (row_it.hasNext()) {
                 DataRow row = row_it.next();
                 DataCell dataCell = row.getCell(inputIdx);
@@ -312,26 +325,42 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
 
 
+        // export the selected level to selected format
+        FileStoreURIPortObject fsupo = new FileStoreURIPortObject(exec.createFileStore("PIA_export_file"));
 
+        if (!m_export_level.getStringValue().equals(ExportLevels.none.toString())) {
+            String file_basename = "piaExport";
+            File file = fsupo.registerFile(file_basename + "."
+                    + m_export_format.getStringValue());
+            file.createNewFile();
 
-        // TODO: export one level to one selected file format
-        // TODO: here the export to mzIdentML, mzTab, idXML or CSV should happen...
+            Long fileID;
+            ExportLevels exportLvl = ExportLevels.valueOf(m_export_level.getStringValue());
+            switch (exportLvl) {
+            case PSM:
+                fileID = (long)(m_psm_analysis_file_id.getIntValue());
+                break;
 
-        String ext = "idXML";
+            case peptide:
+                fileID = (long)(m_peptide_analysis_file_id.getIntValue());
+                break;
 
+            case protein:
+                fileID = 0L;
+                break;
 
-        FileStoreURIPortObject fsupo = new FileStoreURIPortObject(
-                exec.createFileStore("PIAAnalysis_file_1"));
+            case none:
+            default:
+                fileID = -1L;
+            }
 
-        String file_basename = "piaExport";
-        File file = fsupo.registerFile(file_basename + "." + ext);
-
-        logger.debug("Storing export to: " + file.getAbsolutePath());
-
-        file.createNewFile();
-        IdXMLExporter exporter = new IdXMLExporter(piaModeller);
-        exporter.exportToIdXML(0L, file, true);
-
+            exportReportTo(file, piaModeller,
+                    ExportFormats.valueOf(m_export_format.getStringValue()),
+                    exportLvl, fileID);
+        } else {
+            File file = fsupo.registerFile("emptyfile.txt");
+            file.createNewFile();
+        }
 
 
         // TODO: make calculation of each level switchable (on/off)
@@ -380,9 +409,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
      */
     @Override
     protected void saveSettingsTo(final NodeSettingsWO settings) {
+        m_input_column.saveSettingsTo(settings);
         m_create_psm_sets.saveSettingsTo(settings);
         m_consider_modifications.saveSettingsTo(settings);
-        m_input_column.saveSettingsTo(settings);
+        m_export_level.saveSettingsTo(settings);
+        m_export_format.saveSettingsTo(settings);
 
         m_psm_analysis_file_id.saveSettingsTo(settings);
         m_calculate_all_fdr.saveSettingsTo(settings);
@@ -411,9 +442,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void loadValidatedSettingsFrom(final NodeSettingsRO settings)
             throws InvalidSettingsException {
+        m_input_column.loadSettingsFrom(settings);
         m_create_psm_sets.loadSettingsFrom(settings);
         m_consider_modifications.loadSettingsFrom(settings);
-        m_input_column.loadSettingsFrom(settings);
+        m_export_level.loadSettingsFrom(settings);
+        m_export_format.loadSettingsFrom(settings);
 
         m_psm_analysis_file_id.loadSettingsFrom(settings);
         m_calculate_all_fdr.loadSettingsFrom(settings);
@@ -442,9 +475,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void validateSettings(final NodeSettingsRO settings)
             throws InvalidSettingsException {
+        m_input_column.validateSettings(settings);
         m_create_psm_sets.validateSettings(settings);
         m_consider_modifications.validateSettings(settings);
-        m_input_column.validateSettings(settings);
+        m_export_level.validateSettings(settings);
+        m_export_format.validateSettings(settings);
 
         m_psm_analysis_file_id.validateSettings(settings);
         m_calculate_all_fdr.validateSettings(settings);
@@ -949,6 +984,40 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         return fileName;
+    }
+
+
+    /**
+     * Exports the PIA analysis to the given file format.
+     *
+     * @param file the file, must be created
+     * @param piaModeller {@link PIAModeller} containing the analysis
+     * @param exportFormat format to export to
+     * @param exportLevel the level (PSM, peptide or protein)
+     * @param fileID the file ID (0=overview, not used for protein level)
+     */
+    private void exportReportTo(File file, PIAModeller piaModeller,
+            ExportFormats exportFormat, ExportLevels exportLevel, Long fileID) {
+        logger.debug("Exporting to " + exportFormat + " (" + file.getAbsolutePath() + "), "
+                + exportLevel + " (" + fileID + ")");
+
+        switch (exportFormat) {
+        case idXML:
+            IdXMLExporter exporter = new IdXMLExporter(piaModeller);
+            exporter.exportToIdXML(fileID, file, exportLevel.equals(ExportLevels.protein));
+            break;
+
+        case csv:
+            // TODO: implement
+        case mzIdentML:
+            // TODO: implement
+        case mzTab:
+            // TODO: implement
+
+        default:
+            logger.warn("Unimplemented export format: " + exportFormat);
+            break;
+        }
     }
 }
 

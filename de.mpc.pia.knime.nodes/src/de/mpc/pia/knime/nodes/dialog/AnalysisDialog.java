@@ -28,24 +28,24 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.knime.core.data.DataColumnSpec;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.data.DataValue;
 import org.knime.core.data.StringValue;
 import org.knime.core.data.blob.BinaryObjectDataValue;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NotConfigurableException;
-import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
-import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelection;
-import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
-import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.util.ColumnFilter;
+import org.knime.core.node.util.ColumnSelectionComboxBox;
 
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.dialog.renderer.ScoreCellRenderer;
@@ -66,7 +66,7 @@ import de.mpc.pia.modeller.score.ScoreModelEnum;
  * @author julian
  *
  */
-public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionListener, ChangeListener {
+public class AnalysisDialog extends JTabbedPane implements ActionListener, ChangeListener {
 
     // TODO: usage of flow variables for the settings
     // TODO: add help/information for the settings from the help properties file
@@ -75,6 +75,9 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     /** the logger instance */
     private static final NodeLogger logger =
             NodeLogger.getLogger(AnalysisDialog.class);
+
+    /** the panel for the general settings */
+    private JPanel generalSettingsPanel;
 
     /** the panel for the PSM level analysis settings */
     private JPanel psmAnalysisPanel;
@@ -87,13 +90,17 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
 
 
     /** checkbox to select, whether the node should fail, if no decoys were found */
-    private SettingsModelBoolean checkErrorOnNoDecoys;
+    private JCheckBox checkErrorOnNoDecoys;
     /** checkbox to select, whether PSM sets should be created */
-    private SettingsModelBoolean checkCreatePSMSets;
+    private JCheckBox checkCreatePSMSets;
     /** checkbox to select, whether modifications are considered to distinguish peptides */
-    private SettingsModelBoolean checkConsiderModifications;
+    private JCheckBox checkConsiderModifications;
     /** selection box to select the input column */
-    private SettingsModelString inputColumnName;
+    private ColumnSelectionComboxBox inputColumnBox;
+    /** the combobox for the available export levels */
+    private JComboBox<ExportLevels> comboExportLevel;
+    /** the combobox for the available export formats */
+    private JComboBox<ExportFormats> comboExportFormat;
 
 
     /** text field for the selected file, for which the PSM export should be performed */
@@ -155,6 +162,7 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
 
         // general settings are used in other panels, create this first
         initializeGeneralSettingsPanel();
+        this.addTab("general", generalSettingsPanel);
 
         initializePSMPanel();
         this.addTab("PSMs", psmAnalysisPanel);
@@ -191,6 +199,8 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
                     selectedPreferredFDRScoresList.getSelectedValue());
             ((DefaultListModel<String>)selectedPreferredFDRScoresList.getModel()).remove(
                     selectedPreferredFDRScoresList.getSelectedIndex());
+        } else if (e.getSource().equals(comboExportLevel)) {
+            updateExportAvailables();
         }
     }
 
@@ -198,7 +208,7 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     @Override
     public void stateChanged(ChangeEvent e) {
         if (e.getSource().equals(checkCreatePSMSets)) {
-            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
+            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
         }
     }
 
@@ -212,15 +222,21 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     public Map<String, Object> getSettings() {
         HashMap<String, Object> settings = new HashMap<String, Object>();
 
-        // error when no decoys are found
-        settings.put(PIASettings.ERROR_ON_NO_DECOYS.getKey(), checkErrorOnNoDecoys.getBooleanValue());
-        // create PSM sets
-        settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.getBooleanValue());
-        // consider modifications
-        settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.getBooleanValue());
         // the selected input column
-        settings.put(PIASettings.CONFIG_INPUT_COLUMN.getKey(), inputColumnName.getStringValue());
+        settings.put(PIASettings.CONFIG_INPUT_COLUMN.getKey(), inputColumnBox.getSelectedColumn());
+        // error when no decoys are found
+        settings.put(PIASettings.ERROR_ON_NO_DECOYS.getKey(), checkErrorOnNoDecoys.isSelected());
+        // create PSM sets
+        settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.isSelected());
+        // consider modifications
+        settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.isSelected());
+        // export level and format
 
+        logger.debug("setze: " + comboExportLevel.getSelectedItem().toString());
+
+        settings.put(PIASettings.EXPORT_LEVEL.getKey(), comboExportLevel.getSelectedItem().toString());
+        settings.put(PIASettings.EXPORT_FORMAT.getKey(), comboExportFormat.getSelectedItem() != null ?
+                comboExportFormat.getSelectedItem().toString() : null);
 
         // PSM file ID
         settings.put(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(), Integer.parseInt(fieldPSMAnalysisFileID.getText()));
@@ -306,21 +322,34 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
      */
     public void applySettings(NodeSettingsRO settings, PortObjectSpec[] specs)
             throws NotConfigurableException {
-        loadSettingsFrom(settings, specs);
+        // get the datatable information to select the column containing the pia XML file
+        if (specs[0] instanceof DataTableSpec) {
+            inputColumnBox.update((DataTableSpec)specs[0], null);
+        } else {
+            inputColumnBox.removeAllItems();
+        }
+        inputColumnBox.setSelectedColumn(
+                settings.getString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString()));
 
         // error when no decoys are found
-        checkErrorOnNoDecoys.setBooleanValue(
+        checkErrorOnNoDecoys.setSelected(
                 settings.getBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(), PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean()));
         // create PSM sets
-        checkCreatePSMSets.setBooleanValue(
+        checkCreatePSMSets.setSelected(
                 settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
+        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
         // consider modifications
-        checkConsiderModifications.setBooleanValue(
+        checkConsiderModifications.setSelected(
                 settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
-        // the selected input column
-        inputColumnName.setStringValue(
-                settings.getString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString()));
+
+        // export level and format
+        comboExportLevel.setSelectedItem(
+                ExportLevels.valueOf(
+                        settings.getString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString())));
+        updateExportAvailables();
+        comboExportFormat.setSelectedItem(
+                ExportFormats.valueOf(
+                        settings.getString(PIASettings.EXPORT_FORMAT.getKey(), PIASettings.EXPORT_FORMAT.getDefaultString())));
 
         // PSM file ID
         fieldPSMAnalysisFileID.setValue(
@@ -433,6 +462,38 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
 
 
     /**
+     * Updates the settings of the export format, depending on the selected
+     * export level.
+     */
+    private void updateExportAvailables() {
+        if (comboExportLevel.getSelectedItem().equals(ExportLevels.none)) {
+            comboExportFormat.setEnabled(false);
+        } else {
+            comboExportFormat.setEnabled(true);
+        }
+
+        comboExportFormat.removeAllItems();
+
+        ExportLevels selectedLvl = (ExportLevels)comboExportLevel.getSelectedItem();
+        switch (selectedLvl) {
+        case PSM:
+        case protein:
+            comboExportFormat.addItem(ExportFormats.mzIdentML);
+            comboExportFormat.addItem(ExportFormats.mzTab);
+            comboExportFormat.addItem(ExportFormats.idXML);
+
+        case peptide:
+            comboExportFormat.addItem(ExportFormats.csv);
+            break;
+
+        case none:
+        default:
+            break;
+        }
+    }
+
+
+    /**
      * Initializes the panel for the PSM settings
      */
     private void initializePSMPanel() {
@@ -472,7 +533,7 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
         // CalculateCombinedFDRScore >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score");
         checkCalculateCombinedFDRScore.setSelected(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.getBooleanValue());
+        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -884,53 +945,129 @@ public class AnalysisDialog extends DefaultNodeSettingsPane implements ActionLis
     /**
      * Initializes the panel for the general settings (which is also the main
      * tab of the DefaultNodeSettingsPane).
+     * @throws NotConfigurableException
      */
+    @SuppressWarnings("unchecked")
     private void initializeGeneralSettingsPanel() {
-        this.setDefaultTabTitle("general");
+        generalSettingsPanel = new  JPanel(new GridBagLayout());
 
-        checkErrorOnNoDecoys = new SettingsModelBoolean(PIASettings.ERROR_ON_NO_DECOYS.getKey(),
-                PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean());
-        addDialogComponent(new DialogComponentBoolean(
-                checkErrorOnNoDecoys,
-                "Fail on no decoys"));
+        GridBagConstraints c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5, 5);
 
-        checkCreatePSMSets = new SettingsModelBoolean(PIASettings.CREATE_PSMSETS.getKey(),
-                        PIASettings.CREATE_PSMSETS.getDefaultBoolean());
+        int row = 0;
+
+        // input column >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        c.weighty = 0.0;
+        generalSettingsPanel.add(new JLabel("Column to PIA XML file"), c);
+
+        inputColumnBox = new ColumnSelectionComboxBox((Border)null, DataValue.class);
+        try {
+            inputColumnBox.setColumnFilter(new ColumnFilter() {
+                @Override
+                public boolean includeColumn(DataColumnSpec colSpec) {
+                    if (colSpec.getType().isCompatible(StringValue.class)) {
+                        return true;
+                    } else if (colSpec.getType().isCompatible(BinaryObjectDataValue.class)) {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                @Override
+                public String allFilteredMsg() {
+                    return "No column with needed data found, needs String or BinaryObjectData";
+                }
+            });
+        } catch (NotConfigurableException e) {
+            logger.warn("Could not find a compatible column in the input datatable.");
+        }
+
+        c.gridx = 1;
+        c.gridy = row++;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        generalSettingsPanel.add(inputColumnBox, c);
+        // input column <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // fail on no decoys >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkErrorOnNoDecoys = new JCheckBox("Fail on no decoys");
+        checkErrorOnNoDecoys.setSelected(PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean());
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 2;
+        generalSettingsPanel.add(checkErrorOnNoDecoys, c);
+        // fail on no decoys <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // create PSM sets >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkCreatePSMSets = new JCheckBox("Create PSM sets");
+        checkCreatePSMSets.setSelected(PIASettings.CREATE_PSMSETS.getDefaultBoolean());
         checkCreatePSMSets.addChangeListener(this);
-        addDialogComponent(new DialogComponentBoolean(
-                checkCreatePSMSets,
-                "Create PSM sets"));
 
-        checkConsiderModifications = new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(),
-                PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
-        addDialogComponent(new DialogComponentBoolean(
-                checkConsiderModifications,
-                "consider modifications to distinguish peptides"));
+        c.gridy = row++;
+        generalSettingsPanel.add(checkCreatePSMSets, c);
+        // create PSM sets <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // consider modifications >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkConsiderModifications = new JCheckBox("consider modifications to distinguish peptides");
+        checkConsiderModifications.setSelected(PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
+
+        c.gridy = row++;
+        generalSettingsPanel.add(checkConsiderModifications, c);
+        // consider modifications <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // Export settings >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        JPanel exportSettingsPanel = new  JPanel(new GridBagLayout());
+        exportSettingsPanel.setBorder(BorderFactory.createTitledBorder("Export settings"));
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        exportSettingsPanel.add(new JLabel("Export level"), c);
+
+        comboExportLevel = new JComboBox<ExportLevels>();
+
+        for (ExportLevels lvl : ExportLevels.values()) {
+            comboExportLevel.addItem(lvl);
+        }
+        comboExportLevel.addActionListener(this);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        exportSettingsPanel.add(comboExportLevel, c);
 
 
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        exportSettingsPanel.add(new JLabel("Export format"), c);
 
-        inputColumnName = new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(),
-                PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
-        DialogComponentColumnNameSelection inputColumnNameSel = new DialogComponentColumnNameSelection(
-                inputColumnName, "input column", 0, false, true, new ColumnFilter() {
-                    @Override
-                    public boolean includeColumn(DataColumnSpec colSpec) {
-                        if (colSpec.getType().isCompatible(StringValue.class)) {
-                            return true;
-                        } else if (colSpec.getType().isCompatible(BinaryObjectDataValue.class)) {
-                            return true;
-                        }
+        comboExportFormat = new JComboBox<ExportFormats>();
+        updateExportAvailables();
+        comboExportLevel.setSelectedItem(PIASettings.EXPORT_LEVEL.getDefaultString());
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        exportSettingsPanel.add(comboExportFormat, c);
 
-                        return false;
-                    }
 
-                    @Override
-                    public String allFilteredMsg() {
-                        return "No column with needed data found";
-                    }
-                });
-
-        addDialogComponent(inputColumnNameSel);
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        generalSettingsPanel.add(exportSettingsPanel, c);
+        // Export settings <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
 }

@@ -1,5 +1,7 @@
 package de.mpc.pia.knime.nodes;
 
+import de.mpc.pia.knime.nodes.dialog.ExportFormats;
+import de.mpc.pia.knime.nodes.dialog.ExportLevels;
 import de.mpc.pia.modeller.protein.inference.ProteinInferenceFactory.ProteinInferenceMethod;
 import de.mpc.pia.modeller.protein.scoring.ProteinScoringFactory.ScoringType;
 import de.mpc.pia.modeller.protein.scoring.settings.PSMForScoring;
@@ -17,6 +19,8 @@ public enum PIASettings {
     ERROR_ON_NO_DECOYS(new Boolean(true)),
     CREATE_PSMSETS(new Boolean(true)),
     CONSIDER_MODIFICATIONS(new Boolean(false)),
+    EXPORT_LEVEL(ExportLevels.none.toString()),
+    EXPORT_FORMAT(ExportFormats.mzIdentML.toString()),
 
     FDR_THRESHOLD(new Double(0.01)),
 
