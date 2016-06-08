@@ -72,9 +72,10 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     // TODO: add help/information for the settings from the help properties file
     // TODO: make settings for decoys, FDR calculation etc. possible for each single file
 
+    private static final long serialVersionUID = -4217255580574382291L;
+
     /** the logger instance */
-    private static final NodeLogger logger =
-            NodeLogger.getLogger(AnalysisDialog.class);
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(AnalysisDialog.class);
 
     /** the panel for the general settings */
     private JPanel generalSettingsPanel;
@@ -231,9 +232,6 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // consider modifications
         settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.isSelected());
         // export level and format
-
-        logger.debug("setze: " + comboExportLevel.getSelectedItem().toString());
-
         settings.put(PIASettings.EXPORT_LEVEL.getKey(), comboExportLevel.getSelectedItem().toString());
         settings.put(PIASettings.EXPORT_FORMAT.getKey(), comboExportFormat.getSelectedItem() != null ?
                 comboExportFormat.getSelectedItem().toString() : null);
@@ -347,9 +345,13 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                 ExportLevels.valueOf(
                         settings.getString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString())));
         updateExportAvailables();
-        comboExportFormat.setSelectedItem(
-                ExportFormats.valueOf(
-                        settings.getString(PIASettings.EXPORT_FORMAT.getKey(), PIASettings.EXPORT_FORMAT.getDefaultString())));
+
+        String formatString = settings.getString(PIASettings.EXPORT_FORMAT.getKey(), PIASettings.EXPORT_FORMAT.getDefaultString());
+        ExportFormats format = null;
+        if (formatString != null) {
+            format = ExportFormats.valueOf(formatString);
+        }
+        comboExportFormat.setSelectedItem(format);
 
         // PSM file ID
         fieldPSMAnalysisFileID.setValue(
@@ -935,7 +937,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                     filtersProteinInference.addAvailableFilter(filter);
                 }
             } else {
-                logger.error("Could not create inference method for "
+                LOGGER.error("Could not create inference method for "
                         + radioGrpInferenceMethod.getSelection().getActionCommand());
             }
         }
@@ -985,7 +987,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                 }
             });
         } catch (NotConfigurableException e) {
-            logger.warn("Could not find a compatible column in the input datatable.");
+            LOGGER.warn("Could not find a compatible column in the input datatable.");
         }
 
         c.gridx = 1;
