@@ -207,7 +207,7 @@ public class FilterPanel extends JPanel implements ActionListener {
         String argument = fieldFilterArgument.getText();
         Boolean negate = checkNegateFilter.isSelected();
 
-        StringBuffer messageBuffer = new StringBuffer();
+        StringBuilder messageBuffer = new StringBuilder();
 
         /// we have a valid value, so go on
         AbstractFilter newFilter = FilterFactory.newInstanceOf(filterShort,

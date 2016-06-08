@@ -112,7 +112,7 @@ public class ObjectSerializer {
             String filterValue = arrObj[3].toString();
 
 
-            StringBuffer messageBuffer = new StringBuffer();
+            StringBuilder messageBuffer = new StringBuilder();
             AbstractFilter filter = null;
 
             if (shortName.startsWith(PSMScoreFilter.prefix) ||
