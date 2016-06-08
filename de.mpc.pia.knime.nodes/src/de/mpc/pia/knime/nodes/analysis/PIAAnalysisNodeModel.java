@@ -269,6 +269,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
         analysisModel.addSetting(PIASettings.FDR_PREFERRED_SCORES.getKey(),
                 m_fdr_preferred_scores.getStringArrayValue());
 
+        // set the analyzed fileId for PSM operations
+        analysisModel.addSetting(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(),
+                m_psm_analysis_file_id.getIntValue());
+        // set PSM level filters
+        analysisModel.addSetting(PIASettings.PSM_FILTERS.getKey(),
+                m_psm_filters.getStringArrayValue());
+
         // set whether all FDRs should be calculated
         analysisModel.addSetting(PIASettings.CALCULATE_ALL_FDR.getKey(),
                 m_calculate_all_fdr.getBooleanValue());
@@ -276,8 +283,14 @@ public class PIAAnalysisNodeModel extends NodeModel {
         analysisModel.addSetting(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getKey(),
                 m_calculate_combined_fdr.getBooleanValue());
 
+        // set the analyzed fileId for peptide operations
+        analysisModel.addSetting(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(),
+                m_peptide_analysis_file_id.getIntValue());
+        // set peptide level filters
+        analysisModel.addSetting(PIASettings.PEPTIDE_FILTERS.getKey(),
+                m_peptide_filters.getStringArrayValue());
 
-        // set the protein inference methos
+        // set the protein inference methods
         analysisModel.addSetting(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(),
                 m_protein_inference_method.getStringValue());
         // set filters for the protein inference
@@ -292,6 +305,14 @@ public class PIAAnalysisNodeModel extends NodeModel {
         // set the used PSMs for the scoring
         analysisModel.addSetting(PIASettings.PROTEIN_SCORING_USED_PSMS.getKey(),
                 m_protein_scoring_used_psms.getStringValue());
+
+
+        // export format
+        analysisModel.addSetting(PIASettings.EXPORT_FORMAT.getKey(),
+                m_export_format.getStringValue());
+        // export level
+        analysisModel.addSetting(PIASettings.EXPORT_LEVEL.getKey(),
+                m_export_level.getStringValue());
 
 
         // execute the PSM analysis

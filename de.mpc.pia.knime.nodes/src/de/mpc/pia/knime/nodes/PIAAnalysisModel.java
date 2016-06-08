@@ -296,6 +296,16 @@ public class PIAAnalysisModel {
     public void executePeptideOperations() {
         piaModeller.setCreatePSMSets(getSettingBoolean(PIASettings.CREATE_PSMSETS));
         piaModeller.setConsiderModifications(getSettingBoolean(PIASettings.CONSIDER_MODIFICATIONS));
+
+        piaModeller.getPeptideModeller().removeAllFilters();
+
+        Long fileID = getSettingInteger(PIASettings.PEPTIDE_ANALYSIS_FILE_ID).longValue();
+
+        String[] serializedInferenceFilters =
+                getSettingStringArray(PIASettings.PEPTIDE_FILTERS);
+        for (AbstractFilter filter : unserializeFilters(serializedInferenceFilters)) {
+            piaModeller.getPeptideModeller().addFilter(fileID, filter);
+        }
     }
 
 
