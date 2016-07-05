@@ -294,7 +294,6 @@ public class PIAAnalysisModel {
      * If a required setting is not given, the default value is used.
      */
     public void executePeptideOperations() {
-        piaModeller.setCreatePSMSets(getSettingBoolean(PIASettings.CREATE_PSMSETS));
         piaModeller.setConsiderModifications(getSettingBoolean(PIASettings.CONSIDER_MODIFICATIONS));
 
         piaModeller.getPeptideModeller().removeAllFilters();
@@ -330,9 +329,6 @@ public class PIAAnalysisModel {
     * If a required setting is not given, the default value is used.
     */
    public void executeProteinOperations() {
-       piaModeller.setCreatePSMSets(getSettingBoolean(PIASettings.CREATE_PSMSETS));
-       piaModeller.setConsiderModifications(getSettingBoolean(PIASettings.CONSIDER_MODIFICATIONS));
-
        AbstractProteinInference proteinInference =
                ProteinInferenceFactory.createInstanceOf(getSettingString(PIASettings.PROTEIN_INFERENCE_METHOD));
 

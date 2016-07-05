@@ -795,7 +795,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
             List<DoubleCell> scoresList = new ArrayList<DoubleCell>();
             List<StringCell> scoreNamesList = new ArrayList<StringCell>();
             List<StringCell> scoreShortsList = new ArrayList<StringCell>();
+
             for (String scoreShort : scoreShorts) {
+
+                logger.debug(scoreShort + " -> " + pep.getBestScore(scoreShort));
+
                 scoresList.add(new DoubleCell(pep.getBestScore(scoreShort)));
                 scoreNamesList.add(new StringCell(scoreShortsToNames.get(scoreShort)));
                 scoreShortsList.add(new StringCell(scoreShort));
