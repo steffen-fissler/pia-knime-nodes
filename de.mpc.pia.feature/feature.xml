@@ -20,11 +20,11 @@ peptides and proteins.
 
 For more information, please go to:
 https://github.com/mpc-bioinformatics/pia
- 
+
     </description>
 
     <copyright>
-    Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2015
+    Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2016
 
     </copyright>
 
@@ -32,7 +32,7 @@ https://github.com/mpc-bioinformatics/pia
     --------------------------------------------------------------------------------
                       PIA - Protein Inference Algorithms
 --------------------------------------------------------------------------------
-Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2015
+Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2016
 
 This software is released under a three-clause BSD license:
 
@@ -64,60 +64,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </license>
 
 	<plugin
-		id="de.mpc.pia"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false"/>
-
-
-	<plugin id="de.mpc.pia.macosx.x86_64"
-		os="macosx"
-		arch="x86_64"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		fragment="true"/>
-
-	<plugin id="de.mpc.pia.linux.x86_64"
-		os="linux"
-		arch="x86_64"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		fragment="true"/>
-
-	<plugin id="de.mpc.pia.linux.x86"
-		os="linux"
-		arch="x86"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		fragment="true"/>
-
-	<plugin id="de.mpc.pia.win32.x86_64"
-		os="win32"
-		arch="x86_64"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		fragment="true"/>
-
-	<plugin id="de.mpc.pia.win32.x86"
-		os="win32"
-		arch="x86"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		fragment="true"/>
-
-
-	<plugin
 		id="de.mpc.pia.knime.nodes"
 		download-size="0"
 		install-size="0"
 		version="0.0.0"
 		unpack="false"/>
-
 
 </feature>
