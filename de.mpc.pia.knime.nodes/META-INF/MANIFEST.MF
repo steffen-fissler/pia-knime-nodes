@@ -104,7 +104,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.knime.core.data.uritype,
  org.knime.workbench.core,
  org.knime.workbench.repository,
- org.knime.base
+ org.knime.base;bundle-version="[3.0.0,4.0.0)"
 Bundle-ActivationPolicy: lazy
 Export-Package: de.mpc.pia.knime.nodes
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
