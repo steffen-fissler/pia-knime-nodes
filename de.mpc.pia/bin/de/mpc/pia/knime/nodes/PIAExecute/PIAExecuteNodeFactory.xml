@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PIAExecute</name>
+    
+    <shortDescription>
+        Execute a pipeline and export PIA results after execution of a PIA pipeline on the PSM, peptide or protein level.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Execute a pipeline and export PIA results after execution of a PIA pipeline on the PSM, peptide or protein level.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PIAExecute</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory (which is recommended).</option>
+		<option name="format">format of the export</option>
+		<option name="fileID">the ID of the exported file's PSMs (0 for overview)</option>
+		<option name="spectralCount">whether to export for spectral count or not (consider using PeptideExport!)</option>
+		<option name="format">format of the export</option>
+		<option name="fileID">the ID of the exported file's PSMs (0 for overview)</option>
+		<option name="exportPSMs">also export PSM information in the same file</option>
+		<option name="exportPSMSets">also export PSMSet information in the same file</option>
+		<option name="oneAccessionPerLine">whether one Accession should be exported per line, useful for spectral counting.</option>
+		<option name="format">format of the export</option>
+		<option name="oneAccessionPerLine">exports one line for each protein instead of protein groups (for CSV export).</option>
+		<option name="exportPeptides">also export peptide information in the same file</option>
+		<option name="exportPSMSets">also export PSMSet information in the same file</option>
+		<option name="exportPSMs">also export PSM information in the same file</option>
+		<option name="calculateInformation">calculate additional information (e.g. information for different FDR thresholds)</option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="infile [pia.xml]">The compiled PIA-XML file. [pia.xml]</inPort>
+		<inPort index="1" name="paramFile [xml]">Path to a PIA pipeline file. [xml]</inPort>
+		<outPort index="0" name="fileNamePSM [csv,mzTab,mzid]">file for PSM export [csv,mzTab,mzid]</outPort>
+		<outPort index="1" name="fileNamePeptide [csv]">file for peptide export [csv]</outPort>
+		<outPort index="2" name="fileNameProtein [csv,mzid]">file for protein export [csv,mzid]</outPort>
+		<outPort index="3" name="fileNameInfos [txt]">file for file information [txt]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PIAExecute Std Output">The text sent to standard out during the execution of PIAExecute.</view>
+        <view index="1" name="PIAExecute Error Output">The text sent to standard error during the execution of PIAExecute. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

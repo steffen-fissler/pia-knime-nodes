@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PeptideConsiderModifications</name>
+    
+    <shortDescription>
+        Sets whether modifications should be considered while inferring the peptides from the PSMs.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Sets whether modifications should be considered while inferring the peptides from the PSMs.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PeptideConsiderModifications</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+		<option name="consider modifications">Whether modifications should be considered when inferring peptides from PSMs.</option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="paramFile [xml]">Path to the file, which contains the build pipeline until this step. [xml]</inPort>
+		<outPort index="0" name="paramOutFile [xml]">Path to the file, which will contain the pipeline with added filters. [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PeptideConsiderModifications Std Output">The text sent to standard out during the execution of PeptideConsiderModifications.</view>
+        <view index="1" name="PeptideConsiderModifications Error Output">The text sent to standard error during the execution of PeptideConsiderModifications. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

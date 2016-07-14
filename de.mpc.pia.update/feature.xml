@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.mpc.pia.update"
+      label="Update site for PIA"
+      version="1.1.0.201603171710">
+
+   <includes
+         id="de.mpc.pia.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="de.mpc.pia.testing.feature"
+         version="0.0.0"/>
+</feature>

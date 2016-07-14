@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PIACompiler</name>
+    
+    <shortDescription>
+        Compile PIA intermediate XML file from raw search engine results.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Compile PIA intermediate XML file from raw search engine results.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PIACompiler</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="infile [mzid,dat,msf,t.xml,xml,idxml]">Search engine result files to compile into PIA-XML file. [mzid,dat,msf,t.xml,xml,idxml]</inPort>
+		<outPort index="0" name="outfile [pia.xml]">The generated PIA-XML file. [pia.xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PIACompiler Std Output">The text sent to standard out during the execution of PIACompiler.</view>
+        <view index="1" name="PIACompiler Error Output">The text sent to standard error during the execution of PIACompiler. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

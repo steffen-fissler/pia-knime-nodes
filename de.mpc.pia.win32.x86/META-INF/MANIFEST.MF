@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Generic Workflow Nodes for KNIME: PIA - win32-x86 Fragment  
+Bundle-SymbolicName: de.mpc.pia.win32.x86;singleton:=true
+Bundle-Version: 1.1.0.201603161745
+Bundle-Vendor: Freie Universitaet Berlin, Universitaet Tuebingen, and the PIA Team
+Fragment-Host: de.mpc.pia;bundle-version="1.1.0.201603161745"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-PlatformFilter: (& (osgi.arch=x86) (osgi.os=win32))

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>ProteinAddFilter</name>
+    
+    <shortDescription>
+        Adds a protein level filter, which will be used in all further steps.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Adds a protein level filter, which will be used in all further steps.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for ProteinAddFilter</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+		<option name="filtername"></option>
+		<option name="comparison"></option>
+		<option name="value"></option>
+		<option name="negate"></option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="paramFile [xml]">Path to the file, which contains the build pipeline until this step. [xml]</inPort>
+		<outPort index="0" name="paramOutFile [xml]">Path to the file, which will contain the pipeline with added filters. [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="ProteinAddFilter Std Output">The text sent to standard out during the execution of ProteinAddFilter.</view>
+        <view index="1" name="ProteinAddFilter Error Output">The text sent to standard error during the execution of ProteinAddFilter. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

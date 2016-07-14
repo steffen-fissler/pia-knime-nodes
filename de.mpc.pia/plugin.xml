@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin> 
+  <extension point="org.knime.workbench.repository.categories"> 
+    <category description="/community/PIA/peptide" icon="icons/category.png" path="/community/PIA" name="peptide" level-id="peptide"/>
+    <category description="/community/PIA" icon="icons/category.png" path="/community" name="PIA" level-id="PIA"/>
+    <category description="/community/PIA/general" icon="icons/category.png" path="/community/PIA" name="general" level-id="general"/>
+    <category description="/community/PIA/protein" icon="icons/category.png" path="/community/PIA" name="protein" level-id="protein"/>
+    <category description="/community/PIA/PSM" icon="icons/category.png" path="/community/PIA" name="PSM" level-id="PSM"/>
+  </extension>  
+  <extension point="org.knime.workbench.repository.nodes"> 
+    <node factory-class="de.mpc.pia.knime.nodes.PeptideAddFilter.PeptideAddFilterNodeFactory" id="de.mpc.pia.knime.nodes.PeptideAddFilter.PeptideAddFilterNodeFactory" category-path="/community/PIA/peptide"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PeptideConsiderModifications.PeptideConsiderModificationsNodeFactory" id="de.mpc.pia.knime.nodes.PeptideConsiderModifications.PeptideConsiderModificationsNodeFactory" category-path="/community/PIA/peptide"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PIACompiler.PIACompilerNodeFactory" id="de.mpc.pia.knime.nodes.PIACompiler.PIACompilerNodeFactory" category-path="/community/PIA/general"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PIAExecute.PIAExecuteNodeFactory" id="de.mpc.pia.knime.nodes.PIAExecute.PIAExecuteNodeFactory" category-path="/community/PIA/general"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PIAGeneratePipelineXML.PIAGeneratePipelineXMLNodeFactory" id="de.mpc.pia.knime.nodes.PIAGeneratePipelineXML.PIAGeneratePipelineXMLNodeFactory" category-path="/community/PIA/general"/>
+    <node factory-class="de.mpc.pia.knime.nodes.ProteinAddFilter.ProteinAddFilterNodeFactory" id="de.mpc.pia.knime.nodes.ProteinAddFilter.ProteinAddFilterNodeFactory" category-path="/community/PIA/protein"/>
+    <node factory-class="de.mpc.pia.knime.nodes.ProteinAddInferenceFilter.ProteinAddInferenceFilterNodeFactory" id="de.mpc.pia.knime.nodes.ProteinAddInferenceFilter.ProteinAddInferenceFilterNodeFactory" category-path="/community/PIA/protein"/>
+    <node factory-class="de.mpc.pia.knime.nodes.ProteinCalculateFDR.ProteinCalculateFDRNodeFactory" id="de.mpc.pia.knime.nodes.ProteinCalculateFDR.ProteinCalculateFDRNodeFactory" category-path="/community/PIA/protein"/>
+    <node factory-class="de.mpc.pia.knime.nodes.ProteinInfereProteins.ProteinInfereProteinsNodeFactory" id="de.mpc.pia.knime.nodes.ProteinInfereProteins.ProteinInfereProteinsNodeFactory" category-path="/community/PIA/protein"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMAddFilter.PSMAddFilterNodeFactory" id="de.mpc.pia.knime.nodes.PSMAddFilter.PSMAddFilterNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMAddPreferredFDRScore.PSMAddPreferredFDRScoreNodeFactory" id="de.mpc.pia.knime.nodes.PSMAddPreferredFDRScore.PSMAddPreferredFDRScoreNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMCalculateAllFDR.PSMCalculateAllFDRNodeFactory" id="de.mpc.pia.knime.nodes.PSMCalculateAllFDR.PSMCalculateAllFDRNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMCalculateCombinedFDRScore.PSMCalculateCombinedFDRScoreNodeFactory" id="de.mpc.pia.knime.nodes.PSMCalculateCombinedFDRScore.PSMCalculateCombinedFDRScoreNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMCreatePSMSets.PSMCreatePSMSetsNodeFactory" id="de.mpc.pia.knime.nodes.PSMCreatePSMSets.PSMCreatePSMSetsNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMSetAllDecoyPattern.PSMSetAllDecoyPatternNodeFactory" id="de.mpc.pia.knime.nodes.PSMSetAllDecoyPattern.PSMSetAllDecoyPatternNodeFactory" category-path="/community/PIA/PSM"/>
+    <node factory-class="de.mpc.pia.knime.nodes.PSMSetAllTopidentificationsForFDR.PSMSetAllTopidentificationsForFDRNodeFactory" id="de.mpc.pia.knime.nodes.PSMSetAllTopidentificationsForFDR.PSMSetAllTopidentificationsForFDRNodeFactory" category-path="/community/PIA/PSM"/>
+  </extension>  
+  <extension point="org.knime.product.splashExtension"> 
+    <splashExtension icon="icons/splash.png" id="de.mpc.pia.icons.splashIcon"/>
+  </extension>  
+  <extension point="org.knime.base.filehandling.mimetypes"> 
+    <mimetype name="application/x-MZIDENTML">
+      <fileextension name="mzid"/>
+      <fileextension name="mzIdentML"/>
+    </mimetype>
+    <mimetype name="application/x-MASCOTDAT">
+      <fileextension name="dat"/>
+    </mimetype>
+    <mimetype name="application/x-MAGELLANSTORAGEFILE">
+      <fileextension name="msf"/>
+    </mimetype>
+    <mimetype name="application/x-TANDEMXML">
+      <fileextension name="tandem.xml"/>
+      <fileextension name="t.xml"/>
+      <fileextension name="xml"/>
+    </mimetype>
+    <mimetype name="application/x-IDXML">
+      <fileextension name="idxml"/>
+    </mimetype>
+    <mimetype name="application/x-PIAXML">
+      <fileextension name="pia.xml"/>
+    </mimetype>
+    <mimetype name="text/CSV">
+      <fileextension name="csv"/>
+    </mimetype>
+    <mimetype name="application/x-MZTAB">
+      <fileextension name="mzTab"/>
+    </mimetype>
+  </extension> 
+</plugin>

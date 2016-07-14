@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PIAGeneratePipelineXML</name>
+    
+    <shortDescription>
+        Create a new pipeline for PIA execution.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>This node is the starting node for each PIA pipeline. It creates an XML file, which contains all further pipeline executions.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PIAGeneratePipelineXML</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory (which is recommended).</option>
+		<option name="pipelineName">the name of the new PIA pipeline</option>
+
+    </fullDescription>
+    
+    <ports>
+		<outPort index="0" name="outfile [xml]">the generated PIA pipeline file [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PIAGeneratePipelineXML Std Output">The text sent to standard out during the execution of PIAGeneratePipelineXML.</view>
+        <view index="1" name="PIAGeneratePipelineXML Error Output">The text sent to standard error during the execution of PIAGeneratePipelineXML. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

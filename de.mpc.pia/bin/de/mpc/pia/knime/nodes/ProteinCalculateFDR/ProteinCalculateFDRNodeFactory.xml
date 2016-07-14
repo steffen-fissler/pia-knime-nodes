@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>ProteinCalculateFDR</name>
+    
+    <shortDescription>
+        Calculates the FDR with the given parameters. The first parameter is the decoy strategy, either accessionpattern or inherit (cautious with this). The second is the decoy regular expression.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Calculates the FDR with the given parameters. The first parameter is the decoy strategy, either accessionpattern or inherit (cautious with this). The second is the decoy regular expression.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for ProteinCalculateFDR</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+		<option name="decoy strategy">Use accessionpattern to use a regular expression to identify decoys. inherit is not recommended</option>
+		<option name="decoy pattern"></option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="paramFile [xml]">Path to the file, which contains the build pipeline until this step. [xml]</inPort>
+		<outPort index="0" name="paramOutFile [xml]">Path to the file, which will contain the pipeline with added filters. [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="ProteinCalculateFDR Std Output">The text sent to standard out during the execution of ProteinCalculateFDR.</view>
+        <view index="1" name="ProteinCalculateFDR Error Output">The text sent to standard error during the execution of ProteinCalculateFDR. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

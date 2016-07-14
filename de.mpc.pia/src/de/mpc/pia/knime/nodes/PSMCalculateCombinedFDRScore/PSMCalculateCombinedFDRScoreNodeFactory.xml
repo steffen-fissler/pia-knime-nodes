@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PSMCalculateCombinedFDRScore</name>
+    
+    <shortDescription>
+        Calculates the combined FDR score. The FDR scores for the single files should be calculated before.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Calculates the combined FDR score. The FDR scores for the single files should be calculated before.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PSMCalculateCombinedFDRScore</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="paramFile [xml]">Path to the file, which contains the build pipeline until this step. [xml]</inPort>
+		<outPort index="0" name="paramOutFile [xml]">Path to the file, which will contain the pipeline with added filters. [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PSMCalculateCombinedFDRScore Std Output">The text sent to standard out during the execution of PSMCalculateCombinedFDRScore.</view>
+        <view index="1" name="PSMCalculateCombinedFDRScore Error Output">The text sent to standard error during the execution of PSMCalculateCombinedFDRScore. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>

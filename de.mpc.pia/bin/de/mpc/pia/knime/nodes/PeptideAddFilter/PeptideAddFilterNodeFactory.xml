@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE knimeNode PUBLIC "-//UNIKN//DTD KNIME Node 2.0//EN" "http://www.knime.org/Node.dtd">
+<knimeNode icon="generic_node.png" type="Manipulator">
+    <name>PeptideAddFilter</name>
+    
+    <shortDescription>
+        Adds a peptide level filter to a specified file (0 for overview), which will be used in all further steps.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro><p>Adds a peptide level filter to a specified file (0 for overview), which will be used in all further steps.</p>
+		<p>
+			<a href="https://github.com/mpc-bioinformatics/pia/wiki/Running-PIA-via-KNIME">Web Documentation for PeptideAddFilter</a>
+		</p>
+
+        </intro>
+        
+		<option name="vmsettings">Additional Java settings, like giving Java a big enough amount of memory.</option>
+		<option name="file ID">the file id, 0 for overview</option>
+		<option name="filtername"></option>
+		<option name="comparison"></option>
+		<option name="value"></option>
+		<option name="negate"></option>
+
+    </fullDescription>
+    
+    <ports>
+		<inPort index="0" name="paramFile [xml]">Path to the file, which contains the build pipeline until this step. [xml]</inPort>
+		<outPort index="0" name="paramOutFile [xml]">Path to the file, which will contain the pipeline with added filters. [xml]</outPort>
+ </ports>
+    <views>
+        <view index="0" name="PeptideAddFilter Std Output">The text sent to standard out during the execution of PeptideAddFilter.</view>
+        <view index="1" name="PeptideAddFilter Error Output">The text sent to standard error during the execution of PeptideAddFilter. (If it appears in gray, it's the output of a previously failing run which is preserved for your trouble shooting.)</view>
+    </views>    
+</knimeNode>
