@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./compiler.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>PIA Compiler</name>
+    
+    <shortDescription>
+        Compiles search results into a PIA XML file.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>To start a new analysis, you need to compile the search results of one or more search engine runs.
+        The data is structured to speed up further analyses. The result is saved as an XML file, which is used
+        as input for the PIA analysis nodes.</intro>
+        
+        <option name="input files">Path or local URLs to search engine result files.</option>
+        <option name="name">A distinctive name of the compilation, can be left blank.</option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Input file(s)">The spectrum identification results files, which should be compiled for this analysis. Either the path to the files or the local URLs are required.</inPort>
+        <outPort index="0" name="PIA XML file">The PIA intermediate XML file containing the compilation of search results. To save space the file will be stored as GZipped binary file. It can be saved to any Location using the "Binary Objects to Files" node. </outPort>
+    </ports>    
+    <views>
+        <view index="0" name="summary">A short summary of the compilation.</view>
+    </views>
+</knimeNode>
