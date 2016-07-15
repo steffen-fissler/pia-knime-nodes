@@ -360,11 +360,16 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         // execute the protein analysis
-        analysisModel.executeProteinOperations();
-        List<ReportProtein> proteinList = analysisModel.getFilteredReportProteins(
-                m_protein_filters.getStringArrayValue());
-        BufferedDataContainer proteinContainer = createProteinContainer(proteinList, exec);
-
+        BufferedDataContainer proteinContainer;
+        if (m_protein_infer_proteins.getBooleanValue()) {
+            analysisModel.executeProteinOperations();
+            List<ReportProtein> proteinList = analysisModel.getFilteredReportProteins(
+                    m_protein_filters.getStringArrayValue());
+            proteinContainer = createProteinContainer(proteinList, exec);
+        } else {
+            proteinContainer = exec.createDataContainer(getProteinTableSpec());
+            proteinContainer.close();
+        }
 
         // export the selected level to selected format
         FileStoreURIPortObject fsupo = new FileStoreURIPortObject(exec.createFileStore("PIA_export_file"));
