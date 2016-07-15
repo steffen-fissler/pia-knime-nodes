@@ -37,10 +37,11 @@ public enum PIASettings {
 
     PSM_FILTERS(new String[]{}),
 
+    PEPTIDE_INFER_PEPTIDES(new Boolean(true)),
     PEPTIDE_ANALYSIS_FILE_ID(0),
-
     PEPTIDE_FILTERS(new String[]{}),
 
+    PROTEIN_INFER_PROTEINS(new Boolean(true)),
     PROTEIN_INFERENCE_METHOD(ProteinInferenceMethod.REPORT_SPECTRUM_EXTRACTOR.getShortName()),
     PROTEIN_INFERENCE_FILTERS(new String[]{}),
     PROTEIN_SCORING_METHOD(ScoringType.MULTIPLICATIVE_SCORING.getShortName()),

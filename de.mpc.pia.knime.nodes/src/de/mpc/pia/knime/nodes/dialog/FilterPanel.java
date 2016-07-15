@@ -299,4 +299,19 @@ public class FilterPanel extends JPanel implements ActionListener {
     public void removeAllAvailableFilter() {
         comboAvailableFilters.removeAllItems();
     }
+
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+
+        comboAvailableFilters.setEnabled(enabled);
+        checkNegateFilter.setEnabled(enabled);
+        comboAvailableFilterComparators.setEnabled(enabled);
+        fieldFilterArgument.setEnabled(enabled);
+        comboAvailableFilterScores.setEnabled(enabled);
+        btnAddFilter.setEnabled(enabled);
+        btnRemoveFilter.setEnabled(enabled);
+        listAppliedFilters.setEnabled(enabled);
+    }
 }

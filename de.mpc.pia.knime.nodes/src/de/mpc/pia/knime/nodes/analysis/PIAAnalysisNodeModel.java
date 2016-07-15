@@ -131,6 +131,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
             new SettingsModelStringArray(PIASettings.PSM_FILTERS.getKey(), PIASettings.PSM_FILTERS.getDefaultStringArray());
 
 
+    /** whether to infer peptides */
+    private final SettingsModelBoolean m_peptide_infer_peptides =
+            new SettingsModelBoolean(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean());
+
     /** the file ID for the peptide analysis */
     private final SettingsModelInteger m_peptide_analysis_file_id =
             new SettingsModelInteger(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getDefaultInteger());
@@ -139,6 +143,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
     private final SettingsModelStringArray m_peptide_filters =
             new SettingsModelStringArray(PIASettings.PEPTIDE_FILTERS.getKey(), PIASettings.PEPTIDE_FILTERS.getDefaultStringArray());
 
+
+    /** whether to infer proteins */
+    private final SettingsModelBoolean m_protein_infer_proteins =
+            new SettingsModelBoolean(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean());
 
     /** storing model for the used protein inference method */
     private final SettingsModelString m_protein_inference_method =
@@ -283,6 +291,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
         analysisModel.addSetting(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getKey(),
                 m_calculate_combined_fdr.getBooleanValue());
 
+        // set whether to infer peptides
+        analysisModel.addSetting(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(),
+                m_peptide_infer_peptides.getBooleanValue());
         // set the analyzed fileId for peptide operations
         analysisModel.addSetting(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(),
                 m_peptide_analysis_file_id.getIntValue());
@@ -290,6 +301,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
         analysisModel.addSetting(PIASettings.PEPTIDE_FILTERS.getKey(),
                 m_peptide_filters.getStringArrayValue());
 
+        // set whether to infer proteins
+        analysisModel.addSetting(PIASettings.PROTEIN_INFER_PROTEINS.getKey(),
+                m_protein_infer_proteins.getBooleanValue());
         // set the protein inference methods
         analysisModel.addSetting(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(),
                 m_protein_inference_method.getStringValue());
@@ -334,10 +348,16 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer psmContainer = createPSMContainer(psmList, exec);
 
         // execute the peptide analysis
-        analysisModel.executePeptideOperations();
-        List<ReportPeptide> peptideList = analysisModel.getFilteredReportPeptides(
-                m_peptide_analysis_file_id.getIntValue(), m_peptide_filters.getStringArrayValue());
-        BufferedDataContainer pepContainer = createPeptideContainer(peptideList, exec);
+        BufferedDataContainer pepContainer;
+        if (m_peptide_infer_peptides.getBooleanValue()) {
+            analysisModel.executePeptideOperations();
+            List<ReportPeptide> peptideList = analysisModel.getFilteredReportPeptides(
+                    m_peptide_analysis_file_id.getIntValue(), m_peptide_filters.getStringArrayValue());
+            pepContainer = createPeptideContainer(peptideList, exec);
+        } else {
+            pepContainer = exec.createDataContainer(getPeptideTableSpec());
+            pepContainer.close();
+        }
 
         // execute the protein analysis
         analysisModel.executeProteinOperations();
@@ -364,10 +384,16 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             case peptide:
                 fileID = (long)(m_peptide_analysis_file_id.getIntValue());
+                if (!m_peptide_infer_peptides.getBooleanValue()) {
+                    logger.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                }
                 break;
 
             case protein:
                 fileID = 0L;
+                if (!m_protein_infer_proteins.getBooleanValue()) {
+                    logger.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                }
                 break;
 
             case none:
@@ -445,9 +471,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_fdr_preferred_scores.saveSettingsTo(settings);
         m_psm_filters.saveSettingsTo(settings);
 
+        m_peptide_infer_peptides.saveSettingsTo(settings);
         m_peptide_analysis_file_id.saveSettingsTo(settings);
         m_peptide_filters.saveSettingsTo(settings);
 
+        m_protein_infer_proteins.saveSettingsTo(settings);
         m_protein_inference_method.saveSettingsTo(settings);
         m_protein_inference_filters.saveSettingsTo(settings);
         m_protein_scoring_method.saveSettingsTo(settings);
@@ -478,9 +506,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_fdr_preferred_scores.loadSettingsFrom(settings);
         m_psm_filters.loadSettingsFrom(settings);
 
+        m_peptide_infer_peptides.loadSettingsFrom(settings);
         m_peptide_analysis_file_id.loadSettingsFrom(settings);
         m_peptide_filters.loadSettingsFrom(settings);
 
+        m_protein_infer_proteins.loadSettingsFrom(settings);
         m_protein_inference_method.loadSettingsFrom(settings);
         m_protein_inference_filters.loadSettingsFrom(settings);
         m_protein_scoring_method.loadSettingsFrom(settings);
@@ -511,9 +541,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_fdr_preferred_scores.validateSettings(settings);
         m_psm_filters.validateSettings(settings);
 
+        m_peptide_infer_peptides.validateSettings(settings);
         m_peptide_analysis_file_id.validateSettings(settings);
         m_peptide_filters.validateSettings(settings);
 
+        m_protein_infer_proteins.validateSettings(settings);
         m_protein_inference_method.validateSettings(settings);
         m_protein_inference_filters.validateSettings(settings);
         m_protein_scoring_method.validateSettings(settings);

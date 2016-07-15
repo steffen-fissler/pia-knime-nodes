@@ -135,12 +135,16 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     private FilterPanel filtersPSMLevel;
 
 
+    /** checkbox to select, whether peptides should be inferred */
+    private JCheckBox checkInferPeptides;
     /** text field for the selected file, for which the peptide export should be performed */
     private JFormattedTextField fieldPeptideAnalysisFileID;
-
     /** panel for the filters on the peptide level */
     private FilterPanel filtersPeptideLevel;
 
+
+    /** checkbox to select, whether proteins should be inferred */
+    private JCheckBox checkInferProteins;
 
     /** button group to select the inference method */
     private ButtonGroup radioGrpInferenceMethod;
@@ -210,6 +214,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     public void stateChanged(ChangeEvent e) {
         if (e.getSource().equals(checkCreatePSMSets)) {
             checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        } else if (e.getSource().equals(checkInferPeptides)) {
+            fieldPeptideAnalysisFileID.setEnabled(checkInferPeptides.isSelected());
+            filtersPeptideLevel.setEnabled(checkInferPeptides.isSelected());
         }
     }
 
@@ -269,6 +276,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         settings.put(PIASettings.PSM_FILTERS.getKey(), filtersArr);
 
 
+        // infere peptides
+        settings.put(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), checkInferPeptides.isSelected());
+
         // peptide file ID
         settings.put(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), Integer.parseInt(fieldPeptideAnalysisFileID.getText()));
 
@@ -280,6 +290,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         }
         settings.put(PIASettings.PEPTIDE_FILTERS.getKey(), filtersArr);
 
+
+        // infere proteins
+        settings.put(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), checkInferProteins.isSelected());
 
         // protein inference method
         settings.put(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(), radioGrpInferenceMethod.getSelection().getActionCommand());
@@ -391,6 +404,12 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                 filtersPSMLevel);
 
 
+        // infere peptides
+        checkInferPeptides.setSelected(
+                settings.getBoolean(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean()));
+        fieldPeptideAnalysisFileID.setEnabled(checkInferPeptides.isSelected());
+        filtersPeptideLevel.setEnabled(checkInferPeptides.isSelected());
+
         // peptide file ID
         fieldPeptideAnalysisFileID.setValue(
                 settings.getInt(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getDefaultInteger()));
@@ -399,6 +418,10 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         replaceAppliedFilters(settings.getStringArray(PIASettings.PEPTIDE_FILTERS.getKey(), PIASettings.PEPTIDE_FILTERS.getDefaultStringArray()),
                 filtersPeptideLevel);
 
+
+        // infere proteins
+        checkInferProteins.setSelected(
+                settings.getBoolean(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean()));
 
         // protein inference method
         updateSelectedRadioButtonInGroup(
@@ -727,6 +750,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         int row = 0;
 
+        // checkInferePeptides >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkInferPeptides = new JCheckBox("Infere peptides");
+        checkInferPeptides.setSelected(PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean());
+        checkInferPeptides.addChangeListener(this);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 2;
+        peptideAnalysisPanel.add(checkInferPeptides, c);
+        // checkInferePeptides <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
         // fieldPeptideAnalysisFileID >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         c.gridx = 0;
         c.gridy = row;
@@ -766,6 +800,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.fill = GridBagConstraints.HORIZONTAL;
         peptideAnalysisPanel.add(filtersPeptideLevel, c);
         // PeptideLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        fieldPeptideAnalysisFileID.setEnabled(checkInferPeptides.isSelected());
+        filtersPeptideLevel.setEnabled(checkInferPeptides.isSelected());
     }
 
 
@@ -781,6 +818,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.insets = new Insets(5, 5, 5, 5);
 
         int row = 0;
+
+        // checkInfereProteins >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkInferProteins = new JCheckBox("Infere proteins");
+        checkInferProteins.setSelected(PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean());
+        checkInferProteins.addChangeListener(this);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 1;
+        proteinAnalysisPanel.add(checkInferProteins, c);
+        // checkInfereProteins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         JPanel proteinInferencePanel = new JPanel(new GridBagLayout());
         proteinInferencePanel.setBorder(BorderFactory.createTitledBorder("Inference method"));
