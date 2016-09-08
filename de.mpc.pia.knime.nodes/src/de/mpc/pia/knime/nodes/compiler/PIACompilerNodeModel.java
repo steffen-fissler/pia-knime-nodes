@@ -46,6 +46,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 import de.mpc.pia.intermediate.compiler.PIACompiler;
+import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.intermediate.piaxml.FilesListXML;
 import de.mpc.pia.intermediate.piaxml.PIAInputFileXML;
 import uk.ac.ebi.jmzidml.model.mzidml.AbstractParam;
@@ -119,7 +120,7 @@ public class PIACompilerNodeModel extends NodeModel {
     @Override
     protected BufferedDataTable[] execute(final BufferedDataTable[] inData,
             final ExecutionContext exec) throws IOException, InterruptedException  {
-        PIACompiler piaCompiler = new PIACompiler();
+        PIACompiler piaCompiler = new PIASimpleCompiler();
 
         // get the input files
         RowIterator row_it = inData[0].iterator();

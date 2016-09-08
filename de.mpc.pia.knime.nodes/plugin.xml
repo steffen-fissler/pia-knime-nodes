@@ -14,11 +14,6 @@
    -->
    
    <extension point="org.knime.workbench.repository.nodes">
-      <node
-            category-path="/community/PIA"
-            deprecated="false"
-            factory-class="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"
-            id="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"/>
 <node
       category-path="/community/PIA"
       deprecated="false"
