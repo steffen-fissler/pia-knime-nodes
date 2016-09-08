@@ -56,6 +56,8 @@ import de.mpc.pia.knime.nodes.dialog.ExportLevels;
 import de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject;
 import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.exporter.IdXMLExporter;
+import de.mpc.pia.modeller.exporter.MzIdentMLExporter;
+import de.mpc.pia.modeller.exporter.MzTabExporter;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
@@ -413,9 +415,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
             File file = fsupo.registerFile("emptyfile.txt");
             file.createNewFile();
         }
-
-
-        // TODO: make calculation of each level switchable (on/off)
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
@@ -1062,15 +1061,23 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         switch (exportFormat) {
         case idXML:
-            IdXMLExporter exporter = new IdXMLExporter(piaModeller);
-            exporter.exportToIdXML(fileID, file, exportLevel.equals(ExportLevels.protein));
+            IdXMLExporter idXMLexporter = new IdXMLExporter(piaModeller);
+            idXMLexporter.exportToIdXML(fileID, file, exportLevel.equals(ExportLevels.protein));
+            break;
+
+        case mzIdentML:
+            MzIdentMLExporter mzIDexporter = new MzIdentMLExporter(piaModeller);
+            mzIDexporter.exportToMzIdentML(fileID, file, exportLevel.equals(ExportLevels.protein),
+                    false /* no filtering */);
+            break;
+
+        case mzTab:
+            MzTabExporter mzTabExporter = new MzTabExporter(piaModeller);
+            mzTabExporter.exportToMzTab(fileID, file, exportLevel.equals(ExportLevels.protein),
+                    false /* TODO: implement peptide level statistics */, false /* no filtering */);
             break;
 
         case csv:
-            // TODO: implement
-        case mzIdentML:
-            // TODO: implement
-        case mzTab:
             // TODO: implement
 
         default:
