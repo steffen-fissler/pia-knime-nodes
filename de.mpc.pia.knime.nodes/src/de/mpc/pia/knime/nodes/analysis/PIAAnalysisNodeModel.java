@@ -866,6 +866,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
         protCols.add(new DataColumnSpecCreator("nrPSMs", IntCell.TYPE).createSpec());
         protCols.add(new DataColumnSpecCreator("nrSpectra", IntCell.TYPE).createSpec());
 
+        protCols.add(new DataColumnSpecCreator("clusterID", IntCell.TYPE).createSpec());
+
         if (m_calculate_all_fdr.getBooleanValue() ||
                 m_calculate_combined_fdr.getBooleanValue()) {
             protCols.add(new DataColumnSpecCreator("Decoy", BooleanCell.TYPE).createSpec());
@@ -929,6 +931,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             // number of spectra
             proteinCells.add(new IntCell(protein.getNrSpectra()));
+
+            // the cluster ID
+            proteinCells.add(new IntCell(new Long(protein.getAccessions().get(0).getGroup().getTreeID()).intValue()));
 
 
             if (m_calculate_all_fdr.getBooleanValue() ||
