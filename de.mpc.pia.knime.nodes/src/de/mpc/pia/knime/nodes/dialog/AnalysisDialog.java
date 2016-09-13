@@ -700,7 +700,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         // add all the scores, refine later
         for (ScoreModelEnum score : ScoreModelEnum.values()) {
-            if (!ScoreModelEnum.notForPSMFdrScore.contains(score) && !ScoreModelEnum.UNKNOWN_SCORE.equals(score)) {
+            if (!ScoreModelEnum.getNotForPSMFdrScore().contains(score) && !ScoreModelEnum.UNKNOWN_SCORE.equals(score)) {
                 availablePreferredFDRScores.addElement(score.getShortName());
             }
         }

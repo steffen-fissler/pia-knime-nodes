@@ -61,6 +61,7 @@ import de.mpc.pia.modeller.exporter.MzTabExporter;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
+import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
 
 import org.knime.core.node.ExecutionContext;
@@ -80,7 +81,7 @@ import org.knime.core.node.NodeSettingsWO;
 public class PIAAnalysisNodeModel extends NodeModel {
 
     /** the logger instance */
-    private static final NodeLogger logger =
+    private static final NodeLogger LOGGER =
             NodeLogger.getLogger(PIAAnalysisNodeModel.class);
 
 
@@ -218,7 +219,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
                 if (piaXmlFileName != null) {
                     if (row_it.hasNext()) {
-                        logger.warn("Only the first suitable entry in the datatable is used.");
+                        LOGGER.warn("Only the first suitable entry in the datatable is used.");
                     }
                     break;
                 }
@@ -232,7 +233,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             ListIterator<URIContent> uriIter = uris.listIterator();
 
             if ((piaXmlFileName != null) && (uris.size() > 0)) {
-                logger.warn("The file from datatable is used preferentially, if table and port are available");
+                LOGGER.warn("The file from datatable is used preferentially, if table and port are available");
             } else {
                 while (uriIter.hasNext()) {
                     URI uri = uriIter.next().getURI();
@@ -241,7 +242,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
                     if (piaXmlFileName != null) {
                         if (uriIter.hasNext()) {
-                            logger.warn("Only the first suitable entry in the port is used.");
+                            LOGGER.warn("Only the first suitable entry in the port is used.");
                         }
                         break;
                     }
@@ -392,14 +393,14 @@ public class PIAAnalysisNodeModel extends NodeModel {
             case peptide:
                 fileID = (long)(m_peptide_analysis_file_id.getIntValue());
                 if (!m_peptide_infer_peptides.getBooleanValue()) {
-                    logger.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                    LOGGER.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
                 }
                 break;
 
             case protein:
                 fileID = 0L;
                 if (!m_protein_infer_proteins.getBooleanValue()) {
-                    logger.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                    LOGGER.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
                 }
                 break;
 
@@ -648,6 +649,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
         List<String> psmScoreShorts = analysisModel.getPSMScoreShorts(m_psm_analysis_file_id.getIntValue());
 
+        LOGGER.debug("scoreshorts: " + psmScoreShorts);
+
         for (PSMReportItem psm : psmList) {
             psmId++;
             RowKey key = new RowKey(psmId.toString());
@@ -724,7 +727,15 @@ public class PIAAnalysisNodeModel extends NodeModel {
             List<StringCell> scoreNamesList = new ArrayList<StringCell>();
             List<StringCell> scoreShortsList = new ArrayList<StringCell>();
             for (String scoreShort : psmScoreShorts) {
-                scoresList.add(new DoubleCell(psm.getScore(scoreShort)));
+                Double scoreValue = psm.getScore(scoreShort);
+
+                if (((scoreValue == null) || scoreValue.equals(Double.NaN))
+                        && (psm instanceof ReportPSMSet)) {
+                    // PSM level FDRScore is only valid as a bestScore
+                    scoreValue = ((ReportPSMSet) psm).getBestScore(scoreShort);
+                }
+
+                scoresList.add(new DoubleCell(scoreValue));
                 scoreNamesList.add(new StringCell(scoreShortsToNames.get(scoreShort)));
                 scoreShortsList.add(new StringCell(scoreShort));
             }
@@ -1023,7 +1034,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             if (magic == GZIPInputStream.GZIP_MAGIC) {
                 // file is gzipped
-                logger.info("binary input file is gzipped");
+                LOGGER.info("binary input file is gzipped");
                 is = new GZIPInputStream(is);
             }
 
@@ -1032,16 +1043,16 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             FileOutputStream fos = new FileOutputStream(piaTmpFile, false);
 
-            logger.debug("writing unzipped file to " + piaTmpFile.getAbsolutePath());
+            LOGGER.debug("writing unzipped file to " + piaTmpFile.getAbsolutePath());
             int len;
             while((len = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len);
             }
             //close resources
             fos.close();
-            logger.debug("outputStream closed");
+            LOGGER.debug("outputStream closed");
             is.close();
-            logger.debug("inputStream closed");
+            LOGGER.debug("inputStream closed");
 
             fileName = piaTmpFile.getAbsolutePath();
         }
@@ -1061,7 +1072,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      */
     private void exportReportTo(File file, PIAModeller piaModeller,
             ExportFormats exportFormat, ExportLevels exportLevel, Long fileID) {
-        logger.debug("Exporting to " + exportFormat + " (" + file.getAbsolutePath() + "), "
+        LOGGER.debug("Exporting to " + exportFormat + " (" + file.getAbsolutePath() + "), "
                 + exportLevel + " (" + fileID + ")");
 
         switch (exportFormat) {
@@ -1086,7 +1097,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             // TODO: implement
 
         default:
-            logger.warn("Unimplemented export format: " + exportFormat);
+            LOGGER.warn("Unimplemented export format: " + exportFormat);
             break;
         }
     }

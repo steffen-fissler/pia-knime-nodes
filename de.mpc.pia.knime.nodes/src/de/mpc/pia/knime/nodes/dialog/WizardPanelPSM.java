@@ -474,7 +474,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 						model = new ScoreModel(0.0, modelType);
 					}
 
-					if (!ScoreModelEnum.notForPSMFdrScore.contains(model)) {
+					if (!ScoreModelEnum.getNotForPSMFdrScore().contains(model)) {
 						if (!availableScoresModel.contains(model) && !preferredScoresModel.contains(model)) {
 							availableScoresModel.addElement(model);
 						}
@@ -490,7 +490,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 			decoyStrategy_pattern.setSelected(true);
 
 			for (ScoreModelEnum model : ScoreModelEnum.values()) {
-				if (!ScoreModelEnum.notForPSMFdrScore.contains(model) && !model.equals(ScoreModelEnum.UNKNOWN_SCORE)) {
+				if (!ScoreModelEnum.getNotForPSMFdrScore().contains(model) && !model.equals(ScoreModelEnum.UNKNOWN_SCORE)) {
 					availableScoresModel.addElement(
 							new ScoreModel(0.0, model.getShortName(), model.getName()));
 				}
@@ -539,7 +539,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 						model = new ScoreModel(0.0, modelType);
 					}
 
-					if (!ScoreModelEnum.notForPSMFdrScore.contains(model)) {
+					if (!ScoreModelEnum.getNotForPSMFdrScore().contains(model)) {
 						if (modelType.isSearchengineMainScore()) {
 							if (!preferredScoresModel.contains(model)) {
 								preferredScoresModel.addElement(model);
@@ -561,7 +561,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 			decoyStrategy_pattern.setSelected(true);
 
 			for (ScoreModelEnum model : ScoreModelEnum.values()) {
-				if (!ScoreModelEnum.notForPSMFdrScore.contains(model) && !model.equals(ScoreModelEnum.UNKNOWN_SCORE)) {
+				if (!ScoreModelEnum.getNotForPSMFdrScore().contains(model) && !model.equals(ScoreModelEnum.UNKNOWN_SCORE)) {
 					availableScoresModel.addElement(
 							new ScoreModel(0.0, model.getShortName(), model.getName()));
 				}
