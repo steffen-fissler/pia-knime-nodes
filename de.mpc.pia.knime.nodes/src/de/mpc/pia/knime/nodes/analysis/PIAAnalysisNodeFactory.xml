@@ -34,5 +34,6 @@
     </ports>    
     <views>
         <view index="0" name="PIA Result Analysis">The PIA Analysis view: browse the PSM, peptide and protein results and visualise the results.</view>
+        <view index="1" name="PSM Spectrum viewer">Spectrum viewer on PSM level.</view>
     </views>
 </knimeNode>

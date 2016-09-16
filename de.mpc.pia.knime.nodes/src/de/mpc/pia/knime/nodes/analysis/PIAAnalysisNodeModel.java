@@ -34,6 +34,7 @@ import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.DoubleCell.DoubleCellFactory;
 import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.StringCell;
+import org.knime.core.data.filestore.FileStore;
 import org.knime.core.data.uri.IURIPortObject;
 import org.knime.core.data.uri.URIContent;
 import org.knime.core.data.uri.URIPortObjectSpec;
@@ -63,6 +64,7 @@ import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
+import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -177,6 +179,18 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
     /** temporary created file, delete on reset */
     private File piaTmpFile;
+
+    /** the reported PSMs */
+    private List<PSMReportItem> filteredPSMs;
+
+    /** the reported peptides */
+    private List<ReportPeptide> filteredPeptides;
+
+    /** the reported proteins */
+    private List<ReportProtein> filteredProteins;
+
+    /** the PSM to spectrum mapper */
+    private PiaPsmToSpectrum<ReportPSM> psmToSpectrum;
 
 
     /**
@@ -346,17 +360,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             throw new ExecutionException(errors.toString());
         }
 
-        List<PSMReportItem> psmList = analysisModel.getFilteredReportPSMs(
-                m_psm_analysis_file_id.getIntValue(), m_psm_filters.getStringArrayValue());
-        BufferedDataContainer psmContainer = createPSMContainer(psmList, exec);
+        BufferedDataContainer psmContainer = createPSMContainer(getFilteredPSMList(), exec);
 
         // execute the peptide analysis
         BufferedDataContainer pepContainer;
         if (m_peptide_infer_peptides.getBooleanValue()) {
             analysisModel.executePeptideOperations();
-            List<ReportPeptide> peptideList = analysisModel.getFilteredReportPeptides(
-                    m_peptide_analysis_file_id.getIntValue(), m_peptide_filters.getStringArrayValue());
-            pepContainer = createPeptideContainer(peptideList, exec);
+            pepContainer = createPeptideContainer(getFilteredPeptides(), exec);
         } else {
             pepContainer = exec.createDataContainer(getPeptideTableSpec());
             pepContainer.close();
@@ -366,56 +376,17 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer proteinContainer;
         if (m_protein_infer_proteins.getBooleanValue()) {
             analysisModel.executeProteinOperations();
-            List<ReportProtein> proteinList = analysisModel.getFilteredReportProteins(
-                    m_protein_filters.getStringArrayValue());
-            proteinContainer = createProteinContainer(proteinList, exec);
+            proteinContainer = createProteinContainer(getFilteredProteinList(), exec);
         } else {
             proteinContainer = exec.createDataContainer(getProteinTableSpec());
             proteinContainer.close();
         }
 
         // export the selected level to selected format
-        FileStoreURIPortObject fsupo = new FileStoreURIPortObject(exec.createFileStore("PIA_export_file"));
+        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"));
 
-        if (!m_export_level.getStringValue().equals(ExportLevels.none.toString())) {
-            String file_basename = "piaExport";
-            File file = fsupo.registerFile(file_basename + "."
-                    + m_export_format.getStringValue());
-            file.createNewFile();
-
-            Long fileID;
-            ExportLevels exportLvl = ExportLevels.valueOf(m_export_level.getStringValue());
-            switch (exportLvl) {
-            case PSM:
-                fileID = (long)(m_psm_analysis_file_id.getIntValue());
-                break;
-
-            case peptide:
-                fileID = (long)(m_peptide_analysis_file_id.getIntValue());
-                if (!m_peptide_infer_peptides.getBooleanValue()) {
-                    LOGGER.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
-                }
-                break;
-
-            case protein:
-                fileID = 0L;
-                if (!m_protein_infer_proteins.getBooleanValue()) {
-                    LOGGER.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
-                }
-                break;
-
-            case none:
-            default:
-                fileID = -1L;
-            }
-
-            exportReportTo(file, piaModeller,
-                    ExportFormats.valueOf(m_export_format.getStringValue()),
-                    exportLvl, fileID);
-        } else {
-            File file = fsupo.registerFile("emptyfile.txt");
-            file.createNewFile();
-        }
+        // create the PSM to spectra mapping
+        psmToSpectrum = createPSMToSpectrumMapping((IURIPortObject) inObjects[2]);
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
@@ -436,6 +407,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             piaTmpFile.delete();
             piaTmpFile = null;
         }
+
+        filteredProteins = null;
+        filteredPSMs = null;
+
+        // TODO: close the accessor
+        //psmToSpectrum.close();
+        psmToSpectrum = null;
     }
 
 
@@ -648,8 +626,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
         List<String> psmScoreShorts = analysisModel.getPSMScoreShorts(m_psm_analysis_file_id.getIntValue());
-
-        LOGGER.debug("scoreshorts: " + psmScoreShorts);
 
         for (PSMReportItem psm : psmList) {
             psmId++;
@@ -975,17 +951,53 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
 
     /**
+     * Returns the list of filtered PSMs
+     *
+     * @return
+     */
+    public List<PSMReportItem> getFilteredPSMList() {
+        if (analysisModel != null) {
+            if (filteredPSMs == null) {
+                filteredPSMs = analysisModel.getFilteredReportPSMs(
+                        m_psm_analysis_file_id.getIntValue(), m_psm_filters.getStringArrayValue());
+            }
+        }
+
+        return filteredPSMs;
+    }
+
+
+    /**
+     * Returns the list of filtered peptides
+     *
+     * @return
+     */
+    public List<ReportPeptide> getFilteredPeptides() {
+        if (analysisModel != null) {
+            if (filteredPeptides == null) {
+                filteredPeptides = analysisModel.getFilteredReportPeptides(
+                        m_peptide_analysis_file_id.getIntValue(), m_peptide_filters.getStringArrayValue());
+            }
+        }
+
+        return filteredPeptides;
+    }
+
+
+    /**
      * Returns the list of filtered proteins
      *
      * @return
      */
     public List<ReportProtein> getFilteredProteinList() {
         if (analysisModel != null) {
-            return analysisModel.getFilteredReportProteins(
-                m_protein_filters.getStringArrayValue());
+            if (filteredProteins == null) {
+                filteredProteins =  analysisModel.getFilteredReportProteins(
+                        m_protein_filters.getStringArrayValue());
+            }
         }
 
-        return null;
+        return filteredProteins;
     }
 
 
@@ -1062,6 +1074,61 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
 
     /**
+     * Exports the report to the given {@link FileStore}.
+     *
+     * @param fileStore
+     * @return
+     * @throws IOException
+     */
+    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore) throws IOException {
+        FileStoreURIPortObject fsupo = new FileStoreURIPortObject(fileStore);
+
+        if (!m_export_level.getStringValue().equals(ExportLevels.none.toString())) {
+            String file_basename = "piaExport";
+            File file = fsupo.registerFile(file_basename + "."
+                    + m_export_format.getStringValue());
+            file.createNewFile();
+
+            Long fileID;
+            ExportLevels exportLvl = ExportLevels.valueOf(m_export_level.getStringValue());
+            switch (exportLvl) {
+            case PSM:
+                fileID = (long)(m_psm_analysis_file_id.getIntValue());
+                break;
+
+            case peptide:
+                fileID = (long)(m_peptide_analysis_file_id.getIntValue());
+                if (!m_peptide_infer_peptides.getBooleanValue()) {
+                    LOGGER.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                }
+                break;
+
+            case protein:
+                fileID = 0L;
+                if (!m_protein_infer_proteins.getBooleanValue()) {
+                    LOGGER.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
+                }
+                break;
+
+            case none:
+            default:
+                fileID = -1L;
+            }
+
+            exportReportTo(file, analysisModel.getPIAModeller(),
+                    ExportFormats.valueOf(m_export_format.getStringValue()),
+                    exportLvl, fileID);
+
+        } else {
+            File file = fsupo.registerFile("emptyfile.txt");
+            file.createNewFile();
+        }
+
+        return fsupo;
+    }
+
+
+    /**
      * Exports the PIA analysis to the given file format.
      *
      * @param file the file, must be created
@@ -1100,6 +1167,80 @@ public class PIAAnalysisNodeModel extends NodeModel {
             LOGGER.warn("Unimplemented export format: " + exportFormat);
             break;
         }
+    }
+
+
+    /**
+     * Creates the PSM to spectrum mapper from the spectrum file on the given
+     * port.
+     *
+     * @param filePort
+     * @return null, if no spectrum file was found on the port
+     */
+    private PiaPsmToSpectrum<ReportPSM> createPSMToSpectrumMapping(IURIPortObject filePort) {
+        PiaPsmToSpectrum<ReportPSM> psmToSpec = null;
+
+        // get the input file from the file port input (if not set before)
+        if (filePort != null) {
+            List<URIContent> uris = filePort.getURIContents();
+            ListIterator<URIContent> uriIter = uris.listIterator();
+
+            while (uriIter.hasNext()) {
+                URI uri = uriIter.next().getURI();
+                File portFile = new File(uri);
+
+                LOGGER.info("Matching PSMs to spectra in file " + portFile.getAbsolutePath());
+                psmToSpec = new PiaPsmToSpectrum<>(portFile, getAllReportPSMs());
+
+                if (psmToSpec.getNrNullMatches() > 0) {
+                    LOGGER.warn("There were " + psmToSpec.getNrNullMatches() + " PSMs, that could not be matched to spectra.");
+                }
+
+                if (uriIter.hasNext()) {
+                    LOGGER.warn("Only the first suitable entry in the port for spectra file is used.");
+                }
+                break;
+            }
+        } else {
+            LOGGER.debug("no spectrum file given");
+        }
+
+        return psmToSpec;
+    }
+
+
+    /**
+     * Returns a List of all ReportPSMs in the analysis.
+     *
+     * @return
+     */
+    private List<ReportPSM> getAllReportPSMs() {
+        List<ReportPSMSet> psmSets = analysisModel.getPSMModeller().getFilteredReportPSMSets(null);
+        ListIterator<ReportPSMSet> setIterator = psmSets.listIterator();
+
+        // guess the size of returned PSMs using the number of files
+        int listSize = psmSets.size();
+        if (analysisModel.getPIAModeller().getCreatePSMSets()) {
+            listSize = listSize * analysisModel.getPIAModeller().getFiles().size();
+        }
+        List<ReportPSM> psmList = new ArrayList<>(listSize);
+
+        while (setIterator.hasNext()) {
+            ReportPSMSet psmSet = setIterator.next();
+            psmList.addAll(psmSet.getPSMs());
+        }
+
+        LOGGER.debug("items in PSM list " + psmList.size());
+        return psmList;
+    }
+
+
+    /**
+     * getter for the PSM to spectrum matcher
+     * @return
+     */
+    public PiaPsmToSpectrum<ReportPSM> getPSMToSpectrum() {
+        return psmToSpectrum;
     }
 }
 

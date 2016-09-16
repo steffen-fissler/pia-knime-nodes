@@ -2,6 +2,8 @@ package de.mpc.pia.knime.nodes.visualization;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +15,9 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +34,7 @@ import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.visualization.peptides.PeptideTableModel;
 import de.mpc.pia.knime.nodes.visualization.proteins.ProteinTableModel;
 import de.mpc.pia.knime.nodes.visualization.psms.PSMSetTableModel;
+import de.mpc.pia.knime.nodes.visualization.psmspectrumviewer.PSMSpectrumAnnotator;
 import de.mpc.pia.modeller.peptide.ReportPeptide;
 import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
@@ -37,10 +43,11 @@ import de.mpc.pia.modeller.psm.ReportPSMSet;
 import de.mpc.pia.modeller.score.ScoreModel;
 import de.mpc.pia.visualization.graph.AmbiguityGroupVisualizationHandler;
 import de.mpc.pia.visualization.graph.VertexRelation;
+import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 
 
-public class ProteinsVisualizationPanel extends JPanel implements ListSelectionListener {
+public class ProteinsVisualizationPanel extends JPanel implements ListSelectionListener, ActionListener {
 
 
     /** the shown proteins table */
@@ -62,7 +69,7 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
     /** the shown PSM set table */
     private JTable psmSetTable;
-    /** the shown peptides table model */
+    /** the shown PSM table model */
     private PSMSetTableModel psmSetTableModel;
     /** the index of the currently selected peptide */
     private int selectedPSMSetIdx;
@@ -79,9 +86,15 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
     /** mapping of the short names to names for peptide scores */
     private Map<String, String> peptideScoreNameMap;
 
+    /** mapping from the PSMs to the spectra (might be null, if no spectra file is given) */
+    private PiaPsmToSpectrum<ReportPSM> psmToSpectrum;
+
+    /** window for spectrum annotation */
+    private JFrame spectrumWindow;
+
 
     public ProteinsVisualizationPanel(List<ReportProtein> proteinList,
-            PIAAnalysisModel model) {
+            PIAAnalysisModel model, PiaPsmToSpectrum<ReportPSM> psmToSpectrum) {
         if (proteinList == null) {
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             this.add(new JLabel("No data available for visualisation."));
@@ -91,10 +104,21 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
             selectedPeptideIdx = -1;
             selectedPSMSetIdx = -1;
 
+            spectrumWindow = null;
             considerModifications = model.getSettingBoolean(PIASettings.CONSIDER_MODIFICATIONS);
             peptideScoreNameMap = model.getPIAModeller().getProteinModeller().getScoreShortsToScoreNames();
 
+            this.psmToSpectrum = psmToSpectrum;
+
             initializeVisualization(proteinList);
+        }
+    }
+
+
+    public void close() {
+        if (spectrumWindow != null) {
+            spectrumWindow.setVisible(false);
+            spectrumWindow = null;
         }
     }
 
@@ -332,7 +356,7 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         for (ReportPSM psm : psmSet.getPSMs()) {
             JPanel psmPanel = new JPanel();
             psmPanel.setBorder(BorderFactory.createTitledBorder(psm.getFileName()));
-            psmPanel.setLayout(new GridLayout(psm.getScores().size(), 2));
+            psmPanel.setLayout(new GridLayout(psm.getScores().size()+1, 2));
 
             for (ScoreModel score : psm.getScores()) {
                 JTextArea scoreName = new JTextArea(peptideScoreNameMap.get(score.getShortName()));
@@ -344,6 +368,14 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
                 psmPanel.add(scoreName);
                 psmPanel.add(scoreValue);
+            }
+
+
+            if (psmToSpectrum != null) {
+                JButton visualizeButton = new JButton("View spectrum");
+                visualizeButton.setActionCommand(psm.getId().toString());
+                visualizeButton.addActionListener(this);
+                psmPanel.add(visualizeButton);
             }
 
             psmsPanel.add(psmPanel);
@@ -459,5 +491,24 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         res.add(spectra);
 
         return res;
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        if (event.getSource() instanceof JButton) {
+            System.err.println("button selected " + event.getActionCommand());
+
+            /*
+            if (spectrumWindow == null) {
+                spectrumWindow = new JFrame("Spectrum visualization");
+            }
+
+            spectrumWindow.setVisible(true);
+            */
+
+            //spectrumWindow.add(PSMSpectrumAnnotator.annotateSpectrumInPanel(psm, spectrum, visualizerPanel);
+
+        }
     }
 }

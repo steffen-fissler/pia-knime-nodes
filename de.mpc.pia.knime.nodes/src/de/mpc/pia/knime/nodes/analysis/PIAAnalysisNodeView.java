@@ -24,8 +24,8 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
     protected PIAAnalysisNodeView(final PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
 
-        visualizationPanel = new ProteinsVisualizationPanel(
-                nodeModel.getFilteredProteinList(), nodeModel.getAnalysisModel());
+        visualizationPanel = new ProteinsVisualizationPanel(nodeModel.getFilteredProteinList(),
+                nodeModel.getAnalysisModel(), nodeModel.getPSMToSpectrum());
         setComponent(visualizationPanel);
     }
 
@@ -41,8 +41,8 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
             (PIAAnalysisNodeModel)getNodeModel();
         assert nodeModel != null;
 
-        visualizationPanel = new ProteinsVisualizationPanel(
-                nodeModel.getFilteredProteinList(), nodeModel.getAnalysisModel());
+        visualizationPanel = new ProteinsVisualizationPanel(nodeModel.getFilteredProteinList(),
+                nodeModel.getAnalysisModel(), nodeModel.getPSMToSpectrum());
     }
 
     /**
@@ -50,6 +50,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void onClose() {
+        visualizationPanel.close();
         visualizationPanel = null;
     }
 
