@@ -411,8 +411,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         filteredProteins = null;
         filteredPSMs = null;
 
-        // TODO: close the accessor
-        //psmToSpectrum.close();
+        psmToSpectrum.close();
         psmToSpectrum = null;
     }
 

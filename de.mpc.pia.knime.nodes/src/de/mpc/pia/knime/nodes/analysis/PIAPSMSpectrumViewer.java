@@ -6,7 +6,9 @@ import de.mpc.pia.knime.nodes.visualization.psmspectrumviewer.PSMSpectrumViewerP
 
 
 /**
- * View for the PSM spectrum visualization.
+ * View for the PSM spectrum visualization. Visualizes all identified (filtered)
+ * PSMs. If the output PSM list contains PSM sets these are resolved into single
+ * PSMs.
  *
  * @author julian
  *

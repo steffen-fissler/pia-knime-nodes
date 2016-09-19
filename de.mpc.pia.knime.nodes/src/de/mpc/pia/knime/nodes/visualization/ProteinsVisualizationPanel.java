@@ -1,7 +1,11 @@
 package de.mpc.pia.knime.nodes.visualization;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,15 +21,18 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
+
+import org.knime.core.node.NodeLogger;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.intermediate.Group;
@@ -45,10 +52,24 @@ import de.mpc.pia.visualization.graph.AmbiguityGroupVisualizationHandler;
 import de.mpc.pia.visualization.graph.VertexRelation;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
+import uk.ac.ebi.pride.utilities.data.core.Spectrum;
 
 
-public class ProteinsVisualizationPanel extends JPanel implements ListSelectionListener, ActionListener {
+/**
+ * This panel visualizes the relations between proteins, peptides and PSMs,
+ * shows the connected items and visualizes the spectrum.
+ *
+ * @author julian
+ *
+ */
+public class ProteinsVisualizationPanel extends JPanel
+        implements ListSelectionListener, ActionListener {
 
+    private static final long serialVersionUID = 6906128380061289084L;
+
+    /** the logger instance */
+    private static final NodeLogger LOGGER =
+            NodeLogger.getLogger(ProteinsVisualizationPanel.class);
 
     /** the shown proteins table */
     private JTable proteinTable;
@@ -77,6 +98,16 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
     /** the panel for the PSM information */
     private JPanel psmsPanel;
 
+    /** window for spectrum annotation */
+    private JDialog spectrumDialog;
+
+    /** the sorter for the protein table */
+    TableRowSorter<ProteinTableModel> proteinSorter;
+    /** the sorter for the protein table */
+    TableRowSorter<PeptideTableModel> peptideSorter;
+    /** the sorter for the protein table */
+    TableRowSorter<PSMSetTableModel> psmSorter;
+
     /** the right side of the panel shows the visualization of the cluster */
     private JSplitPane protTableClusterPane;
 
@@ -89,36 +120,27 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
     /** mapping from the PSMs to the spectra (might be null, if no spectra file is given) */
     private PiaPsmToSpectrum<ReportPSM> psmToSpectrum;
 
-    /** window for spectrum annotation */
-    private JFrame spectrumWindow;
+
+    private final static String PSM_BUTTON_ACTION_PREFIX = "PSM_ID ";
 
 
     public ProteinsVisualizationPanel(List<ReportProtein> proteinList,
             PIAAnalysisModel model, PiaPsmToSpectrum<ReportPSM> psmToSpectrum) {
         if (proteinList == null) {
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            this.add(new JLabel("No data available for visualisation."));
-            this.add(new JLabel("Try re-running the node."));
+            this.add(new JLabel("No protein data available for visualization."));
+            this.add(new JLabel("Try re-running the node with activated protein inference."));
         } else {
             selectedProteinIdx = -1;
             selectedPeptideIdx = -1;
             selectedPSMSetIdx = -1;
 
-            spectrumWindow = null;
             considerModifications = model.getSettingBoolean(PIASettings.CONSIDER_MODIFICATIONS);
             peptideScoreNameMap = model.getPIAModeller().getProteinModeller().getScoreShortsToScoreNames();
 
             this.psmToSpectrum = psmToSpectrum;
 
             initializeVisualization(proteinList);
-        }
-    }
-
-
-    public void close() {
-        if (spectrumWindow != null) {
-            spectrumWindow.setVisible(false);
-            spectrumWindow = null;
         }
     }
 
@@ -136,6 +158,9 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         proteinTable.setDefaultRenderer(List.class, new ReportTableCellRenderer());
 
         proteinTable.getSelectionModel().addListSelectionListener(this);
+
+        proteinSorter = new TableRowSorter<>(proteinTableModel);
+        proteinTable.setRowSorter(proteinSorter);
 
         JScrollPane proteinScrollPane = new JScrollPane(proteinTable);
         // ProteinTable <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -161,6 +186,9 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
         peptideTable.getSelectionModel().addListSelectionListener(this);
 
+        peptideSorter = new TableRowSorter<>(peptideTableModel);
+        peptideTable.setRowSorter(peptideSorter);
+
         JScrollPane peptideScrollPane = new JScrollPane(peptideTable);
         peptideScrollPane.setAlignmentX(CENTER_ALIGNMENT);
         proteinBottomInfos.add(peptideScrollPane);
@@ -183,6 +211,9 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         psmSetTable.setDefaultRenderer(List.class, new ReportTableCellRenderer());
 
         psmSetTable.getSelectionModel().addListSelectionListener(this);
+
+        psmSorter = new TableRowSorter<>(psmSetTableModel);
+        psmSetTable.setRowSorter(psmSorter);
 
         JScrollPane psmSetScrollPane = new JScrollPane(psmSetTable);
         psmSetsPanel.add(psmSetScrollPane);
@@ -322,7 +353,7 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
      * Updates the visualization information if the selected peptide was
      * changed.
      *
-     * @param proteinIdx
+     * @param peptideIdx
      */
     public void updateSelectedPeptide(int peptideIdx) {
         selectedPeptideIdx = peptideIdx;
@@ -341,7 +372,7 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
      * Updates the visualization information if the selected PSM set was
      * changed.
      *
-     * @param proteinIdx
+     * @param psmSetIdx
      */
     public void updateSelectedPSMSet(int psmSetIdx) {
         selectedPSMSetIdx = psmSetIdx;
@@ -356,36 +387,53 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
         for (ReportPSM psm : psmSet.getPSMs()) {
             JPanel psmPanel = new JPanel();
             psmPanel.setBorder(BorderFactory.createTitledBorder(psm.getFileName()));
-            psmPanel.setLayout(new GridLayout(psm.getScores().size()+1, 2));
+            psmPanel.setLayout(new GridBagLayout());
+
+            int row = 0;
+            GridBagConstraints c = new GridBagConstraints();
+            c.insets = new Insets(0, 0, 0, 5);
+            c.gridwidth = 1;
+            c.gridheight = 1;
+            c.weightx = 0.0;
+            c.weighty = 0.0;
+            c.anchor = GridBagConstraints.FIRST_LINE_START;
+            c.fill = GridBagConstraints.NONE;
 
             for (ScoreModel score : psm.getScores()) {
-                JTextArea scoreName = new JTextArea(peptideScoreNameMap.get(score.getShortName()));
-                scoreName.setEditable(false);
+                JLabel scoreName = new JLabel(peptideScoreNameMap.get(score.getShortName()));
+                JLabel scoreValue = new JLabel(ReportTableCellRenderer.getStringOfNumber(score.getValue()));
 
-                JTextArea scoreValue = new JTextArea(
-                        ReportTableCellRenderer.getStringOfNumber(score.getValue()));
-                scoreValue.setEditable(false);
+                c.gridx = 0;
+                c.gridy = row;
+                c.weightx = 0.0;
+                psmPanel.add(scoreName, c);
 
-                psmPanel.add(scoreName);
-                psmPanel.add(scoreValue);
+                c.gridx = 1;
+                c.gridy = row++;
+                c.weightx = 1.0;
+                psmPanel.add(scoreValue, c);
             }
 
-
             if (psmToSpectrum != null) {
-                JButton visualizeButton = new JButton("View spectrum");
-                visualizeButton.setActionCommand(psm.getId().toString());
+                JButton visualizeButton = new JButton("View annotated spectrum");
+                visualizeButton.setActionCommand(PSM_BUTTON_ACTION_PREFIX + psm.getId().toString());
                 visualizeButton.addActionListener(this);
-                psmPanel.add(visualizeButton);
+
+                c.insets = new Insets(0, 0, 0, 0);
+                c.gridx = 0;
+                c.gridy = row++;
+                c.weightx = 0.0;
+                c.gridwidth = 2;
+                c.anchor = GridBagConstraints.CENTER;
+                psmPanel.add(visualizeButton, c);
             }
 
             psmsPanel.add(psmPanel);
         }
 
         psmsPanel.add(Box.createVerticalGlue());
-
         psmsPanel.revalidate();
     }
-
 
 
     private List<Map<VertexRelation, Set<Long>>> calculateVertexRelations(ReportProtein protein) {
@@ -496,19 +544,80 @@ public class ProteinsVisualizationPanel extends JPanel implements ListSelectionL
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        if (event.getSource() instanceof JButton) {
-            System.err.println("button selected " + event.getActionCommand());
+        if ((event.getSource() instanceof JButton)
+                && event.getActionCommand().startsWith(PSM_BUTTON_ACTION_PREFIX)) {
 
-            /*
-            if (spectrumWindow == null) {
-                spectrumWindow = new JFrame("Spectrum visualization");
+            try {
+                Long psmId = Long.parseLong(event.getActionCommand().substring(PSM_BUTTON_ACTION_PREFIX.length()));
+                createAndShowSpectrumViewerDialog(psmId);
+            } catch (NumberFormatException e) {
+                if ((spectrumDialog != null) && spectrumDialog.isVisible()) {
+                    spectrumDialog.setVisible(false);
+                    spectrumDialog.setEnabled(false);
+                    spectrumDialog = null;
+                }
+
+                LOGGER.error("Could not parse the PSM id from " + event.getActionCommand());
             }
-
-            spectrumWindow.setVisible(true);
-            */
-
-            //spectrumWindow.add(PSMSpectrumAnnotator.annotateSpectrumInPanel(psm, spectrum, visualizerPanel);
-
         }
+    }
+
+
+    /**
+     * Initializes the spectrum viewer dialog (if necessary) and shows the
+     * annotated spectrum given by the PSM in it.
+     *
+     * @param psmId
+     */
+    public void createAndShowSpectrumViewerDialog(Long psmId) {
+        LOGGER.debug("Showing spectrum viewer for " + psmId);
+
+        boolean createViewer = false;
+        if ((spectrumDialog == null) || !spectrumDialog.isVisible()) {
+            // create and locate the dialog
+            Window parentWindow = SwingUtilities.windowForComponent(this);
+
+            spectrumDialog = new JDialog(parentWindow, "PIA Spectrum annotation");
+            createViewer = true;
+        }
+
+        // get the selected PSM
+        ReportPSMSet psmSet = psmSetTableModel.getPSMSetAt(selectedPSMSetIdx);
+        ReportPSM selectedPSM = null;
+
+        for (ReportPSM psm : psmSet.getPSMs()) {
+            if (psm.getId().equals(psmId)) {
+                selectedPSM = psm;
+                break;
+            }
+        }
+
+        // check if psmToSpectrum and PSM are ok
+        String errorMsg = null;
+        if (psmToSpectrum == null) {
+            errorMsg = "No spectrum file given. Re-run the node with an attached spectrum file.";
+        } else if (selectedPSM == null) {
+            errorMsg = "Could not get the currently selected PSM! " + psmId;
+        }
+
+        if (errorMsg == null) {
+            Spectrum spectrum = psmToSpectrum.getSpectrumForPSM(selectedPSM);
+
+            JPanel spectrumVisualizerPanel = new JPanel();
+            spectrumVisualizerPanel.setPreferredSize(new Dimension(800, 600));
+            PSMSpectrumAnnotator.annotateSpectrumInPanel(selectedPSM, spectrum, spectrumVisualizerPanel);
+
+            spectrumDialog.add(spectrumVisualizerPanel);
+        } else {
+            spectrumDialog.add(new JLabel(errorMsg));
+            LOGGER.error(errorMsg);
+        }
+
+        // show the dialog
+        spectrumDialog.pack();
+        if (createViewer) {
+            spectrumDialog.setLocationRelativeTo(this);
+        }
+        spectrumDialog.setVisible(true);
     }
 }

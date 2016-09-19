@@ -185,10 +185,14 @@ public class PSMSpectrumViewerPanel extends JPanel implements ListSelectionListe
      */
     private void updateSelectedPSM(int psmIndex) {
         selectedPSMIdx = psmIndex;
-        if (selectedPSMIdx < 0) {
+        if (psmToSpectrum == null) {
+            spectrumVisualizerPanel.removeAll();
+            spectrumVisualizerPanel.add(new JLabel("No spectrum file given. Re-run the node with an attached spectrum file."));
+            spectrumVisualizerPanel.revalidate();
+        } else if (selectedPSMIdx < 0) {
             spectrumVisualizerPanel.removeAll();
             spectrumVisualizerPanel.add(new JLabel("Please select a PSM in the list."));
-            return;
+            spectrumVisualizerPanel.revalidate();
         } else {
             ReportPSM psm = psmTableModel.getPSMAt(selectedPSMIdx);
             Spectrum spectrum = psmToSpectrum.getSpectrumForPSM(psm);

@@ -50,7 +50,6 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void onClose() {
-        visualizationPanel.close();
         visualizationPanel = null;
     }
 
