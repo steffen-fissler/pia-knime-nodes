@@ -215,9 +215,10 @@ public class PIAAnalysisModel {
             }
         }
 
-        if (createPSMSets &&
-                getSettingBoolean(PIASettings.CALCULATE_COMBINED_FDR_SCORE)) {
-            // calculate the Combined FDR Score
+        if (createPSMSets
+                && getSettingBoolean(PIASettings.CALCULATE_ALL_FDR)
+                && getSettingBoolean(PIASettings.CALCULATE_COMBINED_FDR_SCORE)) {
+            // calculate the Combined FDR Score only if there are PSM sets and calculated FDRs
             piaModeller.getPSMModeller().calculateCombinedFDRScore();
         } else if (getSettingBoolean(PIASettings.CALCULATE_ALL_FDR)) {
             // PSM sets are not created, but all FDRs are calculated -> set decoy level on PSM overview

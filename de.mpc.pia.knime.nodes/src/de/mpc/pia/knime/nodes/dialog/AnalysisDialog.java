@@ -212,8 +212,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (e.getSource().equals(checkCreatePSMSets)) {
-            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        if (e.getSource().equals(checkCreatePSMSets) || e.getSource().equals(checkCalculateAllFDR)) {
+            checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         } else if (e.getSource().equals(checkInferPeptides)) {
             inferePeptidesChanged();
         } else if (e.getSource().equals(checkInferProteins)) {
@@ -388,7 +388,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // create PSM sets
         checkCreatePSMSets.setSelected(
                 settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         // consider modifications
         checkConsiderModifications.setSelected(
                 settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
@@ -589,6 +589,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // CalculateAllFDR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateAllFDR = new JCheckBox("Calculate FDR for all files");
         checkCalculateAllFDR.setSelected(PIASettings.CALCULATE_ALL_FDR.getDefaultBoolean());
+        checkCalculateAllFDR.addChangeListener(this);
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -598,7 +599,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // CalculateCombinedFDRScore >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score");
         checkCalculateCombinedFDRScore.setSelected(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -1161,4 +1162,18 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // Export settings <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+
+    /**
+     * Check whether all is set to allow calculation of CombinedFDRSCore or not.
+     * @return
+     */
+    private boolean allowCombinedFDRScoreCalculation() {
+        if ((checkCreatePSMSets != null)
+                && (checkCalculateAllFDR != null)) {
+            return checkCreatePSMSets.isSelected()
+                    && checkCalculateAllFDR.isSelected();
+        } else {
+            return false;
+        }
+    }
 }
