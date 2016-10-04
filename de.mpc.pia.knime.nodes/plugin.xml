@@ -14,11 +14,6 @@
    -->
    
    <extension point="org.knime.workbench.repository.nodes">
-      <node
-            category-path="/community/PIA"
-            deprecated="false"
-            factory-class="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"
-            id="de.mpc.pia.knime.nodes.PIAWizard.PIAWizardNodeFactory"/>
 <node
       category-path="/community/PIA"
       deprecated="false"
@@ -31,6 +26,13 @@
       id="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory">
 </node>
 </extension>
+   <extension point="org.knime.product.splashExtension">
+        <splashExtension
+              icon="src/de/mpc/pia/knime/nodes/pia_logo_48x48.png"
+              id="de.mpc.pia.knime.nodes.splashExtension"
+              tooltip="PIA - Protein Inference Algorithms"/>
+   </extension>
+
    <extension point="org.knime.workbench.repository.categories">
       <category icon="src/de/mpc/pia/knime/nodes/pia_logo_small.png" level-id="PIA" name="PIA" path="/community">
       </category>

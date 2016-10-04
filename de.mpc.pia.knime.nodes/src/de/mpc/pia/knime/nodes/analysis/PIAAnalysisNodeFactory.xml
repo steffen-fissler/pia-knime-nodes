@@ -24,15 +24,16 @@
     
     <ports>
         <inPort index="0" name="PIA XML file (from table)">A PIA XML file from a table, may be gzipped. This would be the default output of the PIA Compiler. Either this or a file in port 1 must be given.</inPort>
-        <inPort index="1" name="PIA XML file (from table)">A PIA XML file from a file port, e.g. from Input File.  Either this or a file in port 0 must be given.</inPort>
+        <inPort index="1" name="PIA XML file (from port)">A PIA XML file from a file port, e.g. from Input File.  Either this or a file in port 0 must be given. Only the first suitable file in the port will be used.</inPort>
         <inPort index="2" name="spectrum file">An optional spectrum file for the spectrum viewer (not yet fully implemented).</inPort>
         
         <outPort index="0" name="PSM results">The results on the PSM level.</outPort>
         <outPort index="1" name="peptide results">The results on the peptide level.</outPort>
         <outPort index="2" name="protein results">The results on the protein level.</outPort>
-        <outPort index="3" name="export file">The generated export file. (not yet implemented)</outPort>
+        <outPort index="3" name="export file">The generated export file (not yet implemented for CSV).</outPort>
     </ports>    
     <views>
-        <view index="0" name="PIA Result Analysis">The PIA Analysis view: browse the PSM, peptide and protein results and visualisation.</view>
+        <view index="0" name="PIA Result Analysis">The PIA Analysis view: browse the PSM, peptide and protein results and visualise the results.</view>
+        <view index="1" name="PSM Spectrum viewer">Spectrum viewer on PSM level.</view>
     </views>
 </knimeNode>

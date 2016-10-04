@@ -135,12 +135,16 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     private FilterPanel filtersPSMLevel;
 
 
+    /** checkbox to select, whether peptides should be inferred */
+    private JCheckBox checkInferPeptides;
     /** text field for the selected file, for which the peptide export should be performed */
     private JFormattedTextField fieldPeptideAnalysisFileID;
-
     /** panel for the filters on the peptide level */
     private FilterPanel filtersPeptideLevel;
 
+
+    /** checkbox to select, whether proteins should be inferred */
+    private JCheckBox checkInferProteins;
 
     /** button group to select the inference method */
     private ButtonGroup radioGrpInferenceMethod;
@@ -208,8 +212,51 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (e.getSource().equals(checkCreatePSMSets)) {
-            checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        if (e.getSource().equals(checkCreatePSMSets) || e.getSource().equals(checkCalculateAllFDR)) {
+            checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
+        } else if (e.getSource().equals(checkInferPeptides)) {
+            inferePeptidesChanged();
+        } else if (e.getSource().equals(checkInferProteins)) {
+            infereProteinsChanged();
+        }
+    }
+
+
+    /**
+     * The status of the checkbox for inferPeptides has changed, hide or show
+     * settings
+     */
+    private void inferePeptidesChanged() {
+        boolean enabled = checkInferPeptides.isSelected();
+        fieldPeptideAnalysisFileID.setEnabled(enabled);
+        filtersPeptideLevel.setEnabled(enabled);
+    }
+
+
+    /**
+     * The status of the checkbox for inferProteins has changed, hide or show
+     * settings
+     */
+    private void infereProteinsChanged() {
+        boolean enabled = checkInferProteins.isSelected();
+
+        filtersProteinInference.setEnabled(enabled);
+        comboAvailableBaseScores.setEnabled(enabled);
+        filtersProteinLevel.setEnabled(enabled);
+
+        Enumeration<AbstractButton> btns = radioGrpInferenceMethod.getElements();
+        while (btns.hasMoreElements()) {
+            btns.nextElement().setEnabled(enabled);
+        }
+
+        btns = radioGrpProteinScoring.getElements();
+        while (btns.hasMoreElements()) {
+            btns.nextElement().setEnabled(enabled);
+        }
+
+        btns = radioGrpPSMsForScoring.getElements();
+        while (btns.hasMoreElements()) {
+            btns.nextElement().setEnabled(enabled);
         }
     }
 
@@ -269,6 +316,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         settings.put(PIASettings.PSM_FILTERS.getKey(), filtersArr);
 
 
+        // infere peptides
+        settings.put(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), checkInferPeptides.isSelected());
+
         // peptide file ID
         settings.put(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), Integer.parseInt(fieldPeptideAnalysisFileID.getText()));
 
@@ -280,6 +330,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         }
         settings.put(PIASettings.PEPTIDE_FILTERS.getKey(), filtersArr);
 
+
+        // infere proteins
+        settings.put(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), checkInferProteins.isSelected());
 
         // protein inference method
         settings.put(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(), radioGrpInferenceMethod.getSelection().getActionCommand());
@@ -335,7 +388,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // create PSM sets
         checkCreatePSMSets.setSelected(
                 settings.getBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean()));
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         // consider modifications
         checkConsiderModifications.setSelected(
                 settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
@@ -391,6 +444,11 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                 filtersPSMLevel);
 
 
+        // infere peptides
+        checkInferPeptides.setSelected(
+                settings.getBoolean(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean()));
+        inferePeptidesChanged();
+
         // peptide file ID
         fieldPeptideAnalysisFileID.setValue(
                 settings.getInt(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getDefaultInteger()));
@@ -399,6 +457,11 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         replaceAppliedFilters(settings.getStringArray(PIASettings.PEPTIDE_FILTERS.getKey(), PIASettings.PEPTIDE_FILTERS.getDefaultStringArray()),
                 filtersPeptideLevel);
 
+
+        // infere proteins
+        checkInferProteins.setSelected(
+                settings.getBoolean(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean()));
+        infereProteinsChanged();
 
         // protein inference method
         updateSelectedRadioButtonInGroup(
@@ -526,6 +589,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // CalculateAllFDR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateAllFDR = new JCheckBox("Calculate FDR for all files");
         checkCalculateAllFDR.setSelected(PIASettings.CALCULATE_ALL_FDR.getDefaultBoolean());
+        checkCalculateAllFDR.addChangeListener(this);
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -535,7 +599,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // CalculateCombinedFDRScore >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score");
         checkCalculateCombinedFDRScore.setSelected(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
-        checkCalculateCombinedFDRScore.setEnabled(checkCreatePSMSets.isSelected());
+        checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         c.gridx = 0;
         c.gridy = row++;
         c.gridwidth = 2;
@@ -637,7 +701,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         // add all the scores, refine later
         for (ScoreModelEnum score : ScoreModelEnum.values()) {
-            if (!ScoreModelEnum.notForPSMFdrScore.contains(score) && !ScoreModelEnum.UNKNOWN_SCORE.equals(score)) {
+            if (!ScoreModelEnum.getNotForPSMFdrScore().contains(score) && !ScoreModelEnum.UNKNOWN_SCORE.equals(score)) {
                 availablePreferredFDRScores.addElement(score.getShortName());
             }
         }
@@ -727,6 +791,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         int row = 0;
 
+        // checkInferePeptides >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkInferPeptides = new JCheckBox("Infere peptides");
+        checkInferPeptides.setSelected(PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean());
+        checkInferPeptides.addChangeListener(this);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 2;
+        peptideAnalysisPanel.add(checkInferPeptides, c);
+        // checkInferePeptides <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
         // fieldPeptideAnalysisFileID >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         c.gridx = 0;
         c.gridy = row;
@@ -766,6 +841,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.fill = GridBagConstraints.HORIZONTAL;
         peptideAnalysisPanel.add(filtersPeptideLevel, c);
         // PeptideLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        inferePeptidesChanged();
     }
 
 
@@ -781,6 +858,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.insets = new Insets(5, 5, 5, 5);
 
         int row = 0;
+
+        // checkInfereProteins >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        checkInferProteins = new JCheckBox("Infere proteins");
+        checkInferProteins.setSelected(PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean());
+        checkInferProteins.addChangeListener(this);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 1;
+        proteinAnalysisPanel.add(checkInferProteins, c);
+        // checkInfereProteins <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         JPanel proteinInferencePanel = new JPanel(new GridBagLayout());
         proteinInferencePanel.setBorder(BorderFactory.createTitledBorder("Inference method"));
@@ -916,6 +1004,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.weighty = 1.0;
         proteinAnalysisPanel.add(filtersProteinLevel, c);
         // ProteinLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        infereProteinsChanged();
     }
 
 
@@ -1072,4 +1162,18 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // Export settings <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
+
+    /**
+     * Check whether all is set to allow calculation of CombinedFDRSCore or not.
+     * @return
+     */
+    private boolean allowCombinedFDRScoreCalculation() {
+        if ((checkCreatePSMSets != null)
+                && (checkCalculateAllFDR != null)) {
+            return checkCreatePSMSets.isSelected()
+                    && checkCalculateAllFDR.isSelected();
+        } else {
+            return false;
+        }
+    }
 }

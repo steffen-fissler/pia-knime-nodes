@@ -100,6 +100,10 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
                 (String[])settingsMap.get(PIASettings.PSM_FILTERS.getKey()));
 
 
+        // whether to infer peptides
+        settings.addBoolean(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(),
+                (Boolean)settingsMap.get(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey()));
+
         // used file ID for peptide export
         settings.addInt(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(),
                 (Integer)settingsMap.get(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey()));
@@ -108,6 +112,10 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
         settings.addStringArray(PIASettings.PEPTIDE_FILTERS.getKey(),
                 (String[])settingsMap.get(PIASettings.PEPTIDE_FILTERS.getKey()));
 
+
+        // whether to infer proteins
+        settings.addBoolean(PIASettings.PROTEIN_INFER_PROTEINS.getKey(),
+                (Boolean)settingsMap.get(PIASettings.PROTEIN_INFER_PROTEINS.getKey()));
 
         // the protein inference method
         settings.addString(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(),

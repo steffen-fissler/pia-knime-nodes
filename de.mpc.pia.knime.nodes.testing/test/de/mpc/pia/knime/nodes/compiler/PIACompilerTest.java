@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.mpc.pia.intermediate.compiler.PIACompiler;
+import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 
 public class PIACompilerTest {
 
@@ -48,7 +49,7 @@ public class PIACompilerTest {
      */
     @Test
     public void testPIACompilation() throws IOException {
-        PIACompiler piaCompiler = new PIACompiler();
+        PIACompiler piaCompiler = new PIASimpleCompiler();
 
         assertEquals("Mascot file could not be parsed", true,
                 piaCompiler.getDataFromFile("file1", inputFile1.getAbsolutePath(), null, null));

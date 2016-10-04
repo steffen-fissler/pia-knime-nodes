@@ -6,11 +6,11 @@ import org.knime.core.node.NodeView;
 
 /**
  * <code>NodeFactory</code> for the "PIADefault" Node.
- * 
+ *
  *
  * @author Julian Uszkoreit
  */
-public class PIAAnalysisNodeFactory 
+public class PIAAnalysisNodeFactory
         extends NodeFactory<PIAAnalysisNodeModel> {
 
     /**
@@ -26,7 +26,7 @@ public class PIAAnalysisNodeFactory
      */
     @Override
     public int getNrNodeViews() {
-        return 1;
+        return 2;
     }
 
     /**
@@ -35,7 +35,14 @@ public class PIAAnalysisNodeFactory
     @Override
     public NodeView<PIAAnalysisNodeModel> createNodeView(final int viewIndex,
             final PIAAnalysisNodeModel nodeModel) {
-        return new PIAAnalysisNodeView(nodeModel);
+        switch (viewIndex) {
+        case 1:
+            return new PIAPSMSpectrumViewer(nodeModel);
+
+        case 0:
+        default:
+            return new PIAAnalysisNodeView(nodeModel);
+        }
     }
 
     /**
