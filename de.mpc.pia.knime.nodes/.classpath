@@ -64,9 +64,9 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzidentml-1.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzml-1.7.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzreader-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-converters-3.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-model-3.0.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-util-3.0.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-converters-3.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-model-3.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-util-3.0.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jshortcut-0.4-oberzalek.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/json-20090211.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jung-algorithms-2.0.1.jar"/>
