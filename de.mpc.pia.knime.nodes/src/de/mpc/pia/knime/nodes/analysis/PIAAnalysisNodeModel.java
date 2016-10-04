@@ -411,8 +411,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
         filteredProteins = null;
         filteredPSMs = null;
 
-        psmToSpectrum.close();
-        psmToSpectrum = null;
+        if (psmToSpectrum != null) {
+            psmToSpectrum.close();
+            psmToSpectrum = null;
+        }
     }
 
 

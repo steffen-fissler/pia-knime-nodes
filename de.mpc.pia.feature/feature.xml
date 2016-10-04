@@ -2,10 +2,10 @@
 <feature
       id="de.mpc.pia.feature"
       label="PIA"
-      version="1.1.0.qualifier">
+      version="1.2.0.qualifier">
 
     <description>
-    PIA - Protein Inference Algorithms
+PIA - Protein Inference Algorithms
 ----------------------------------
 
 PIA is a toolbox for MS based protein inference and identification analysis.
@@ -29,7 +29,7 @@ https://github.com/mpc-bioinformatics/pia
     </copyright>
 
     <license>
-    --------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
                       PIA - Protein Inference Algorithms
 --------------------------------------------------------------------------------
 Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2016
@@ -60,7 +60,6 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
     </license>
 
 	<plugin
