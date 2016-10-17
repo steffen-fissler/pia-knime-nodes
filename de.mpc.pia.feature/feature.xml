@@ -29,9 +29,12 @@ https://github.com/mpc-bioinformatics/pia
     </copyright>
 
     <license>
+BSD 3-Clause License
+
 --------------------------------------------------------------------------------
-                      PIA - Protein Inference Algorithms
+      PIA - Protein Inference Algorithms
 --------------------------------------------------------------------------------
+
 Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2016
 
 This software is released under a three-clause BSD license:
