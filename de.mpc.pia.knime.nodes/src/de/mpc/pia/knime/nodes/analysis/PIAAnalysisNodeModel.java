@@ -856,6 +856,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         protCols.add(new DataColumnSpecCreator("clusterID", IntCell.TYPE).createSpec());
 
+        protCols.add(new DataColumnSpecCreator("Descriptions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
+
         if (m_calculate_all_fdr.getBooleanValue() ||
                 m_calculate_combined_fdr.getBooleanValue()) {
             protCols.add(new DataColumnSpecCreator("Decoy", BooleanCell.TYPE).createSpec());
@@ -887,9 +889,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             // accessions
             List<StringCell> accList = new ArrayList<StringCell>(protein.getAccessions().size());
+            List<StringCell> descriptionList = new ArrayList<StringCell>(protein.getAccessions().size());
             List<DataCell> coverageList = new ArrayList<DataCell>(protein.getAccessions().size());
             for (Accession acc : protein.getAccessions()) {
                 accList.add(new StringCell(acc.getAccession()));
+
+                descriptionList.add(new StringCell(acc.getDescription(0L)));
 
                 Double coverage = protein.getCoverage(acc.getAccession());
                 if (coverage.equals(Double.NaN)) {
@@ -923,6 +928,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
             // the cluster ID
             proteinCells.add(new IntCell(new Long(protein.getAccessions().get(0).getGroup().getTreeID()).intValue()));
 
+            // the protein description
+            proteinCells.add(CollectionCellFactory.createListCell(descriptionList));
 
             if (m_calculate_all_fdr.getBooleanValue() ||
                     m_calculate_combined_fdr.getBooleanValue()) {
