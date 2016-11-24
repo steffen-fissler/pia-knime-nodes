@@ -26,7 +26,7 @@ public enum PIASettings {
 
     ALL_DECOY_STRATEGY(FDRData.DecoyStrategy.ACCESSIONPATTERN.toString()),
     ALL_DECOY_PATTERN("rev_.*"),
-    ALL_USED_IDENTIFICATIONS(1),   // 1 = top identifications, 0 = all identifications
+    ALL_USED_IDENTIFICATIONS(0),   // 1 = top identifications, 0 = all identifications
 
     FDR_PREFERRED_SCORES(new String[]{}),
 
