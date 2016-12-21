@@ -79,11 +79,11 @@ public class ObjectSerializer {
 
         stringRep[0] = filter.getShortName();
         if (filter instanceof PSMScoreFilter) {
-            stringRep[0] = PSMScoreFilter.prefix + ((PSMScoreFilter) filter).getScoreShortName();
+            stringRep[0] = PSMScoreFilter.PREFIX + ((PSMScoreFilter) filter).getScoreShortName();
         } else if (filter instanceof PSMTopIdentificationFilter) {
-            stringRep[0] = PSMTopIdentificationFilter.prefix + ((PSMTopIdentificationFilter) filter).getScoreShortName();
+            stringRep[0] = PSMTopIdentificationFilter.PREFIX + ((PSMTopIdentificationFilter) filter).getScoreShortName();
         } else if (filter instanceof PeptideScoreFilter) {
-            stringRep[0] = PeptideScoreFilter.prefix + ((PeptideScoreFilter) filter).getScoreShortName();
+            stringRep[0] = PeptideScoreFilter.PREFIX + ((PeptideScoreFilter) filter).getScoreShortName();
         }
         stringRep[1] = new Boolean(filter.getFilterNegate());
         stringRep[2] = filter.getFilterComparator().getName();
@@ -115,22 +115,22 @@ public class ObjectSerializer {
             StringBuilder messageBuffer = new StringBuilder();
             AbstractFilter filter = null;
 
-            if (shortName.startsWith(PSMScoreFilter.prefix) ||
-                    shortName.startsWith(PSMTopIdentificationFilter.prefix) ||
-                    shortName.startsWith(PeptideScoreFilter.prefix)) {
+            if (shortName.startsWith(PSMScoreFilter.PREFIX) ||
+                    shortName.startsWith(PSMTopIdentificationFilter.PREFIX) ||
+                    shortName.startsWith(PeptideScoreFilter.PREFIX)) {
                 FilterComparator comparator =
                         FilterComparator.getFilterComparatorByName(comparatorName);
 
-                if (shortName.startsWith(PSMScoreFilter.prefix)) {
-                    String scoreShort = shortName.substring(PSMScoreFilter.prefix.length());
+                if (shortName.startsWith(PSMScoreFilter.PREFIX)) {
+                    String scoreShort = shortName.substring(PSMScoreFilter.PREFIX.length());
                     filter = new PSMScoreFilter(comparator, negateFilter,
                             Double.parseDouble(filterValue), scoreShort);
-                } else if (shortName.startsWith(PSMTopIdentificationFilter.prefix)) {
-                    String scoreShort = shortName.substring(PSMTopIdentificationFilter.prefix.length());
+                } else if (shortName.startsWith(PSMTopIdentificationFilter.PREFIX)) {
+                    String scoreShort = shortName.substring(PSMTopIdentificationFilter.PREFIX.length());
                     filter = new PSMTopIdentificationFilter(comparator,
                             Integer.parseInt(filterValue), negateFilter, scoreShort);
-                } else if (shortName.startsWith(PeptideScoreFilter.prefix)) {
-                    String scoreShort = shortName.substring(PeptideScoreFilter.prefix.length());
+                } else if (shortName.startsWith(PeptideScoreFilter.PREFIX)) {
+                    String scoreShort = shortName.substring(PeptideScoreFilter.PREFIX.length());
                     filter = new PeptideScoreFilter(comparator, negateFilter,
                             Double.parseDouble(filterValue), scoreShort);
                 }
