@@ -15,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -207,18 +208,33 @@ public class FilterPanel extends JPanel implements ActionListener {
         String argument = fieldFilterArgument.getText();
         Boolean negate = checkNegateFilter.isSelected();
 
-        StringBuilder messageBuffer = new StringBuilder();
+        StringBuilder errorMessageBuffer = new StringBuilder();
 
         /// we have a valid value, so go on
-        AbstractFilter newFilter = FilterFactory.newInstanceOf(filterShort,
-                comparator, argument, negate, messageBuffer);
+        AbstractFilter newFilter =
+                FilterFactory.newInstanceOf(filterShort, comparator, argument, negate, errorMessageBuffer);
+
+        if ((newFilter instanceof PSMScoreFilter)
+                && (((PSMScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
+                        || "null".equals(((PSMScoreFilter)newFilter).getScoreShortName()))) {
+            errorMessageBuffer.insert(0, "Select a score for the PSM score filter.");
+            newFilter = null;
+        } else if ((newFilter instanceof PeptideScoreFilter)
+                && (((PeptideScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
+                        || "null".equals(((PeptideScoreFilter)newFilter).getScoreShortName()))) {
+            errorMessageBuffer.insert(0, "Select a score for the Peptide score filter.");
+            newFilter = null;
+        }
 
         if (newFilter != null) {
             ((DefaultListModel<AbstractFilter>)listAppliedFilters.getModel()).addElement(newFilter);
-            messageBuffer.append("new filter added");
-        } else {
-            messageBuffer.insert(0, "Error adding filter: ");
-            logger.error(messageBuffer.toString());
+        }
+
+        if (errorMessageBuffer.length() > 0) {
+            errorMessageBuffer.insert(0, "Error adding filter: ");
+            logger.error(errorMessageBuffer.toString());
+
+            JOptionPane.showMessageDialog(null, errorMessageBuffer.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
