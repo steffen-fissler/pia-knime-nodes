@@ -28,13 +28,13 @@
 </extension>
    <extension point="org.knime.product.splashExtension">
         <splashExtension
-              icon="src/de/mpc/pia/knime/nodes/pia_logo_48x48.png"
+              icon="icons/pia_logo_48x48.png"
               id="de.mpc.pia.knime.nodes.splashExtension"
               tooltip="PIA - Protein Inference Algorithms"/>
    </extension>
 
    <extension point="org.knime.workbench.repository.categories">
-      <category icon="src/de/mpc/pia/knime/nodes/pia_logo_small.png" level-id="PIA" name="PIA" path="/community">
+      <category icon="icons/pia_logo_16x16.png" level-id="PIA" name="PIA" path="/community">
       </category>
    </extension>
    

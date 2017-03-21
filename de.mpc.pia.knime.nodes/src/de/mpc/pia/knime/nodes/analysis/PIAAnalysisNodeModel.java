@@ -205,6 +205,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
                         BufferedDataTable.TYPE,
                         BufferedDataTable.TYPE,
                         IURIPortObject.TYPE });
+
+        analysisModel = null;
+        piaTmpFile = null;
+        filteredProteins = null;
+        filteredPeptides = null;
+        filteredPSMs = null;
+        psmToSpectrum = null;
     }
 
 
@@ -409,6 +416,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         filteredProteins = null;
+        filteredPeptides = null;
         filteredPSMs = null;
 
         if (psmToSpectrum != null) {
@@ -582,7 +590,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
     private DataTableSpec getPSMTableSpec() {
         // TODO: select one "main-score", which should be set for each fileID (seelction by the psmModeller?)
 
-        List<DataColumnSpec> psmCols = new ArrayList<DataColumnSpec>();
+        List<DataColumnSpec> psmCols = new ArrayList<>();
         psmCols.add(new DataColumnSpecCreator("Sequence", StringCell.TYPE).createSpec());
         psmCols.add(new DataColumnSpecCreator("Accessions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
         psmCols.add(new DataColumnSpecCreator("Modifications", StringCell.TYPE).createSpec());
@@ -632,13 +640,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             psmId++;
             RowKey key = new RowKey(psmId.toString());
 
-            List<DataCell> psmCells = new ArrayList<DataCell>();
+            List<DataCell> psmCells = new ArrayList<>();
 
             // sequence
             psmCells.add(new StringCell(psm.getSequence()));
 
             // accessions
-            List<StringCell> accList = new ArrayList<StringCell>(psm.getAccessions().size());
+            List<StringCell> accList = new ArrayList<>(psm.getAccessions().size());
             for (Accession acc : psm.getAccessions()) {
                 accList.add(new StringCell(acc.getAccession()));
             }
@@ -700,9 +708,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
             }
 
             // scores
-            List<DoubleCell> scoresList = new ArrayList<DoubleCell>();
-            List<StringCell> scoreNamesList = new ArrayList<StringCell>();
-            List<StringCell> scoreShortsList = new ArrayList<StringCell>();
+            List<DoubleCell> scoresList = new ArrayList<>();
+            List<StringCell> scoreNamesList = new ArrayList<>();
+            List<StringCell> scoreShortsList = new ArrayList<>();
             for (String scoreShort : psmScoreShorts) {
                 Double scoreValue = psm.getScore(scoreShort);
 
@@ -736,7 +744,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
     private DataTableSpec getPeptideTableSpec() {
         // TODO: select one "main-score", which should be set for each fileID (seelction by the peptideModeller?)
 
-        List<DataColumnSpec> pepCols = new ArrayList<DataColumnSpec>();
+        List<DataColumnSpec> pepCols = new ArrayList<>();
         pepCols.add(new DataColumnSpecCreator("Sequence", StringCell.TYPE).createSpec());
         pepCols.add(new DataColumnSpecCreator("Accessions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
@@ -784,13 +792,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             pepId++;
             RowKey key = new RowKey(pepId.toString());
 
-            List<DataCell> pepCells = new ArrayList<DataCell>();
+            List<DataCell> pepCells = new ArrayList<>();
 
             // sequence
             pepCells.add(new StringCell(pep.getSequence()));
 
             // accessions
-            List<StringCell> accList = new ArrayList<StringCell>(pep.getAccessions().size());
+            List<StringCell> accList = new ArrayList<>(pep.getAccessions().size());
             for (Accession acc : pep.getAccessions()) {
                 accList.add(new StringCell(acc.getAccession()));
             }
@@ -816,9 +824,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
             pepCells.add(new IntCell(pep.getMissedCleavages()));
 
             // scores
-            List<DoubleCell> scoresList = new ArrayList<DoubleCell>();
-            List<StringCell> scoreNamesList = new ArrayList<StringCell>();
-            List<StringCell> scoreShortsList = new ArrayList<StringCell>();
+            List<DoubleCell> scoresList = new ArrayList<>();
+            List<StringCell> scoreNamesList = new ArrayList<>();
+            List<StringCell> scoreShortsList = new ArrayList<>();
 
             for (String scoreShort : scoreShorts) {
                 scoresList.add(new DoubleCell(pep.getBestScore(scoreShort)));
@@ -843,7 +851,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     private DataTableSpec getProteinTableSpec() {
-        List<DataColumnSpec> protCols = new ArrayList<DataColumnSpec>();
+        List<DataColumnSpec> protCols = new ArrayList<>();
         protCols.add(new DataColumnSpecCreator("Accessions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
         protCols.add(new DataColumnSpecCreator("Score", DoubleCell.TYPE).createSpec());
@@ -855,6 +863,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
         protCols.add(new DataColumnSpecCreator("nrSpectra", IntCell.TYPE).createSpec());
 
         protCols.add(new DataColumnSpecCreator("clusterID", IntCell.TYPE).createSpec());
+
+        protCols.add(new DataColumnSpecCreator("Descriptions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
         if (m_calculate_all_fdr.getBooleanValue() ||
                 m_calculate_combined_fdr.getBooleanValue()) {
@@ -883,13 +893,16 @@ public class PIAAnalysisNodeModel extends NodeModel {
             protId++;
             RowKey key = new RowKey(protId.toString());
 
-            List<DataCell> proteinCells = new ArrayList<DataCell>();
+            List<DataCell> proteinCells = new ArrayList<>();
 
             // accessions
-            List<StringCell> accList = new ArrayList<StringCell>(protein.getAccessions().size());
-            List<DataCell> coverageList = new ArrayList<DataCell>(protein.getAccessions().size());
+            List<StringCell> accList = new ArrayList<>(protein.getAccessions().size());
+            List<StringCell> descriptionList = new ArrayList<>(protein.getAccessions().size());
+            List<DataCell> coverageList = new ArrayList<>(protein.getAccessions().size());
             for (Accession acc : protein.getAccessions()) {
                 accList.add(new StringCell(acc.getAccession()));
+
+                descriptionList.add(new StringCell(acc.getDescription(0L)));
 
                 Double coverage = protein.getCoverage(acc.getAccession());
                 if (coverage.equals(Double.NaN)) {
@@ -923,6 +936,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
             // the cluster ID
             proteinCells.add(new IntCell(new Long(protein.getAccessions().get(0).getGroup().getTreeID()).intValue()));
 
+            // the protein description
+            proteinCells.add(CollectionCellFactory.createListCell(descriptionList));
 
             if (m_calculate_all_fdr.getBooleanValue() ||
                     m_calculate_combined_fdr.getBooleanValue()) {

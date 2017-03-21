@@ -15,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -96,7 +97,7 @@ public class FilterPanel extends JPanel implements ActionListener {
         gbc.gridy = 0;
         this.add(new JLabel("Available Filters"), gbc);
 
-        comboAvailableFilters = new JComboBox<RegisteredFilters>();
+        comboAvailableFilters = new JComboBox<>();
         comboAvailableFilters.setRenderer(new RegisteredFilterRenderer());
         comboAvailableFilters.addActionListener(this);
 
@@ -105,7 +106,7 @@ public class FilterPanel extends JPanel implements ActionListener {
         this.add(comboAvailableFilters, gbc);
 
         // scores for score filters
-        comboAvailableFilterScores = new JComboBox<String>();
+        comboAvailableFilterScores = new JComboBox<>();
         comboAvailableFilterScores.setRenderer(new ScoreCellRenderer());
         comboAvailableFilterScores.setEditable(true);
         comboAvailableFilterScores.setEnabled(false);
@@ -128,7 +129,7 @@ public class FilterPanel extends JPanel implements ActionListener {
         this.add(checkNegateFilter, gbc);
 
         // the comparator for the filter
-        comboAvailableFilterComparators = new JComboBox<FilterComparator>();
+        comboAvailableFilterComparators = new JComboBox<>();
         updateSelectedAvailableFilters((RegisteredFilters)comboAvailableFilters.getSelectedItem());
 
         gbc.gridx = 2;
@@ -149,9 +150,9 @@ public class FilterPanel extends JPanel implements ActionListener {
         this.add(btnAddFilter, gbc);
 
         // the currently active filters
-        modelAppliedFilters = new DefaultListModel<AbstractFilter>();
+        modelAppliedFilters = new DefaultListModel<>();
 
-        listAppliedFilters = new JList<AbstractFilter>(modelAppliedFilters);
+        listAppliedFilters = new JList<>(modelAppliedFilters);
         listAppliedFilters.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listAppliedFilters.setLayoutOrientation(JList.VERTICAL);
         listAppliedFilters.setCellRenderer(new AbstractFilterRenderer());
@@ -196,29 +197,44 @@ public class FilterPanel extends JPanel implements ActionListener {
         String filterShort = selectedFilter.getShortName();
 
         if (selectedFilter.equals(RegisteredFilters.PSM_SCORE_FILTER)) {
-            filterShort = PSMScoreFilter.prefix + comboAvailableFilterScores.getSelectedItem();
+            filterShort = PSMScoreFilter.PREFIX + comboAvailableFilterScores.getSelectedItem();
         } else if (selectedFilter.equals(RegisteredFilters.PSM_TOP_IDENTIFICATION_FILTER)) {
-            filterShort = PSMTopIdentificationFilter.prefix + comboAvailableFilterScores.getSelectedItem();
+            filterShort = PSMTopIdentificationFilter.PREFIX + comboAvailableFilterScores.getSelectedItem();
         } else if (selectedFilter.equals(RegisteredFilters.PEPTIDE_SCORE_FILTER)) {
-            filterShort = PeptideScoreFilter.prefix + comboAvailableFilterScores.getSelectedItem();
+            filterShort = PeptideScoreFilter.PREFIX + comboAvailableFilterScores.getSelectedItem();
         }
 
         FilterComparator comparator = (FilterComparator)comboAvailableFilterComparators.getSelectedItem();
         String argument = fieldFilterArgument.getText();
         Boolean negate = checkNegateFilter.isSelected();
 
-        StringBuilder messageBuffer = new StringBuilder();
+        StringBuilder errorMessageBuffer = new StringBuilder();
 
         /// we have a valid value, so go on
-        AbstractFilter newFilter = FilterFactory.newInstanceOf(filterShort,
-                comparator, argument, negate, messageBuffer);
+        AbstractFilter newFilter =
+                FilterFactory.newInstanceOf(filterShort, comparator, argument, negate, errorMessageBuffer);
+
+        if ((newFilter instanceof PSMScoreFilter)
+                && (((PSMScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
+                        || "null".equals(((PSMScoreFilter)newFilter).getScoreShortName()))) {
+            errorMessageBuffer.insert(0, "Select a score for the PSM score filter.");
+            newFilter = null;
+        } else if ((newFilter instanceof PeptideScoreFilter)
+                && (((PeptideScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
+                        || "null".equals(((PeptideScoreFilter)newFilter).getScoreShortName()))) {
+            errorMessageBuffer.insert(0, "Select a score for the Peptide score filter.");
+            newFilter = null;
+        }
 
         if (newFilter != null) {
             ((DefaultListModel<AbstractFilter>)listAppliedFilters.getModel()).addElement(newFilter);
-            messageBuffer.append("new filter added");
-        } else {
-            messageBuffer.insert(0, "Error adding filter: ");
-            logger.error(messageBuffer.toString());
+        }
+
+        if (errorMessageBuffer.length() > 0) {
+            errorMessageBuffer.insert(0, "Error adding filter: ");
+            logger.error(errorMessageBuffer.toString());
+
+            JOptionPane.showMessageDialog(null, errorMessageBuffer.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -275,7 +291,7 @@ public class FilterPanel extends JPanel implements ActionListener {
      * @return
      */
     public List<AbstractFilter> getAppliedFilters() {
-        List<AbstractFilter> filtersList = new ArrayList<AbstractFilter>(modelAppliedFilters.size());
+        List<AbstractFilter> filtersList = new ArrayList<>(modelAppliedFilters.size());
         for (int i=0; i < modelAppliedFilters.getSize(); i++) {
             filtersList.add(modelAppliedFilters.get(i));
         }

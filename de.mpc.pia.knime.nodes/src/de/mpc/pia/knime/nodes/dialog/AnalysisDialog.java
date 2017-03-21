@@ -582,8 +582,16 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         fieldPSMAnalysisFileID = new JFormattedTextField(nf);
         fieldPSMAnalysisFileID.setValue(PIASettings.PSM_ANALYSIS_FILE_ID.getDefaultInteger());
         c.gridx = 1;
-        c.gridy = row++;
+        c.gridy = row;
+        c.gridwidth = 1;
+        c.weightx = 1;
         psmAnalysisPanel.add(fieldPSMAnalysisFileID, c);
+
+        c.gridx = 2;
+        c.gridy = row++;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        psmAnalysisPanel.add(new JLabel("(0 for merge/overview, 1..n for specific file given to the compiler)"), c);
         // fieldPSMAnalysisFileID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // CalculateAllFDR >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -592,17 +600,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         checkCalculateAllFDR.addChangeListener(this);
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         psmAnalysisPanel.add(checkCalculateAllFDR, c);
         // CalculateAllFDR <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // CalculateCombinedFDRScore >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score");
+        checkCalculateCombinedFDRScore = new JCheckBox("Calculate Combined FDR Score (used to combine results of multiple search engines)");
         checkCalculateCombinedFDRScore.setSelected(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
         checkCalculateCombinedFDRScore.setEnabled(allowCombinedFDRScoreCalculation());
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         psmAnalysisPanel.add(checkCalculateCombinedFDRScore, c);
         // CalculateCombinedFDRScore <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -631,23 +639,33 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.insets = new Insets(0, 5, 0, 5);
         c.gridx = 1;
         c.gridy = row++;
+        c.gridwidth = 1;
         psmAnalysisPanel.add(allDecoyStrategy_pattern, c);
 
         c.gridx = 1;
         c.gridy = row++;
+        c.gridwidth = 1;
         psmAnalysisPanel.add(allDecoyStrategy_searchengine, c);
-        c.insets = new Insets(5, 5, 5, 5);
 
+        c.insets = new Insets(5, 5, 5, 5);
         c.gridx = 0;
         c.gridy = row;
         c.gridwidth = 1;
+        c.gridheight = 1;
         psmAnalysisPanel.add(new JLabel("Decoy pattern:"), c);
 
         fieldAllDecoyPattern = new JTextField(PIASettings.ALL_DECOY_PATTERN.getDefaultString(), 10);
         fieldAllDecoyPattern.setEnabled(allDecoyStrategy_pattern.isSelected());
         c.gridx = 1;
-        c.gridy = row++;
+        c.gridy = row;
+        c.gridwidth = 1;
         psmAnalysisPanel.add(fieldAllDecoyPattern, c);
+
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.gridx = 2;
+        c.gridy = row++;
+        psmAnalysisPanel.add(new JLabel("(common patterns are e.g.: \"rev_.*\", \"DECOY_.*\")"), c);
         // DecoyStrategyAndPattern <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // AllUsedIdentifications >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -656,10 +674,10 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.gridwidth = 1;
         psmAnalysisPanel.add(new JLabel("Used identifications:"), c);
 
-        JRadioButton usedIdentifications_top = new JRadioButton("only top identification");
+        JRadioButton usedIdentifications_top = new JRadioButton("only top identification per spectrum (all other identifications will be discarded)");
         usedIdentifications_top.setActionCommand("1");
         usedIdentifications_top.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 1 );
-        JRadioButton usedIdentifications_all = new JRadioButton("all identifications");
+        JRadioButton usedIdentifications_all = new JRadioButton("all identifications per spectrum");
         usedIdentifications_all.setActionCommand("0");
         usedIdentifications_all.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 0);
 
@@ -670,6 +688,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.insets = new Insets(0, 5, 0, 5);
         c.gridx = 1;
         c.gridy = row++;
+        c.gridwidth = 2;
         psmAnalysisPanel.add(usedIdentifications_top, c);
 
         c.gridx = 1;
@@ -749,9 +768,14 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         layoutFdrScorePanel.gridy = 1;
         fdrScorePanel.add(psmScoreButtonsPanel, layoutFdrScorePanel);
 
+        layoutFdrScorePanel.gridx = 0;
+        layoutFdrScorePanel.gridy = 2;
+        layoutFdrScorePanel.gridwidth = 3;
+        fdrScorePanel.add(new JLabel("If no score is selected, PIA will use defaults."), layoutFdrScorePanel);
+
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         psmAnalysisPanel.add(fdrScorePanel, c);
         // PreferredFDRScore <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -767,11 +791,18 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weighty = 1.0;
         c.anchor = GridBagConstraints.NORTHWEST;
         psmAnalysisPanel.add(filtersPSMLevel, c);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.NORTH;
+        psmAnalysisPanel.add(new JLabel("Selected filters do not impact the inference, but only the export of PSMs."), c);
         // PSMLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
@@ -792,13 +823,13 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         int row = 0;
 
         // checkInferePeptides >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkInferPeptides = new JCheckBox("Infere peptides");
+        checkInferPeptides = new JCheckBox("Infere peptides (when turned off does not interfere with protein inference)");
         checkInferPeptides.setSelected(PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean());
         checkInferPeptides.addChangeListener(this);
 
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         peptideAnalysisPanel.add(checkInferPeptides, c);
         // checkInferePeptides <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -816,10 +847,16 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         fieldPeptideAnalysisFileID = new JFormattedTextField(nf);
         fieldPeptideAnalysisFileID.setValue(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getDefaultInteger());
         c.gridx = 1;
-        c.gridy = row++;
+        c.gridy = row;
         c.weightx = 1.0;
         c.weighty = 0.0;
         peptideAnalysisPanel.add(fieldPeptideAnalysisFileID, c);
+
+        c.gridx = 2;
+        c.gridy = row++;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        peptideAnalysisPanel.add(new JLabel("(0 for merge/overview, 1..n for specific file given to the compiler)"), c);
         // fieldPeptideAnalysisFileID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // PeptideLevelFilters >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -834,12 +871,20 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         c.gridx = 0;
         c.gridy = row++;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.weightx = 1.0;
-        c.weighty = 1.0;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.fill = GridBagConstraints.HORIZONTAL;
         peptideAnalysisPanel.add(filtersPeptideLevel, c);
+
+        c.gridx = 0;
+        c.gridy = row++;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.NORTH;
+        peptideAnalysisPanel.add(new JLabel("Selected filters do not impact the inference, but only the export of peptides."), c);
         // PeptideLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         inferePeptidesChanged();
@@ -860,7 +905,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         int row = 0;
 
         // checkInfereProteins >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkInferProteins = new JCheckBox("Infere proteins");
+        checkInferProteins = new JCheckBox("Infere proteins (when turned off, no protein output is generated)");
         checkInferProteins.setSelected(PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean());
         checkInferProteins.addChangeListener(this);
 
@@ -920,6 +965,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         infGBC.fill = GridBagConstraints.HORIZONTAL;
         infGBC.insets = new Insets(0, 5, 0, 5);
 
+        int startRow = panelRow;
+
         radioGrpProteinScoring = new ButtonGroup();
         infGBC.gridwidth = 1;
         for (ScoringType scoring : ScoringType.values()) {
@@ -931,15 +978,27 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
             infGBC.gridx = 1;
             infGBC.gridy = panelRow++;
-            infGBC.gridwidth = 2;
+            infGBC.gridwidth = 1;
             proteinScoringPanel.add(btnScoring, infGBC);
         }
+
+        JLabel infoTxt = new JLabel("<html><body>"
+                + "It is recommended to use multiplicative scoring with the <br/>"
+                + "(Combined) FDR Score, if calculated. Otherwise use search <br/>"
+                + "engine (main) score with an appropriate scoring method."
+                + "</body></html>");
+        infGBC.gridx = 2;
+        infGBC.gridy = startRow;
+        infGBC.gridwidth = 1;
+        infGBC.gridheight = panelRow - startRow;
+        proteinScoringPanel.add(infoTxt, infGBC);
 
         // >>> score for scoring
         JLabel scoreLabel = new JLabel("Basescore for protein scoring:");
         infGBC.gridx = 1;
         infGBC.gridy = panelRow;
         infGBC.gridwidth = 1;
+        infGBC.gridheight = 1;
         infGBC.weightx = 0.0;
         proteinScoringPanel.add(scoreLabel, infGBC);
 
@@ -1055,7 +1114,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.gridwidth = 1;
         c.weightx = 0.0;
         c.weighty = 0.0;
-        generalSettingsPanel.add(new JLabel("Column to PIA XML file"), c);
+        generalSettingsPanel.add(new JLabel("Column to PIA XML file (on port 0)"), c);
 
         inputColumnBox = new ColumnSelectionComboxBox((Border)null, DataValue.class);
         try {
@@ -1089,7 +1148,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // input column <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // fail on no decoys >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkErrorOnNoDecoys = new JCheckBox("Fail on no decoys");
+        checkErrorOnNoDecoys = new JCheckBox("Fail on no decoys (select, if a decoy database was used for identification)");
         checkErrorOnNoDecoys.setSelected(PIASettings.ERROR_ON_NO_DECOYS.getDefaultBoolean());
 
         c.gridx = 0;
@@ -1099,7 +1158,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // fail on no decoys <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         // create PSM sets >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        checkCreatePSMSets = new JCheckBox("Create PSM sets");
+        checkCreatePSMSets = new JCheckBox("Create PSM sets (select, if multiple search engines were used for identification)");
         checkCreatePSMSets.setSelected(PIASettings.CREATE_PSMSETS.getDefaultBoolean());
         checkCreatePSMSets.addChangeListener(this);
 

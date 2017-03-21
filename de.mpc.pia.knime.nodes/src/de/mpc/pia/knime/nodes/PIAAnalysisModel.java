@@ -42,7 +42,7 @@ public class PIAAnalysisModel {
 
     public PIAAnalysisModel(PIAModeller piaModeller) {
         this.piaModeller = piaModeller;
-        this.settings = new HashMap<String, Object>();
+        this.settings = new HashMap<>();
     }
 
 
@@ -156,7 +156,7 @@ public class PIAAnalysisModel {
     public List<String> executePSMOperations() {
         // TODO: implement calculation of FDR for single files
 
-        List<String> errorList = new ArrayList<String>();
+        List<String> errorList = new ArrayList<>();
 
         boolean createPSMSets = getSettingBoolean(PIASettings.CREATE_PSMSETS);
         piaModeller.setCreatePSMSets(createPSMSets);
@@ -266,7 +266,7 @@ public class PIAAnalysisModel {
      * @return always a List, maybe null, but never null
      */
     private static List<AbstractFilter> unserializeFilters(String[] serializedFilters) {
-        List<AbstractFilter> filters = new ArrayList<AbstractFilter>();
+        List<AbstractFilter> filters = new ArrayList<>();
 
         for (String serialFilter : serializedFilters) {
             AbstractFilter filter = ObjectSerializer.unserializeFilter(serialFilter);
@@ -288,7 +288,7 @@ public class PIAAnalysisModel {
             return piaModeller.getPSMModeller().getScoreShortNames(fileID.longValue());
         }
 
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
 
@@ -346,9 +346,9 @@ public class PIAAnalysisModel {
                getSettingString(PIASettings.PROTEIN_SCORING_METHOD),
                Collections.emptyMap());
 
-       proteinScoring.setSetting(AbstractScoring.scoringSettingID,
+       proteinScoring.setSetting(AbstractScoring.SCORING_SETTING_ID,
                getSettingString(PIASettings.PROTEIN_SCORING_SCORE));
-       proteinScoring.setSetting(AbstractScoring.scoringSpectraSettingID,
+       proteinScoring.setSetting(AbstractScoring.SCORING_SPECTRA_SETTING_ID,
                getSettingString(PIASettings.PROTEIN_SCORING_USED_PSMS));
 
        proteinInference.setScoring(proteinScoring);
