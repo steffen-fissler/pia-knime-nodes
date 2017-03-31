@@ -21,19 +21,19 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/batik-xml-1.6-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/bcmail-jdk14-138.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/bcprov-jdk14-138.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/biojava-ontology-4.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/biojava-ontology-4.2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/braf-1.2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/bzip2-0.9.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/c3p0-0.9.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/cdm-4.5.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/collections-generic-4.01.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/colt-1.2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/commons-cli-1.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/commons-cli-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-codec-1.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-collections-3.2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-collections4-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-io-1.3.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/commons-lang3-3.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/commons-lang3-3.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-logging-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/commons-math3-3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/concurrent-1.3.4.jar"/>
@@ -81,10 +81,10 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/jung-api-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jung-graph-impl-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jung-visualization-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-1.2.13.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-api-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-core-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-slf4j-impl-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-api-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-core-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/log4j-slf4j-impl-2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/logback-classic-1.0.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/logback-core-1.0.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/logkit-1.0.1.jar"/>
@@ -128,7 +128,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/xsdlib-20050913.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/xtandem-parser-1.12.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/xxindex-0.20.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia-1.2.0-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia-1.3.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
