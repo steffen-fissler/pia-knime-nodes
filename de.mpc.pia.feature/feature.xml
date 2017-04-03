@@ -2,7 +2,7 @@
 <feature
       id="de.mpc.pia.feature"
       label="PIA"
-      version="1.2.0.qualifier">
+      version="1.3.0.qualifier">
 
     <description>
 PIA - Protein Inference Algorithms
@@ -35,7 +35,7 @@ BSD 3-Clause License
       PIA - Protein Inference Algorithms
 --------------------------------------------------------------------------------
 
-Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2016
+Copyright Ruhr-Universitaet Bochum, Medizinisches Proteom-Center, 2013-2017
 
 This software is released under a three-clause BSD license:
 
