@@ -43,7 +43,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/ehcache-3.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/ehcache-core-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/fastutil-6.5.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/guava-17.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/guava-19.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/httpclient-4.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/httpcore-4.2.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/httpmime-4.2.6.jar"/>
@@ -71,9 +71,9 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzidentml-1.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzml-1.7.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jmzreader-1.2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-converters-3.0.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-model-3.0.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-util-3.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-converters-3.0.7-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-model-3.0.7-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/jmztab-modular-util-3.0.7-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jna-4.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/joda-time-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/jshortcut-0.4-oberzalek.jar"/>
@@ -105,9 +105,9 @@
 	<classpathentry exported="true" kind="lib" path="libs/lib/pkl-parser-1.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/pride-jaxb-1.0.18.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/pride-mod-2.1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/pride-utilities-2.0.14.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/pride-utilities-2.0.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/protobuf-java-2.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/lib/px-submission-core-2.0.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lib/px-submission-core-2.0.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/quartz-2.2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/relaxngDatatype-20050913.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/lib/servlet-api-2.2.jar"/>
