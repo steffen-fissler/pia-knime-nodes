@@ -1,7 +1,9 @@
 package de.mpc.pia.knime.nodes.analysis;
 
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeView;
 
+import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.visualization.ProteinsVisualizationPanel;
 
 /**
@@ -12,8 +14,13 @@ import de.mpc.pia.knime.nodes.visualization.ProteinsVisualizationPanel;
  */
 public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
 
-    /** */
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(PIAAnalysisNodeView.class);
+
+    /** the actually schon visualization panel */
     private ProteinsVisualizationPanel visualizationPanel;
+
+    /** the analysis model */
+    private PIAAnalysisModel analysisModel;
 
 
     /**
@@ -23,10 +30,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     protected PIAAnalysisNodeView(final PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
-
-        visualizationPanel = new ProteinsVisualizationPanel(nodeModel.getFilteredProteinList(),
-                nodeModel.getAnalysisModel(), nodeModel.getPSMToSpectrum());
-        setComponent(visualizationPanel);
+        /* creation in modelChanged, because it is called every time */
     }
 
     /**
@@ -34,15 +38,17 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void modelChanged() {
-
         // TODO retrieve the new model from your nodemodel and
         // update the view.
         PIAAnalysisNodeModel nodeModel =
             (PIAAnalysisNodeModel)getNodeModel();
         assert nodeModel != null;
 
-        visualizationPanel = new ProteinsVisualizationPanel(nodeModel.getFilteredProteinList(),
-                nodeModel.getAnalysisModel(), nodeModel.getPSMToSpectrum());
+        LOGGER.debug("loading model in modelChanged");
+        analysisModel = nodeModel.loadAnalysisModelFromFile();
+        visualizationPanel = new ProteinsVisualizationPanel(nodeModel.getFilteredProteinList(analysisModel),
+                analysisModel, nodeModel.getPSMToSpectrum());
+        setComponent(visualizationPanel);
     }
 
     /**
@@ -51,6 +57,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
     @Override
     protected void onClose() {
         visualizationPanel = null;
+        analysisModel = null;
     }
 
     /**

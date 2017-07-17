@@ -2,6 +2,7 @@ package de.mpc.pia.knime.nodes.analysis;
 
 import org.knime.core.node.NodeView;
 
+import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.visualization.psmspectrumviewer.PSMSpectrumViewerPanel;
 
 
@@ -18,13 +19,11 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
     /** The actually shown spectrum viewer panel */
     private PSMSpectrumViewerPanel psmSpectrumPanel;
 
+    /** the analysis model */
+    private PIAAnalysisModel analysisModel;
 
     protected PIAPSMSpectrumViewer(PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
-
-        psmSpectrumPanel = new PSMSpectrumViewerPanel(nodeModel.getFilteredPSMList(),
-                nodeModel.getPSMToSpectrum());
-        setComponent(psmSpectrumPanel);
     }
 
 
@@ -34,14 +33,17 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
             (PIAAnalysisNodeModel)getNodeModel();
         assert nodeModel != null;
 
-        psmSpectrumPanel = new PSMSpectrumViewerPanel(nodeModel.getFilteredPSMList(),
+        analysisModel = nodeModel.loadAnalysisModelFromFile();
+        psmSpectrumPanel = new PSMSpectrumViewerPanel(nodeModel.getFilteredPSMList(analysisModel),
                 nodeModel.getPSMToSpectrum());
+        setComponent(psmSpectrumPanel);
     }
 
 
     @Override
     protected void onClose() {
         psmSpectrumPanel = null;
+        analysisModel = null;
     }
 
 
