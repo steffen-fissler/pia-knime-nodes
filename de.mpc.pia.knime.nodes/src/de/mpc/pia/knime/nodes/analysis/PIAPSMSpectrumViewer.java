@@ -24,6 +24,7 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
 
     protected PIAPSMSpectrumViewer(PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
+        // creation in modelChanged, because it is called every time
     }
 
 

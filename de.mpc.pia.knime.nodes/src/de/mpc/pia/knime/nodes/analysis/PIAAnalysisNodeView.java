@@ -30,7 +30,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     protected PIAAnalysisNodeView(final PIAAnalysisNodeModel nodeModel) {
         super(nodeModel);
-        /* creation in modelChanged, because it is called every time */
+        // creation in modelChanged, because it is called every time
     }
 
     /**
@@ -38,8 +38,6 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void modelChanged() {
-        // TODO retrieve the new model from your nodemodel and
-        // update the view.
         PIAAnalysisNodeModel nodeModel =
             (PIAAnalysisNodeModel)getNodeModel();
         assert nodeModel != null;

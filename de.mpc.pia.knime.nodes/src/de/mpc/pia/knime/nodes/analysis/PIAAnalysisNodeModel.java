@@ -983,7 +983,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
         PIAAnalysisModel analysisModel = null;
 
         try {
-            analysisModel = PIAAnalysisModel.loadModelFromInternal(piaAnalysisModelFile, piaAnalysisSettingsFile);
+            if ((piaAnalysisModelFile != null) && (piaAnalysisSettingsFile != null)) {
+                analysisModel = PIAAnalysisModel.loadModelFromInternal(piaAnalysisModelFile, piaAnalysisSettingsFile);
+            }
         } catch (IOException e) {
             analysisModel = null;
             LOGGER.error("Could not get analysis model", e);
