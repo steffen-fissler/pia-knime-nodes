@@ -163,6 +163,8 @@ public class ProteinsVisualizationPanel extends JPanel
         proteinTable.setRowSorter(proteinSorter);
 
         JScrollPane proteinScrollPane = new JScrollPane(proteinTable);
+        //proteinScrollPane.setLayout(new BoxLayout(proteinScrollPane, BoxLayout.Y_AXIS));
+        proteinScrollPane.setPreferredSize(new Dimension(800, 200));
         // ProteinTable <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         JPanel proteinBottomInfos = new JPanel();
@@ -198,14 +200,14 @@ public class ProteinsVisualizationPanel extends JPanel
         // PSMSetTable >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         JPanel psmSetsPanel = new JPanel();
         psmSetsPanel.setLayout(new BoxLayout(psmSetsPanel, BoxLayout.Y_AXIS));
-        psmSetsPanel.setPreferredSize(new Dimension(600, 200));
+        psmSetsPanel.setPreferredSize(new Dimension(500, 200));
 
         psmSetsPanel.add(new JLabel("PSM sets"));
 
         psmSetTableModel = new PSMSetTableModel(null);
 
         psmSetTable = new JTable(psmSetTableModel);
-        psmSetTable.setPreferredScrollableViewportSize(new Dimension(600, 200));
+        psmSetTable.setPreferredScrollableViewportSize(new Dimension(500, 200));
         psmSetTable.setFillsViewportHeight(true);
         psmSetTable.setDefaultRenderer(Double.class, new ReportTableCellRenderer());
         psmSetTable.setDefaultRenderer(List.class, new ReportTableCellRenderer());
@@ -237,7 +239,6 @@ public class ProteinsVisualizationPanel extends JPanel
         psmsSplitPane.setAlignmentX(CENTER_ALIGNMENT);
         proteinBottomInfos.add(psmsSplitPane);
 
-
         JPanel clusterVisualizationPanelDummy = new JPanel();
         clusterVisualizationPanelDummy.setPreferredSize(new Dimension(500, 400));
 
@@ -248,7 +249,9 @@ public class ProteinsVisualizationPanel extends JPanel
                 protTableClusterPane, proteinBottomInfos);
         this.add(protTopBottomSplitPane);
 
-        psmsSplitPane.setDividerLocation(0.6);
+        protTableClusterPane.setResizeWeight(0.6);
+        protTopBottomSplitPane.setResizeWeight(0.5);
+        psmsSplitPane.setResizeWeight(0.5);
     }
 
 
@@ -501,7 +504,7 @@ public class ProteinsVisualizationPanel extends JPanel
         //VertexRelation.IN_SUPER_PAG           no sub-protein can be selected -> not possible now
         //VertexRelation.IN_UNRELATED_PAG       no sub-protein can be selected -> not possible now
 
-        List<Map<VertexRelation, Set<Long>>> res = new ArrayList<Map<VertexRelation,Set<Long>>>(3);
+        List<Map<VertexRelation, Set<Long>>> res = new ArrayList<>(3);
         res.add(relationsAccessions);
         res.add(relationsPeptides);
         res.add(relationsSpectra);
@@ -533,7 +536,7 @@ public class ProteinsVisualizationPanel extends JPanel
             }
         }
 
-        List<Set<Long>> res = new ArrayList<Set<Long>>(3);
+        List<Set<Long>> res = new ArrayList<>(3);
         res.add(accs);
         res.add(peps);
         res.add(spectra);

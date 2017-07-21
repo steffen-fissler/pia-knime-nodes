@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.commands.ExecutionException;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -992,6 +995,37 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         return analysisModel;
+    }
+
+
+    /**
+     * Getter for the analysis model
+     * @return
+     */
+    public int getAnalysisModelFileHash() {
+        HashCodeBuilder hcb = new HashCodeBuilder(23, 31);
+        int hash = 0;
+
+        if (piaAnalysisModelFile != null) {
+            hcb.append(piaAnalysisModelFile.getAbsolutePath());
+
+            try {
+                BasicFileAttributes attr = Files.readAttributes(piaAnalysisModelFile.toPath(), BasicFileAttributes.class);
+
+                hcb.append(attr.creationTime());
+                hcb.append(attr.lastModifiedTime());
+                hcb.append(attr.size());
+
+                hash = hcb.toHashCode();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                hash = 0;
+                LOGGER.error("could not read file attributes", e);
+            }
+        }
+
+        return hash;
     }
 
 
