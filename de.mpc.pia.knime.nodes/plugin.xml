@@ -71,7 +71,7 @@
         point="org.knime.core.PortType">
      <portType
            hidden="false"
-           name="de.mpc.pia.knime.nodes.filestorage.FileStoreURIPortObject"
+           name="URIPortObject managed by FileStore"
            objectClass="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject"
            objectSerializer="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObjectSerializer"
            specClass="org.knime.core.data.uri.URIPortObjectSpec"
