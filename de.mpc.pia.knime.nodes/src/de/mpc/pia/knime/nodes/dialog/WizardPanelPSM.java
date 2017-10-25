@@ -1,9 +1,7 @@
 package de.mpc.pia.knime.nodes.dialog;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -30,20 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYBarPainter;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
-import org.jfree.data.statistics.HistogramDataset;
 import org.knime.core.node.NodeSettingsRO;
 
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
 import de.mpc.pia.knime.nodes.PIASettings;
-import de.mpc.pia.modeller.PIAModeller;
 import de.mpc.pia.modeller.score.FDRData;
 import de.mpc.pia.modeller.score.ScoreModel;
 import de.mpc.pia.modeller.score.ScoreModelEnum;
@@ -113,7 +101,7 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 	 * @return
 	 */
 	public Map<String, Object> getSettings() {
-		HashMap<String, Object> settings = new HashMap<String, Object>();
+		HashMap<String, Object> settings = new HashMap<>();
 
 		settings.put(PIASettings.CREATE_PSMSETS.getKey(), checkCreatePSMSets.isSelected());
 		settings.put(PIASettings.FDR_THRESHOLD.getKey(), (Double)fdrThreshold.getValue());
@@ -302,9 +290,9 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 		layoutFdrScorePanel.gridy = 0;
 		fdrScorePanel.add(new JLabel("Available PSM scores"), layoutFdrScorePanel);
 
-		availableScoresModel = new DefaultListModel<ScoreModel>();
+		availableScoresModel = new DefaultListModel<>();
 
-		availableScoresList = new JList<ScoreModel>(availableScoresModel);
+		availableScoresList = new JList<>(availableScoresModel);
 		availableScoresList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		availableScoresList.setLayoutOrientation(JList.VERTICAL);
 		availableScoresList.setVisibleRowCount(-1);
@@ -322,9 +310,9 @@ public class WizardPanelPSM extends JPanel implements ActionListener {
 		layoutFdrScorePanel.gridy = 0;
 		fdrScorePanel.add(new JLabel("Preferred PSM scores"), layoutFdrScorePanel);
 
-		preferredScoresModel = new DefaultListModel<ScoreModel>();
+		preferredScoresModel = new DefaultListModel<>();
 
-		preferredScoresList = new JList<ScoreModel>(preferredScoresModel);
+		preferredScoresList = new JList<>(preferredScoresModel);
 		preferredScoresList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		preferredScoresList.setLayoutOrientation(JList.VERTICAL);
 		preferredScoresList.setVisibleRowCount(-1);
