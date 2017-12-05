@@ -2,7 +2,7 @@
 <feature
       id="de.mpc.pia.feature"
       label="PIA"
-      version="1.3.5.qualifier">
+      version="1.3.6.qualifier">
 
     <description>
 PIA - Protein Inference Algorithms
