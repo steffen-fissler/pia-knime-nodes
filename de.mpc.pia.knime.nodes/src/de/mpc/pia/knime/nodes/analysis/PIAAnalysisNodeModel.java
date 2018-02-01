@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.commands.ExecutionException;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -51,6 +54,7 @@ import org.knime.core.node.port.PortType;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
+import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.dialog.ExportFormats;
 import de.mpc.pia.knime.nodes.dialog.ExportLevels;
@@ -64,6 +68,7 @@ import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
+import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 
 import org.knime.core.node.ExecutionContext;
@@ -83,8 +88,7 @@ import org.knime.core.node.NodeSettingsWO;
 public class PIAAnalysisNodeModel extends NodeModel {
 
     /** the logger instance */
-    private static final NodeLogger LOGGER =
-            NodeLogger.getLogger(PIAAnalysisNodeModel.class);
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(PIAAnalysisNodeModel.class);
 
 
     /** the model of the input files' URLs */
@@ -174,11 +178,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
             new SettingsModelStringArray(PIASettings.PROTEIN_FILTERS.getKey(), PIASettings.PROTEIN_FILTERS.getDefaultStringArray());
 
 
-    /** the analysis model, if it is created yet */
-    private PIAAnalysisModel analysisModel;
-
     /** temporary created file, delete on reset */
-    private File piaTmpFile;
+    private File piaXMLTmpFile;
 
     /** the reported PSMs */
     private List<PSMReportItem> filteredPSMs;
@@ -191,6 +192,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
     /** the PSM to spectrum mapper */
     private PiaPsmToSpectrum<ReportPSM> psmToSpectrum;
+
+    /** where to find the analysis model */
+    private File piaAnalysisModelFile;
+
+    /** where to find the analysis model's settings */
+    private File piaAnalysisSettingsFile;
 
 
     /**
@@ -206,12 +213,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
                         BufferedDataTable.TYPE,
                         IURIPortObject.TYPE });
 
-        analysisModel = null;
-        piaTmpFile = null;
+        piaXMLTmpFile = null;
         filteredProteins = null;
         filteredPeptides = null;
         filteredPSMs = null;
         psmToSpectrum = null;
+        piaAnalysisModelFile = null;
+        piaAnalysisSettingsFile = null;
     }
 
 
@@ -276,9 +284,17 @@ public class PIAAnalysisNodeModel extends NodeModel {
                     + "datatable (e.g. from PIA Compiler or List Files) or port (Input File)");
         }
 
+        System.err.println("vCID: " + PIANodesPlugin.getVisitorCid());
+        System.err.println("tracking disabled: " + PIANodesPlugin.isUsageStatisticsDisabled());
+        PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
+        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
+                PIAMatomoTracker.PIA_TRACKING_MODELLER_NAME,
+                PIAMatomoTracker.PIA_TRACKING_MODELLER_KNIME_STARTED, null,
+                PIANodesPlugin.getVisitorCid());
+
         // create modeller and load the file
         PIAModeller piaModeller = new PIAModeller(piaXmlFileName);
-        analysisModel = new PIAAnalysisModel(piaModeller);
+        PIAAnalysisModel analysisModel = new PIAAnalysisModel(piaModeller);
 
         // set whether PSM sets should be created
         analysisModel.addSetting(PIASettings.CREATE_PSMSETS.getKey(),
@@ -367,13 +383,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             throw new ExecutionException(errors.toString());
         }
 
-        BufferedDataContainer psmContainer = createPSMContainer(getFilteredPSMList(), exec);
+        BufferedDataContainer psmContainer = createPSMContainer(analysisModel, exec);
 
         // execute the peptide analysis
         BufferedDataContainer pepContainer;
         if (m_peptide_infer_peptides.getBooleanValue()) {
             analysisModel.executePeptideOperations();
-            pepContainer = createPeptideContainer(getFilteredPeptides(), exec);
+            pepContainer = createPeptideContainer(analysisModel, exec);
         } else {
             pepContainer = exec.createDataContainer(getPeptideTableSpec());
             pepContainer.close();
@@ -383,17 +399,31 @@ public class PIAAnalysisNodeModel extends NodeModel {
         BufferedDataContainer proteinContainer;
         if (m_protein_infer_proteins.getBooleanValue()) {
             analysisModel.executeProteinOperations();
-            proteinContainer = createProteinContainer(getFilteredProteinList(), exec);
+            proteinContainer = createProteinContainer(analysisModel, exec);
         } else {
             proteinContainer = exec.createDataContainer(getProteinTableSpec());
             proteinContainer.close();
         }
 
         // export the selected level to selected format
-        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"));
+        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"), analysisModel);
 
         // create the PSM to spectra mapping
-        psmToSpectrum = createPSMToSpectrumMapping((IURIPortObject) inObjects[2]);
+        psmToSpectrum = createPSMToSpectrumMapping((IURIPortObject) inObjects[2], analysisModel);
+
+        // save the model and settings to disk
+        piaAnalysisModelFile = File.createTempFile("piaAnalysisModel-", "");
+        piaAnalysisModelFile.deleteOnExit();
+        analysisModel.saveModelTo(piaAnalysisModelFile);
+
+        piaAnalysisSettingsFile = File.createTempFile("piaAnalysisModelSettings-", "");
+        piaAnalysisSettingsFile.deleteOnExit();
+        analysisModel.saveSettingsTo(piaAnalysisSettingsFile);
+
+        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
+                PIAMatomoTracker.PIA_TRACKING_MODELLER_NAME,
+                PIAMatomoTracker.PIA_TRACKING_MODELLER_FINISHED, null,
+                PIANodesPlugin.getVisitorCid());
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
@@ -408,11 +438,18 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void reset() {
         // executed on reset.
-        analysisModel = null;
+        if (piaAnalysisModelFile != null) {
+            piaAnalysisModelFile.delete();
+            piaAnalysisModelFile = null;
+        }
+        if (piaAnalysisSettingsFile != null) {
+            piaAnalysisSettingsFile.delete();
+            piaAnalysisSettingsFile = null;
+        }
 
-        if (piaTmpFile != null) {
-            piaTmpFile.delete();
-            piaTmpFile = null;
+        if (piaXMLTmpFile != null) {
+            piaXMLTmpFile.delete();
+            piaXMLTmpFile = null;
         }
 
         filteredProteins = null;
@@ -554,14 +591,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
     protected void loadInternals(final File internDir,
             final ExecutionMonitor exec) throws IOException,
             CanceledExecutionException {
+        piaAnalysisModelFile = PIAAnalysisModel.getInternalModelFileFromDir(internDir);
+        piaAnalysisSettingsFile = PIAAnalysisModel.getInternalSettingsFileFromDir(internDir);
 
-        // TODO load internal data.
-        // Everything handed to output ports is loaded automatically (data
-        // returned by the execute method, models loaded in loadModelContent,
-        // and user settings set through loadSettingsFrom - is all taken care
-        // of). Load here only the other internals that need to be restored
-        // (e.g. data used by the views).
-
+        // TODO: also load the PSMToSpectrum
     }
 
 
@@ -572,13 +605,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
     protected void saveInternals(final File internDir,
             final ExecutionMonitor exec) throws IOException,
             CanceledExecutionException {
+        if (piaAnalysisModelFile != null) {
+            piaAnalysisModelFile = PIAAnalysisModel.moveModelToInternal(internDir, piaAnalysisModelFile);
+            piaAnalysisSettingsFile = PIAAnalysisModel.moveSettingsToInternal(internDir, piaAnalysisSettingsFile);
+        }
 
-        // TODO save internal models.
-        // Everything written to output ports is saved automatically (data
-        // returned by the execute method, models saved in the saveModelContent,
-        // and user settings saved through saveSettingsTo - is all taken care
-        // of). Save here only the other internals that need to be preserved
-        // (e.g. data used by the views).
+        // TODO: also save the PSMToSpectrum
     }
 
 
@@ -588,7 +620,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     private DataTableSpec getPSMTableSpec() {
-        // TODO: select one "main-score", which should be set for each fileID (seelction by the psmModeller?)
+        // TODO: select one "main-score", which should be set for each fileID (selection by the psmModeller?)
 
         List<DataColumnSpec> psmCols = new ArrayList<>();
         psmCols.add(new DataColumnSpecCreator("Sequence", StringCell.TYPE).createSpec());
@@ -625,8 +657,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param exec
      * @return
      */
-    private BufferedDataContainer createPSMContainer(List<PSMReportItem> psmList,
-            final ExecutionContext exec) {
+    private BufferedDataContainer createPSMContainer(PIAAnalysisModel analysisModel, final ExecutionContext exec) {
 
         // TODO: use own DataType for representation of PSM, peptides and proteins
 
@@ -635,6 +666,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
         List<String> psmScoreShorts = analysisModel.getPSMScoreShorts(m_psm_analysis_file_id.getIntValue());
+
+        List<PSMReportItem> psmList = getFilteredPSMList(analysisModel);
 
         for (PSMReportItem psm : psmList) {
             psmId++;
@@ -780,13 +813,14 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param exec
      * @return
      */
-    private BufferedDataContainer createPeptideContainer(List<ReportPeptide> peptideList,
-            final ExecutionContext exec) {
+    private BufferedDataContainer createPeptideContainer(PIAAnalysisModel analysisModel, final ExecutionContext exec) {
         BufferedDataContainer container = exec.createDataContainer(getPeptideTableSpec());
         Integer pepId = 0;
 
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
         List<String> scoreShorts = analysisModel.getPSMScoreShorts(m_peptide_analysis_file_id.getIntValue());
+
+        List<ReportPeptide> peptideList = getFilteredPeptides(analysisModel);
 
         for (ReportPeptide pep : peptideList) {
             pepId++;
@@ -884,10 +918,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param exec
      * @return
      */
-    private BufferedDataContainer createProteinContainer(List<ReportProtein> proteinList,
-            final ExecutionContext exec) {
+    private BufferedDataContainer createProteinContainer(PIAAnalysisModel analysisModel, final ExecutionContext exec) {
         BufferedDataContainer container = exec.createDataContainer(getProteinTableSpec());
         Integer protId = 0;
+
+        List<ReportProtein> proteinList = getFilteredProteinList(analysisModel);
 
         for (ReportProtein protein : proteinList) {
             protId++;
@@ -961,8 +996,50 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * Getter for the analysis model
      * @return
      */
-    public PIAAnalysisModel getAnalysisModel() {
+    public PIAAnalysisModel loadAnalysisModelFromFile() {
+        PIAAnalysisModel analysisModel = null;
+
+        try {
+            if ((piaAnalysisModelFile != null) && (piaAnalysisSettingsFile != null)) {
+                analysisModel = PIAAnalysisModel.loadModelFromInternal(piaAnalysisModelFile, piaAnalysisSettingsFile);
+            }
+        } catch (IOException e) {
+            analysisModel = null;
+            LOGGER.error("Could not get analysis model", e);
+        }
+
         return analysisModel;
+    }
+
+
+    /**
+     * Getter for the analysis model
+     * @return
+     */
+    public int getAnalysisModelFileHash() {
+        HashCodeBuilder hcb = new HashCodeBuilder(23, 31);
+        int hash = 0;
+
+        if (piaAnalysisModelFile != null) {
+            hcb.append(piaAnalysisModelFile.getAbsolutePath());
+
+            try {
+                BasicFileAttributes attr = Files.readAttributes(piaAnalysisModelFile.toPath(), BasicFileAttributes.class);
+
+                hcb.append(attr.creationTime());
+                hcb.append(attr.lastModifiedTime());
+                hcb.append(attr.size());
+
+                hash = hcb.toHashCode();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                hash = 0;
+                LOGGER.error("could not read file attributes", e);
+            }
+        }
+
+        return hash;
     }
 
 
@@ -971,7 +1048,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      *
      * @return
      */
-    public List<PSMReportItem> getFilteredPSMList() {
+    public List<PSMReportItem> getFilteredPSMList(PIAAnalysisModel analysisModel) {
         if (analysisModel != null) {
             if (filteredPSMs == null) {
                 filteredPSMs = analysisModel.getFilteredReportPSMs(
@@ -988,7 +1065,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      *
      * @return
      */
-    public List<ReportPeptide> getFilteredPeptides() {
+    public List<ReportPeptide> getFilteredPeptides(PIAAnalysisModel analysisModel) {
         if (analysisModel != null) {
             if (filteredPeptides == null) {
                 filteredPeptides = analysisModel.getFilteredReportPeptides(
@@ -1005,7 +1082,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      *
      * @return
      */
-    public List<ReportProtein> getFilteredProteinList() {
+    public List<ReportProtein> getFilteredProteinList(PIAAnalysisModel analysisModel) {
         if (analysisModel != null) {
             if (filteredProteins == null) {
                 filteredProteins =  analysisModel.getFilteredReportProteins(
@@ -1066,12 +1143,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 is = new GZIPInputStream(is);
             }
 
-            piaTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
-            piaTmpFile.deleteOnExit();
+            piaXMLTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
+            piaXMLTmpFile.deleteOnExit();
 
-            FileOutputStream fos = new FileOutputStream(piaTmpFile, false);
+            FileOutputStream fos = new FileOutputStream(piaXMLTmpFile, false);
 
-            LOGGER.debug("writing unzipped file to " + piaTmpFile.getAbsolutePath());
+            LOGGER.debug("writing unzipped file to " + piaXMLTmpFile.getAbsolutePath());
             int len;
             while((len = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len);
@@ -1082,7 +1159,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             is.close();
             LOGGER.debug("inputStream closed");
 
-            fileName = piaTmpFile.getAbsolutePath();
+            fileName = piaXMLTmpFile.getAbsolutePath();
         }
 
         return fileName;
@@ -1096,7 +1173,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      * @throws IOException
      */
-    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore) throws IOException {
+    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore, PIAAnalysisModel analysisModel)
+            throws IOException {
         FileStoreURIPortObject fsupo = new FileStoreURIPortObject(fileStore);
 
         if (!m_export_level.getStringValue().equals(ExportLevels.none.toString())) {
@@ -1193,7 +1271,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param filePort
      * @return null, if no spectrum file was found on the port
      */
-    private PiaPsmToSpectrum<ReportPSM> createPSMToSpectrumMapping(IURIPortObject filePort) {
+    private PiaPsmToSpectrum<ReportPSM> createPSMToSpectrumMapping(IURIPortObject filePort,
+            PIAAnalysisModel analysisModel) {
         PiaPsmToSpectrum<ReportPSM> psmToSpec = null;
 
         // get the input file from the file port input (if not set before)
@@ -1206,7 +1285,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 File portFile = new File(uri);
 
                 LOGGER.info("Matching PSMs to spectra in file " + portFile.getAbsolutePath());
-                psmToSpec = new PiaPsmToSpectrum<>(portFile, getAllReportPSMs());
+                psmToSpec = new PiaPsmToSpectrum<>(portFile, getAllReportPSMs(analysisModel));
 
                 if (psmToSpec.getNrNullMatches() > 0) {
                     LOGGER.warn("There were " + psmToSpec.getNrNullMatches() + " PSMs, that could not be matched to spectra.");
@@ -1230,7 +1309,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      *
      * @return
      */
-    private List<ReportPSM> getAllReportPSMs() {
+    private List<ReportPSM> getAllReportPSMs(PIAAnalysisModel analysisModel) {
         List<ReportPSMSet> psmSets = analysisModel.getPSMModeller().getFilteredReportPSMSets(null);
         ListIterator<ReportPSMSet> setIterator = psmSets.listIterator();
 

@@ -81,6 +81,10 @@ public class FilterPanel extends JPanel implements ActionListener {
     private DefaultListModel<AbstractFilter> modelAppliedFilters;
 
 
+    /** placeholder text shown for the empty score selection */
+    public final static String TEXT_SELECT_SCORE_HERE = "-- select score for filter here --";
+
+
     /**
      * Constructs a panel for {@link AbstractFilter}s with the given title.
      *
@@ -110,6 +114,8 @@ public class FilterPanel extends JPanel implements ActionListener {
         comboAvailableFilterScores.setRenderer(new ScoreCellRenderer());
         comboAvailableFilterScores.setEditable(true);
         comboAvailableFilterScores.setEnabled(false);
+
+        comboAvailableFilterScores.addItem(TEXT_SELECT_SCORE_HERE);
 
         // add all possible scores
         for (ScoreModelEnum score : ScoreModelEnum.values()) {
@@ -215,13 +221,11 @@ public class FilterPanel extends JPanel implements ActionListener {
                 FilterFactory.newInstanceOf(filterShort, comparator, argument, negate, errorMessageBuffer);
 
         if ((newFilter instanceof PSMScoreFilter)
-                && (((PSMScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
-                        || "null".equals(((PSMScoreFilter)newFilter).getScoreShortName()))) {
+                && !isSelectedScoreShortnameValid(((PSMScoreFilter)newFilter).getScoreShortName())) {
             errorMessageBuffer.insert(0, "Select a score for the PSM score filter.");
             newFilter = null;
         } else if ((newFilter instanceof PeptideScoreFilter)
-                && (((PeptideScoreFilter)newFilter).getScoreShortName().trim().isEmpty()
-                        || "null".equals(((PeptideScoreFilter)newFilter).getScoreShortName()))) {
+                && !isSelectedScoreShortnameValid(((PSMScoreFilter)newFilter).getScoreShortName())) {
             errorMessageBuffer.insert(0, "Select a score for the Peptide score filter.");
             newFilter = null;
         }
@@ -236,6 +240,20 @@ public class FilterPanel extends JPanel implements ActionListener {
 
             JOptionPane.showMessageDialog(null, errorMessageBuffer.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+
+    /**
+     * Returns whether the given scoreShortName is valid. I.e. it is not null, represents a null score or the
+     * placeholder text.
+     *
+     * @param scoreShortName
+     * @return
+     */
+    private boolean isSelectedScoreShortnameValid(String scoreShortName) {
+        return !scoreShortName.trim().isEmpty()
+                && !"null".equals(scoreShortName.trim())
+                && !TEXT_SELECT_SCORE_HERE.equals(scoreShortName);
     }
 
 

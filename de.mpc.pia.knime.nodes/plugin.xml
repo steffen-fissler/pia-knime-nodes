@@ -71,11 +71,26 @@
         point="org.knime.core.PortType">
      <portType
            hidden="false"
-           name="de.mpc.pia.knime.nodes.filestorage.FileStoreURIPortObject"
+           name="URIPortObject managed by FileStore"
            objectClass="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObject"
            objectSerializer="de.mpc.pia.knime.nodes.filestorageport.FileStoreURIPortObjectSerializer"
            specClass="org.knime.core.data.uri.URIPortObjectSpec"
            specSerializer="org.knime.core.data.uri.URIPortObjectSpec$Serializer">
      </portType>
+  </extension>
+  <extension
+        point="org.eclipse.equinox.preferences.preferences">
+     <initializer
+           class="de.mpc.pia.knime.nodes.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           category="org.knime.workbench.ui.preferences"
+           class="de.mpc.pia.knime.nodes.preferences.PreferencePage"
+           id="de.mpc.pia.knime.nodes.preferences.PreferencePage"
+           name="PIA - Protein Inference Algorithms">
+     </page>
   </extension>
 </plugin>

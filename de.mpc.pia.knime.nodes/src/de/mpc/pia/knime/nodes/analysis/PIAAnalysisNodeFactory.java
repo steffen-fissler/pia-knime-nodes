@@ -10,8 +10,7 @@ import org.knime.core.node.NodeView;
  *
  * @author Julian Uszkoreit
  */
-public class PIAAnalysisNodeFactory
-        extends NodeFactory<PIAAnalysisNodeModel> {
+public class PIAAnalysisNodeFactory extends NodeFactory<PIAAnalysisNodeModel> {
 
     /**
      * {@inheritDoc}

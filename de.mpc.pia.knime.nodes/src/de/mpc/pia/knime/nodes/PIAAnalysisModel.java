@@ -1,10 +1,22 @@
 package de.mpc.pia.knime.nodes;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import org.knime.core.node.NodeLogger;
 
 import de.mpc.pia.knime.nodes.utils.ObjectSerializer;
 import de.mpc.pia.modeller.PIAModeller;
@@ -33,16 +45,167 @@ import de.mpc.pia.modeller.score.FDRData.DecoyStrategy;
  */
 public class PIAAnalysisModel {
 
+    /** the logger instance */
+    private static final NodeLogger LOGGER = NodeLogger.getLogger(PIAAnalysisModel.class);
+
+
     /** the PIA modeller, which handles everything */
     private PIAModeller piaModeller;
 
     /** the settings, which are executed */
-    private Map<String, Object> settings;
+    private HashMap<String, Object> settings;
+
+
+    private static final String PIA_MODEL_FILENAME = "knime.piaModel";
+    private static final String SETTINGS_FILENAME = "knime.piaAnalysisSettings";
 
 
     public PIAAnalysisModel(PIAModeller piaModeller) {
         this.piaModeller = piaModeller;
         this.settings = new HashMap<>();
+    }
+
+
+    /**
+     * Serializes the piaModeller and the settings map to files
+     *
+     * @param folderName
+     * @throws IOException
+     */
+    public void saveModelTo(final File piaModelFile) throws IOException {
+        PIAModeller.serializeToFile(piaModeller, piaModelFile);
+    }
+
+
+    /**
+     * Saves the settings to internal.
+     *
+     * @param internDir
+     * @throws IOException
+     */
+    public void saveSettingsTo(final File settingsFile) throws IOException {
+        LOGGER.debug("Serializing settings data to " + settingsFile.getAbsolutePath());
+        try (FileOutputStream fos = new FileOutputStream(settingsFile);
+                GZIPOutputStream gzo = new GZIPOutputStream(fos);
+                ObjectOutputStream oos = new ObjectOutputStream(gzo); ) {
+            oos.writeObject(settings);
+        } catch (IOException e) {
+            LOGGER.error("Could not write analysis settings to " + settingsFile.getAbsolutePath());
+            throw e;
+        }
+    }
+
+
+    /**
+     * Gets the file of the model in the internal dir
+     *
+     * @param internDir
+     * @return
+     */
+    public static File getInternalModelFileFromDir(final File internDir) {
+        return new File(internDir, PIA_MODEL_FILENAME);
+    }
+
+
+    /**
+     * Gets the file of the settings in the internal dir
+     *
+     * @param internDir
+     * @return
+     */
+    public static File getInternalSettingsFileFromDir(final File internDir) {
+        return new File(internDir, SETTINGS_FILENAME);
+    }
+
+
+    /**
+     * Moves the model to internal storage.
+     *
+     * @param internDir
+     * @param tmpModelFile
+     * @return path to the new location
+     * @throws IOException
+     */
+    public static File moveModelToInternal(final File internDir, final File tmpModelFile) throws IOException {
+        File piaModelFile = getInternalModelFileFromDir(internDir);
+        return moveFile(tmpModelFile, piaModelFile);
+    }
+
+
+    /**
+     * Moves the model to internal storage.
+     *
+     * @param internDir
+     * @param tmpSettingsFile
+     * @return path to the new location
+     * @throws IOException
+     */
+    public static File moveSettingsToInternal(final File internDir, final File tmpSettingsFile) throws IOException {
+        File settingsFile = getInternalSettingsFileFromDir(internDir);
+        return moveFile(tmpSettingsFile, settingsFile);
+    }
+
+
+    /**
+     * Moves the file from srcFile to dstFile and returns the dstFile.
+     *
+     * @param srcFile
+     * @param dstFile
+     * @return
+     * @throws IOException
+     */
+    private static File moveFile(final File srcFile, final File dstFile) throws IOException {
+        Files.copy(srcFile.toPath(), dstFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        srcFile.delete();
+        return dstFile;
+    }
+
+
+    /**
+     * Loads a {@link PIAAnalysisModel} from the given file folder. First the {@link PIAModeller} is de-serialized, the
+     * {@link PIAAnalysisModel} created, the settings de-serialized and the settings connected.
+     *
+     * @param internDir
+     * @return
+     * @throws IOException
+     */
+    @SuppressWarnings("unchecked")
+    public static PIAAnalysisModel loadModelFromInternal(final File piaModelFile, final File settingsFile)
+            throws IOException {
+        // first get the Model
+        LOGGER.debug("De-serializing model data from " + piaModelFile.getAbsolutePath());
+        PIAModeller piaModeller = PIAModeller.deSerializeFromFile(piaModelFile);
+
+        PIAAnalysisModel analysisModel = new PIAAnalysisModel(piaModeller);
+        LOGGER.debug("De-serialized model data");
+
+        // then get the settings
+        HashMap<String, Object> settings = null;
+        LOGGER.debug("De-serializing settings data from " + settingsFile.getAbsolutePath());
+        try (FileInputStream fin = new FileInputStream(settingsFile);
+                GZIPInputStream gzi = new GZIPInputStream(fin);
+                ObjectInputStream ois = new ObjectInputStream(gzi);) {
+            Object readObject = ois.readObject();
+            if (readObject instanceof HashMap<?, ?>) {
+                settings = (HashMap<String, Object>) readObject;
+            } else {
+                String msg = "Could not read the settings from the file " + settingsFile.getAbsolutePath();
+                LOGGER.error(msg);
+                throw new IOException(msg);
+            }
+        } catch (IOException e) {
+            LOGGER.error("Could not read settings from " + settingsFile.getAbsolutePath(), e);
+            throw e;
+        } catch (ClassNotFoundException e) {
+            String msg = "Could not read settings from " + settingsFile.getAbsolutePath();
+            LOGGER.error(msg, e);
+            throw new IOException(msg, e);
+        }
+
+        // set the settings
+        analysisModel.settings = settings;
+
+        return analysisModel;
     }
 
 

@@ -50,6 +50,10 @@
             <option name="PSMs used for scoring">By default, only the best PSM score per peptide is used for protein scoring. If multiple PSMs per peptide should influence the score, use all PSMs.</option>
             <option name="Filters for protein level">Selected filters here will be used for the creation of the protein table on port 2 and for protein level export. It will not directly interfere with protein inference, but only the representation of the inferred groups in the mentioned exports.</option>
         </tab>
+        	
+        <tab name="Privacy information">
+        	<option name="Collection of anonymous usage statistics">The PIA team is collecting usage statistics for quality control and, most important, funding purposes. If you don't like to provide the anonymous usage data, disable it in the KNIME preferences.</option>
+        </tab>
     </fullDescription>
     
     <ports>
