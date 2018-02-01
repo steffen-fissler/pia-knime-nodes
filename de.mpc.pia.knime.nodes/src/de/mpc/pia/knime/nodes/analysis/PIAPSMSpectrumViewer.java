@@ -14,7 +14,9 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeView;
 
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
+import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.visualization.psmspectrumviewer.PSMSpectrumViewerPanel;
+import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 
 /**
  * View for the PSM spectrum visualization. Visualizes all identified (filtered)

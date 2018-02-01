@@ -9,7 +9,7 @@ PIA allows you to inspect the results of common proteomics spectrum identificati
 
 For more information, please refer to the [main PIA project](https://github.com/mpc-bioinformatics/pia) and the [PIA WiKi]( https://github.com/mpc-bioinformatics/pia/wiki).
 
-This branch is for the nodes used in **KNIME 3.2**.
+This branch is for the nodes used in **KNIME 3.2 and above**
 
 ![Smallest possible workflow](KNIME_small_workflow.png)
 

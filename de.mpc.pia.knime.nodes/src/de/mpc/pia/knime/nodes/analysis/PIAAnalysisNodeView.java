@@ -14,7 +14,9 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeView;
 
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
+import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.visualization.ProteinsVisualizationPanel;
+import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 
 /**
  * <code>NodeView</code> for the "PIADefault" Node.
@@ -116,6 +118,12 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
                             analysisModel, currentNodeModel.getPSMToSpectrum());
                 } catch (Exception e) {
                     LOGGER.error("Error while loading model file", e);
+
+                    PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
+                    PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
+                            PIAMatomoTracker.PIA_TRACKING_VIEWER_NAME,
+                            PIAMatomoTracker.PIA_TRACKING_VIEWER_KNIME_ANALYSIS_ERROR, null,
+                            PIANodesPlugin.getVisitorCid());
 
                     visualizationPanel = new JPanel();
                     visualizationPanel.setLayout(new BoxLayout(visualizationPanel, BoxLayout.Y_AXIS));

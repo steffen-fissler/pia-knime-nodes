@@ -49,6 +49,8 @@ import de.mpc.pia.intermediate.compiler.PIACompiler;
 import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.intermediate.piaxml.FilesListXML;
 import de.mpc.pia.intermediate.piaxml.PIAInputFileXML;
+import de.mpc.pia.knime.nodes.PIANodesPlugin;
+import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import uk.ac.ebi.jmzidml.model.mzidml.AbstractParam;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftware;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftwareList;
@@ -122,6 +124,12 @@ public class PIACompilerNodeModel extends NodeModel {
             final ExecutionContext exec) throws IOException, InterruptedException  {
         PIACompiler piaCompiler = new PIASimpleCompiler();
 
+        PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
+        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
+                PIAMatomoTracker.PIA_TRACKING_COMPILER_NAME,
+                PIAMatomoTracker.PIA_TRACKING_COMPILER_STARTED, null,
+                PIANodesPlugin.getVisitorCid());
+
         // get the input files
         RowIterator row_it = inData[0].iterator();
         int url_idx  = inData[0].getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
@@ -185,7 +193,7 @@ public class PIACompilerNodeModel extends NodeModel {
         logger.debug("pipedInputStream closed");
 
 
-        List<DataCell> dataCells = new ArrayList<DataCell>();
+        List<DataCell> dataCells = new ArrayList<>();
         dataCells.add(zippedXMLFileCell);
 
         BufferedDataContainer container = exec.createDataContainer(createTableSpec());
@@ -197,6 +205,11 @@ public class PIACompilerNodeModel extends NodeModel {
         if (informationString.trim().length() < 1) {
             throw new IllegalStateException("The created XML file could not be parsed.");
         }
+
+        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
+                PIAMatomoTracker.PIA_TRACKING_COMPILER_NAME,
+                PIAMatomoTracker.PIA_TRACKING_COMPILER_FINISHED, null,
+                PIANodesPlugin.getVisitorCid());
 
         return new BufferedDataTable[]{container.getTable()};
     }
@@ -279,7 +292,7 @@ public class PIACompilerNodeModel extends NodeModel {
     private DataTableSpec createTableSpec() {
         DataType type = DataType.getType(BinaryObjectDataCell.class);
 
-        List<DataColumnSpec> compilerCols = new ArrayList<DataColumnSpec>();
+        List<DataColumnSpec> compilerCols = new ArrayList<>();
         compilerCols.add(new DataColumnSpecCreator("gzipped PIA XML file", type).createSpec());
         DataTableSpec compilerSpecTable = new DataTableSpec(compilerCols.toArray(new DataColumnSpec[]{}));
 
@@ -478,7 +491,7 @@ public class PIACompilerNodeModel extends NodeModel {
         // parsing the file is done, process the information
         if ((filesList != null) && (softwareList != null)) {
             // create a hashmap for the used software
-            HashMap<String, String> softwareMap = new HashMap<String, String>();
+            HashMap<String, String> softwareMap = new HashMap<>();
 
             if (softwareList.getAnalysisSoftware() != null) {
                 ListIterator<AnalysisSoftware> softwareIter = softwareList.getAnalysisSoftware().listIterator();

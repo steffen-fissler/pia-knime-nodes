@@ -268,7 +268,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
      * @return
      */
     public Map<String, Object> getSettings() {
-        HashMap<String, Object> settings = new HashMap<String, Object>();
+        HashMap<String, Object> settings = new HashMap<>();
 
         // the selected input column
         settings.put(PIASettings.CONFIG_INPUT_COLUMN.getKey(), inputColumnBox.getSelectedColumn());
@@ -708,9 +708,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         layoutFdrScorePanel.gridy = 0;
         fdrScorePanel.add(new JLabel("Available scores"), layoutFdrScorePanel);
 
-        DefaultListModel<String> availablePreferredFDRScores = new DefaultListModel<String>();
+        DefaultListModel<String> availablePreferredFDRScores = new DefaultListModel<>();
 
-        availablePreferredFDRScoresList = new JList<String>(availablePreferredFDRScores);
+        availablePreferredFDRScoresList = new JList<>(availablePreferredFDRScores);
         availablePreferredFDRScoresList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         availablePreferredFDRScoresList.setLayoutOrientation(JList.VERTICAL);
         availablePreferredFDRScoresList.setCellRenderer(new ScoreCellRenderer());
@@ -733,9 +733,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         layoutFdrScorePanel.gridy = 0;
         fdrScorePanel.add(new JLabel("Selected scores"), layoutFdrScorePanel);
 
-        DefaultListModel<String> selectedPreferredFDRScores = new DefaultListModel<String>();
+        DefaultListModel<String> selectedPreferredFDRScores = new DefaultListModel<>();
 
-        selectedPreferredFDRScoresList = new JList<String>(selectedPreferredFDRScores);
+        selectedPreferredFDRScoresList = new JList<>(selectedPreferredFDRScores);
         selectedPreferredFDRScoresList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         selectedPreferredFDRScoresList.setLayoutOrientation(JList.VERTICAL);
         selectedPreferredFDRScoresList.setCellRenderer(new ScoreCellRenderer());
@@ -1002,7 +1002,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         infGBC.weightx = 0.0;
         proteinScoringPanel.add(scoreLabel, infGBC);
 
-        comboAvailableBaseScores = new JComboBox<String>();
+        comboAvailableBaseScores = new JComboBox<>();
         comboAvailableBaseScores.setRenderer(new ScoreCellRenderer());
         comboAvailableBaseScores.setEditable(true);
         // add all possible scores
@@ -1184,7 +1184,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.weightx = 0.0;
         exportSettingsPanel.add(new JLabel("Export level"), c);
 
-        comboExportLevel = new JComboBox<ExportLevels>();
+        comboExportLevel = new JComboBox<>();
 
         for (ExportLevels lvl : ExportLevels.values()) {
             comboExportLevel.addItem(lvl);
@@ -1203,7 +1203,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.weightx = 0.0;
         exportSettingsPanel.add(new JLabel("Export format"), c);
 
-        comboExportFormat = new JComboBox<ExportFormats>();
+        comboExportFormat = new JComboBox<>();
         updateExportAvailables();
         comboExportLevel.setSelectedItem(PIASettings.EXPORT_LEVEL.getDefaultString());
         c.gridx = 1;
