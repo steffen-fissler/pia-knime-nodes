@@ -17,6 +17,7 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.internal.Model;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -68,6 +69,7 @@ import de.mpc.pia.modeller.protein.ReportProtein;
 import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
+import de.mpc.pia.modeller.report.filter.AbstractFilter;
 import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 
@@ -101,6 +103,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
     private final SettingsModelBoolean m_consider_modifications =
             new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
 
+    /** filter the export */
+    private final SettingsModelBoolean m_export_filter =
+            new SettingsModelBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean());
     /** export level */
     private final SettingsModelString m_export_level =
             new SettingsModelString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString());
@@ -361,6 +366,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 m_protein_scoring_used_psms.getStringValue());
 
 
+        // filter the export
+        analysisModel.addSetting(PIASettings.EXPORT_FILTER.getKey(),
+                m_export_filter.getBooleanValue());
         // export format
         analysisModel.addSetting(PIASettings.EXPORT_FORMAT.getKey(),
                 m_export_format.getStringValue());
@@ -406,7 +414,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         // export the selected level to selected format
-        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"), analysisModel);
+        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"), analysisModel,
+                m_export_filter.getBooleanValue());
 
         // create the PSM to spectra mapping
         psmToSpectrum = createPSMToSpectrumMapping((IURIPortObject) inObjects[2], analysisModel);
@@ -488,6 +497,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_input_column.saveSettingsTo(settings);
         m_create_psm_sets.saveSettingsTo(settings);
         m_consider_modifications.saveSettingsTo(settings);
+        m_export_filter.saveSettingsTo(settings);
         m_export_level.saveSettingsTo(settings);
         m_export_format.saveSettingsTo(settings);
 
@@ -523,6 +533,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_input_column.loadSettingsFrom(settings);
         m_create_psm_sets.loadSettingsFrom(settings);
         m_consider_modifications.loadSettingsFrom(settings);
+        m_export_filter.setBooleanValue(settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean()));
         m_export_level.loadSettingsFrom(settings);
         m_export_format.loadSettingsFrom(settings);
 
@@ -558,6 +569,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         m_input_column.validateSettings(settings);
         m_create_psm_sets.validateSettings(settings);
         m_consider_modifications.validateSettings(settings);
+        settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean());
         m_export_level.validateSettings(settings);
         m_export_format.validateSettings(settings);
 
@@ -658,9 +670,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     private BufferedDataContainer createPSMContainer(PIAAnalysisModel analysisModel, final ExecutionContext exec) {
-
-        // TODO: use own DataType for representation of PSM, peptides and proteins
-
         BufferedDataContainer container = exec.createDataContainer(getPSMTableSpec());
         Integer psmId = 0;
 
@@ -1032,8 +1041,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
                 hash = hcb.toHashCode();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
                 hash = 0;
                 LOGGER.error("could not read file attributes", e);
             }
@@ -1173,7 +1180,8 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      * @throws IOException
      */
-    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore, PIAAnalysisModel analysisModel)
+    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore, PIAAnalysisModel analysisModel,
+            boolean filterExport)
             throws IOException {
         FileStoreURIPortObject fsupo = new FileStoreURIPortObject(fileStore);
 
@@ -1211,7 +1219,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             exportReportTo(file, analysisModel.getPIAModeller(),
                     ExportFormats.valueOf(m_export_format.getStringValue()),
-                    exportLvl, fileID);
+                    exportLvl, filterExport, fileID);
 
         } else {
             File file = fsupo.registerFile("emptyfile.txt");
@@ -1232,9 +1240,24 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param fileID the file ID (0=overview, not used for protein level)
      */
     private void exportReportTo(File file, PIAModeller piaModeller,
-            ExportFormats exportFormat, ExportLevels exportLevel, Long fileID) {
+            ExportFormats exportFormat, ExportLevels exportLevel, boolean filterExport, Long fileID) {
         LOGGER.debug("Exporting to " + exportFormat + " (" + file.getAbsolutePath() + "), "
-                + exportLevel + " (" + fileID + ")");
+                + exportLevel + " (" + fileID + "), filter=" + filterExport);
+
+        long exportFileID = -1L;
+        if (filterExport) {
+            if (exportLevel.equals(ExportLevels.PSM)) {
+                exportFileID = m_psm_analysis_file_id.getIntValue();
+                updatePSMFilters(exportFileID, piaModeller);
+            } else if (exportLevel.equals(ExportLevels.peptide)) {
+                exportFileID = m_peptide_analysis_file_id.getIntValue();
+                updatePeptideFilters(fileID, piaModeller);
+            } else {
+                // on proteins, the file is always 0 (overview)
+                exportFileID = 0L;
+                updateProteinFilters(piaModeller);
+            }
+        }
 
         switch (exportFormat) {
         case idXML:
@@ -1244,14 +1267,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         case mzIdentML:
             MzIdentMLExporter mzIDexporter = new MzIdentMLExporter(piaModeller);
-            mzIDexporter.exportToMzIdentML(fileID, file, exportLevel.equals(ExportLevels.protein),
-                    false /* no filtering */);
+            mzIDexporter.exportToMzIdentML(fileID, file, exportLevel.equals(ExportLevels.protein), filterExport);
             break;
 
         case mzTab:
             MzTabExporter mzTabExporter = new MzTabExporter(piaModeller);
             mzTabExporter.exportToMzTab(fileID, file, exportLevel.equals(ExportLevels.protein),
-                    false /* TODO: implement peptide level statistics */, false /* no filtering */);
+                    false /* TODO: implement peptide level statistics */, filterExport);
             break;
 
         case csv:
@@ -1262,6 +1284,49 @@ public class PIAAnalysisNodeModel extends NodeModel {
             break;
         }
     }
+
+
+    /**
+     * Sets the PSM filters of the modeller to the currently set PSM level filters in the dialog.
+     *
+     * @param fileId
+     * @param piaModeller
+     */
+    private void updatePSMFilters(Long fileId, PIAModeller piaModeller) {
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_psm_filters.getStringArrayValue());
+        List<AbstractFilter> filters = piaModeller.getPSMModeller().getFilters(fileId);
+        filters.clear();
+        filters.addAll(newFilters);
+    }
+
+
+    /**
+     * Sets the report peptide filters of the dialog to the modeller
+     *
+     * @param fileId
+     * @param piaModeller
+     */
+    private void updatePeptideFilters(Long fileId, PIAModeller piaModeller) {
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_peptide_filters.getStringArrayValue());
+        piaModeller.getPeptideModeller().removeAllFilters();
+        for (AbstractFilter filter : newFilters) {
+            piaModeller.getPeptideModeller().addFilter(fileId, filter);
+        }
+    }
+
+
+    /**
+     * Sets the report protein filters of the dialog to the modeller
+     *
+     * @param piaModeller
+     */
+    private void updateProteinFilters(PIAModeller piaModeller) {
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_protein_filters.getStringArrayValue());
+        List<AbstractFilter> filters = piaModeller.getProteinModeller().getReportFilters();
+        filters.clear();
+        filters.addAll(newFilters);
+    }
+
 
 
     /**

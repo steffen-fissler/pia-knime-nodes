@@ -102,6 +102,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     private JComboBox<ExportLevels> comboExportLevel;
     /** the combobox for the available export formats */
     private JComboBox<ExportFormats> comboExportFormat;
+    /** filter export to file */
+    private JCheckBox checkExportFilter;
 
 
     /** text field for the selected file, for which the PSM export should be performed */
@@ -206,6 +208,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                     selectedPreferredFDRScoresList.getSelectedIndex());
         } else if (e.getSource().equals(comboExportLevel)) {
             updateExportAvailables();
+            updateFilterExportPossible();
+        } else if (e.getSource().equals(comboExportFormat)) {
+            updateFilterExportPossible();
         }
     }
 
@@ -279,6 +284,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         // consider modifications
         settings.put(PIASettings.CONSIDER_MODIFICATIONS.getKey(), checkConsiderModifications.isSelected());
         // export level and format
+        settings.put(PIASettings.EXPORT_FILTER.getKey(), checkExportFilter.isSelected() && checkExportFilter.isEnabled());
         settings.put(PIASettings.EXPORT_LEVEL.getKey(), comboExportLevel.getSelectedItem().toString());
         settings.put(PIASettings.EXPORT_FORMAT.getKey(), comboExportFormat.getSelectedItem() != null ?
                 comboExportFormat.getSelectedItem().toString() : null);
@@ -393,7 +399,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         checkConsiderModifications.setSelected(
                 settings.getBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean()));
 
-        // export level and format
+        // export level and format and filter
         comboExportLevel.setSelectedItem(
                 ExportLevels.valueOf(
                         settings.getString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString())));
@@ -405,6 +411,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
             format = ExportFormats.valueOf(formatString);
         }
         comboExportFormat.setSelectedItem(format);
+
+        checkExportFilter.setSelected(settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean()));
+        updateFilterExportPossible();
 
         // PSM file ID
         fieldPSMAnalysisFileID.setValue(
@@ -555,6 +564,35 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         default:
             break;
         }
+    }
+
+
+    /**
+     * Updates the visibility of "filter exports" depending on the selected export level and format.
+     */
+    private void updateFilterExportPossible() {
+        ExportLevels exportLvl = (ExportLevels)comboExportLevel.getSelectedItem();
+        ExportFormats exportFormat = (ExportFormats)comboExportFormat.getSelectedItem();
+        boolean filterEnabled = true;
+
+        // check, which format and levels are selected and enable/disable the filtering accordingly
+        if (ExportLevels.none.equals(exportLvl) ||
+                (ExportLevels.protein.equals(exportLvl) && ExportFormats.mzIdentML.equals(exportFormat))) {
+            filterEnabled = false;
+        }
+
+
+        // implementation-check (hard-coded for working export)
+        // TODO: implement all and remove this
+        if (filterEnabled &&
+                // works only for mzIdentML for now
+                ExportFormats.mzIdentML.equals(exportFormat)) {
+            filterEnabled = true;
+        } else {
+            filterEnabled = false;
+        }
+
+        checkExportFilter.setEnabled(filterEnabled);
     }
 
 
@@ -1205,6 +1243,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         comboExportFormat = new JComboBox<>();
         updateExportAvailables();
+        comboExportFormat.addActionListener(this);
         comboExportLevel.setSelectedItem(PIASettings.EXPORT_LEVEL.getDefaultString());
         c.gridx = 1;
         c.gridy = 2;
@@ -1212,6 +1251,14 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.weightx = 1.0;
         exportSettingsPanel.add(comboExportFormat, c);
 
+        checkExportFilter = new JCheckBox("Filter Export (works only on some formats and levels)");
+        checkExportFilter.setSelected(PIASettings.EXPORT_FILTER.getDefaultBoolean());
+        checkExportFilter.addChangeListener(this);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.weightx = 1.0;
+        exportSettingsPanel.add(checkExportFilter, c);
 
         c.gridx = 0;
         c.gridy = row++;

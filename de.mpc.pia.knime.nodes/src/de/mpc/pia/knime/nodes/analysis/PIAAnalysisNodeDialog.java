@@ -64,6 +64,8 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
                 (Boolean)settingsMap.get(PIASettings.CONSIDER_MODIFICATIONS.getKey()));
 
         // the export settings
+        settings.addBoolean(PIASettings.EXPORT_FILTER.getKey(),
+                (Boolean)settingsMap.get(PIASettings.EXPORT_FILTER.getKey()));
         settings.addString(PIASettings.EXPORT_LEVEL.getKey(),
                 (String)settingsMap.get(PIASettings.EXPORT_LEVEL.getKey()));
         settings.addString(PIASettings.EXPORT_FORMAT.getKey(),

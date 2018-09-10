@@ -19,6 +19,8 @@ public enum PIASettings {
     ERROR_ON_NO_DECOYS(new Boolean(true)),
     CREATE_PSMSETS(new Boolean(true)),
     CONSIDER_MODIFICATIONS(new Boolean(false)),
+
+    EXPORT_FILTER(new Boolean(false)),
     EXPORT_LEVEL(ExportLevels.none.toString()),
     EXPORT_FORMAT(ExportFormats.mzIdentML.toString()),
 

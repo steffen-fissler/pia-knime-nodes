@@ -428,7 +428,7 @@ public class PIAAnalysisModel {
      * @param serializedFilters
      * @return always a List, maybe null, but never null
      */
-    private static List<AbstractFilter> unserializeFilters(String[] serializedFilters) {
+    public static List<AbstractFilter> unserializeFilters(String[] serializedFilters) {
         List<AbstractFilter> filters = new ArrayList<>();
 
         for (String serialFilter : serializedFilters) {
