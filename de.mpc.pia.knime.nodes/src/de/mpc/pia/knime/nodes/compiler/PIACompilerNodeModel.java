@@ -206,6 +206,11 @@ public class PIACompilerNodeModel extends NodeModel {
             throw new IllegalStateException("The created XML file could not be parsed.");
         }
 
+        informationString += "\n"
+                + "\ntotal number PSMs:     " + piaCompiler.getNrPeptideSpectrumMatches()
+                + "\ntotal number peptides: " + piaCompiler.getNrPeptides();
+
+
         PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
                 PIAMatomoTracker.PIA_TRACKING_COMPILER_NAME,
                 PIAMatomoTracker.PIA_TRACKING_COMPILER_FINISHED, null,
@@ -372,7 +377,7 @@ public class PIACompilerNodeModel extends NodeModel {
             return "Wrong object class, expected BinaryObjectDataValue, is " + dataCell.getClass().getCanonicalName();
         }
 
-        StringBuffer textSB = new StringBuffer();
+        StringBuilder textSB = new StringBuilder();
         String projectName = null;
 
         StreamSource inputSource = null;
@@ -478,8 +483,6 @@ public class PIACompilerNodeModel extends NodeModel {
                 try {
                     inputSource.getReader().close();
                     PIACompilerNodeModel.logger.debug("closed InputSource's Reader");
-                    //inputSource.getInputStream().close();
-                    //PIACompilerNodeModel.logger.debug("closed InputSource's stream");
                 } catch (Exception e) {
                     PIACompilerNodeModel.logger.error("Error while closing input file/gzip", e);
                 }
