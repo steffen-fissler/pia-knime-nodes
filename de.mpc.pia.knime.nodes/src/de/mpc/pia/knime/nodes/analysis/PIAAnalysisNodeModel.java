@@ -17,7 +17,6 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.internal.Model;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -94,92 +93,95 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
 
     /** the model of the input files' URLs */
-    private final SettingsModelString m_input_column =
+    private final SettingsModelString mInputColumn =
             new SettingsModelString(PIASettings.CONFIG_INPUT_COLUMN.getKey(), PIASettings.CONFIG_INPUT_COLUMN.getDefaultString());
     /** storing model for whether PSM sets should be created */
-    private final SettingsModelBoolean m_create_psm_sets =
+    private final SettingsModelBoolean mCreatePSMSets =
             new SettingsModelBoolean(PIASettings.CREATE_PSMSETS.getKey(), PIASettings.CREATE_PSMSETS.getDefaultBoolean());
     /** storing model for whether modifications should be used to distinguish peptides */
-    private final SettingsModelBoolean m_consider_modifications =
+    private final SettingsModelBoolean mConsiderModifications =
             new SettingsModelBoolean(PIASettings.CONSIDER_MODIFICATIONS.getKey(), PIASettings.CONSIDER_MODIFICATIONS.getDefaultBoolean());
 
     /** filter the export */
-    private final SettingsModelBoolean m_export_filter =
+    private final SettingsModelBoolean mExportFilter =
             new SettingsModelBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean());
     /** export level */
-    private final SettingsModelString m_export_level =
+    private final SettingsModelString mExportLevel =
             new SettingsModelString(PIASettings.EXPORT_LEVEL.getKey(), PIASettings.EXPORT_LEVEL.getDefaultString());
     /** export format */
-    private final SettingsModelString m_export_format =
+    private final SettingsModelString mExportFormat =
             new SettingsModelString(PIASettings.EXPORT_FORMAT.getKey(), PIASettings.EXPORT_FORMAT.getDefaultString());
+    /** export file basename */
+    private final SettingsModelString mExportFileBaseName =
+            new SettingsModelString(PIASettings.EXPORT_FILEBASENAME.getKey(), PIASettings.EXPORT_FILEBASENAME.getDefaultString());
 
 
     /** the file ID for the PSM analysis */
-    private final SettingsModelInteger m_psm_analysis_file_id =
+    private final SettingsModelInteger mPSMAnalysisFileId =
             new SettingsModelInteger(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(), PIASettings.PSM_ANALYSIS_FILE_ID.getDefaultInteger());
 
     /** storing model for whether all FDRs should be calculated */
-    private final SettingsModelBoolean m_calculate_all_fdr =
+    private final SettingsModelBoolean mCalculateAllFDR =
             new SettingsModelBoolean(PIASettings.CALCULATE_ALL_FDR.getKey(), PIASettings.CALCULATE_ALL_FDR.getDefaultBoolean());
     /** storing model for whether the Combined FDR Score should be calculated */
-    private final SettingsModelBoolean m_calculate_combined_fdr =
+    private final SettingsModelBoolean mCalculateCombinedFDR =
             new SettingsModelBoolean(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getKey(), PIASettings.CALCULATE_COMBINED_FDR_SCORE.getDefaultBoolean());
 
     /** storing model for the used strategy of decoy identification for all files */
-    private final SettingsModelString m_all_decoy_strategy =
+    private final SettingsModelString mAllDecoyStrategy =
             new SettingsModelString(PIASettings.ALL_DECOY_STRATEGY.getKey(), PIASettings.ALL_DECOY_STRATEGY.getDefaultString());
     /** storing model for the used decoy pattern for all files */
-    private final SettingsModelString m_all_decoy_pattern =
+    private final SettingsModelString mAllDecoyPattern =
             new SettingsModelString(PIASettings.ALL_DECOY_PATTERN.getKey(), PIASettings.ALL_DECOY_PATTERN.getDefaultString());
 
     /** used identifications (for FDR calculation) for all files */
-    private final SettingsModelInteger m_all_used_identifications =
+    private final SettingsModelInteger mAllUsedIdentifications =
             new SettingsModelInteger(PIASettings.ALL_USED_IDENTIFICATIONS.getKey(), PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger());
 
     /** storing model for preferred scores for FDR calculation */
-    private final SettingsModelStringArray m_fdr_preferred_scores =
+    private final SettingsModelStringArray mFDRPreferredScores =
             new SettingsModelStringArray(PIASettings.FDR_PREFERRED_SCORES.getKey(), PIASettings.FDR_PREFERRED_SCORES.getDefaultStringArray());
 
     /** storing model for PSM level filters */
-    private final SettingsModelStringArray m_psm_filters =
+    private final SettingsModelStringArray mPSMFilters =
             new SettingsModelStringArray(PIASettings.PSM_FILTERS.getKey(), PIASettings.PSM_FILTERS.getDefaultStringArray());
 
 
     /** whether to infer peptides */
-    private final SettingsModelBoolean m_peptide_infer_peptides =
+    private final SettingsModelBoolean mPeptideInferPeptides =
             new SettingsModelBoolean(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(), PIASettings.PEPTIDE_INFER_PEPTIDES.getDefaultBoolean());
 
     /** the file ID for the peptide analysis */
-    private final SettingsModelInteger m_peptide_analysis_file_id =
+    private final SettingsModelInteger mPeptideAnalysisFileId =
             new SettingsModelInteger(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(), PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getDefaultInteger());
 
     /** storing model for peptide level filters */
-    private final SettingsModelStringArray m_peptide_filters =
+    private final SettingsModelStringArray mPeptideFilters =
             new SettingsModelStringArray(PIASettings.PEPTIDE_FILTERS.getKey(), PIASettings.PEPTIDE_FILTERS.getDefaultStringArray());
 
 
     /** whether to infer proteins */
-    private final SettingsModelBoolean m_protein_infer_proteins =
+    private final SettingsModelBoolean mProteinInferProteins =
             new SettingsModelBoolean(PIASettings.PROTEIN_INFER_PROTEINS.getKey(), PIASettings.PROTEIN_INFER_PROTEINS.getDefaultBoolean());
 
     /** storing model for the used protein inference method */
-    private final SettingsModelString m_protein_inference_method =
+    private final SettingsModelString mProteinInferenceMethod =
             new SettingsModelString(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(), PIASettings.PROTEIN_INFERENCE_METHOD.getDefaultString());
     /** storing model for the protein inference filters */
-    private final SettingsModelStringArray m_protein_inference_filters =
+    private final SettingsModelStringArray mProteinInferenceFilters =
             new SettingsModelStringArray(PIASettings.PROTEIN_INFERENCE_FILTERS.getKey(), PIASettings.PROTEIN_INFERENCE_FILTERS.getDefaultStringArray());
     /** storing model for the scoring method used by the protein inference */
-    private final SettingsModelString m_protein_scoring_method =
+    private final SettingsModelString mProteinScoringMethod =
             new SettingsModelString(PIASettings.PROTEIN_SCORING_METHOD.getKey(), PIASettings.PROTEIN_SCORING_METHOD.getDefaultString());
     /** storing model for the base score used by the scoring method of the protein inference */
-    private final SettingsModelString m_protein_scoring_score =
+    private final SettingsModelString mProteinScoringScore =
             new SettingsModelString(PIASettings.PROTEIN_SCORING_SCORE.getKey(), PIASettings.PROTEIN_SCORING_SCORE.getDefaultString());
     /** storing model for the PSMs used by the scoring during the protein inference  */
-    private final SettingsModelString m_protein_scoring_used_psms =
+    private final SettingsModelString mProteinScoringUsedPSMs =
             new SettingsModelString(PIASettings.PROTEIN_SCORING_USED_PSMS.getKey(), PIASettings.PROTEIN_SCORING_USED_PSMS.getDefaultString());
 
     /** storing model for protein level filters */
-    private final SettingsModelStringArray m_protein_filters =
+    private final SettingsModelStringArray mProteinFilters =
             new SettingsModelStringArray(PIASettings.PROTEIN_FILTERS.getKey(), PIASettings.PROTEIN_FILTERS.getDefaultStringArray());
 
 
@@ -237,22 +239,22 @@ public class PIAAnalysisNodeModel extends NodeModel {
         String piaXmlFileName = null;
 
         // get the input file from the first port, first object
-        if ((m_input_column.getStringValue() != null) && (inObjects[0] != null)) {
+        if ((mInputColumn.getStringValue() != null) && (inObjects[0] != null)) {
             DataTable table = (DataTable)inObjects[0];
-            RowIterator row_it = table.iterator();
-            int inputIdx = table.getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
+            RowIterator rowIt = table.iterator();
+            int inputIdx = table.getDataTableSpec().findColumnIndex(mInputColumn.getStringValue());
             if (inputIdx < 0) {
-                throw new ExecutionException("Could not find column '" + m_input_column.getStringValue()
+                throw new ExecutionException("Could not find column '" + mInputColumn.getStringValue()
                         + "' in input table. Settings must be reconfigured.");
             }
-            while (row_it.hasNext()) {
-                DataRow row = row_it.next();
+            while (rowIt.hasNext()) {
+                DataRow row = rowIt.next();
                 DataCell dataCell = row.getCell(inputIdx);
 
                 piaXmlFileName = getFilenameFromTableCell(dataCell);
 
                 if (piaXmlFileName != null) {
-                    if (row_it.hasNext()) {
+                    if (rowIt.hasNext()) {
                         LOGGER.warn("Only the first suitable entry in the datatable is used.");
                     }
                     break;
@@ -266,7 +268,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             List<URIContent> uris = filePort.getURIContents();
             ListIterator<URIContent> uriIter = uris.listIterator();
 
-            if ((piaXmlFileName != null) && (uris.size() > 0)) {
+            if ((piaXmlFileName != null) && !uris.isEmpty()) {
                 LOGGER.warn("The file from datatable is used preferentially, if table and port are available");
             } else {
                 while (uriIter.hasNext()) {
@@ -285,12 +287,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         if (piaXmlFileName == null) {
-            throw new Exception("No PIA XML file given! Provide either by "
+            throw new ExecutionException("No PIA XML file given! Provide either by "
                     + "datatable (e.g. from PIA Compiler or List Files) or port (Input File)");
         }
 
-        System.err.println("vCID: " + PIANodesPlugin.getVisitorCid());
-        System.err.println("tracking disabled: " + PIANodesPlugin.isUsageStatisticsDisabled());
         PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
         PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
                 PIAMatomoTracker.PIA_TRACKING_MODELLER_NAME,
@@ -303,84 +303,84 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         // set whether PSM sets should be created
         analysisModel.addSetting(PIASettings.CREATE_PSMSETS.getKey(),
-                m_create_psm_sets.getBooleanValue());
+                mCreatePSMSets.getBooleanValue());
         // set whether modifications should be considered to distinguish peptides
         analysisModel.addSetting(PIASettings.CONSIDER_MODIFICATIONS.getKey(),
-                m_consider_modifications.getBooleanValue());
+                mConsiderModifications.getBooleanValue());
 
         // set the used decoy strategy for all files
         analysisModel.addSetting(PIASettings.ALL_DECOY_STRATEGY.getKey(),
-                m_all_decoy_strategy.getStringValue());
+                mAllDecoyStrategy.getStringValue());
         // set the used decoy pattern for all files
         analysisModel.addSetting(PIASettings.ALL_DECOY_PATTERN.getKey(),
-                m_all_decoy_pattern.getStringValue());
+                mAllDecoyPattern.getStringValue());
         // set the used identifications for FDR calculations for all files
         analysisModel.addSetting(PIASettings.ALL_USED_IDENTIFICATIONS.getKey(),
-                m_all_used_identifications.getIntValue());
+                mAllUsedIdentifications.getIntValue());
 
         // set the preferred scores for FDR calculation
         analysisModel.addSetting(PIASettings.FDR_PREFERRED_SCORES.getKey(),
-                m_fdr_preferred_scores.getStringArrayValue());
+                mFDRPreferredScores.getStringArrayValue());
 
         // set the analyzed fileId for PSM operations
         analysisModel.addSetting(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(),
-                m_psm_analysis_file_id.getIntValue());
+                mPSMAnalysisFileId.getIntValue());
         // set PSM level filters
         analysisModel.addSetting(PIASettings.PSM_FILTERS.getKey(),
-                m_psm_filters.getStringArrayValue());
+                mPSMFilters.getStringArrayValue());
 
         // set whether all FDRs should be calculated
         analysisModel.addSetting(PIASettings.CALCULATE_ALL_FDR.getKey(),
-                m_calculate_all_fdr.getBooleanValue());
+                mCalculateAllFDR.getBooleanValue());
         // set whether the Combined FDR Score should be calculated
         analysisModel.addSetting(PIASettings.CALCULATE_COMBINED_FDR_SCORE.getKey(),
-                m_calculate_combined_fdr.getBooleanValue());
+                mCalculateCombinedFDR.getBooleanValue());
 
         // set whether to infer peptides
         analysisModel.addSetting(PIASettings.PEPTIDE_INFER_PEPTIDES.getKey(),
-                m_peptide_infer_peptides.getBooleanValue());
+                mPeptideInferPeptides.getBooleanValue());
         // set the analyzed fileId for peptide operations
         analysisModel.addSetting(PIASettings.PEPTIDE_ANALYSIS_FILE_ID.getKey(),
-                m_peptide_analysis_file_id.getIntValue());
+                mPeptideAnalysisFileId.getIntValue());
         // set peptide level filters
         analysisModel.addSetting(PIASettings.PEPTIDE_FILTERS.getKey(),
-                m_peptide_filters.getStringArrayValue());
+                mPeptideFilters.getStringArrayValue());
 
         // set whether to infer proteins
         analysisModel.addSetting(PIASettings.PROTEIN_INFER_PROTEINS.getKey(),
-                m_protein_infer_proteins.getBooleanValue());
+                mProteinInferProteins.getBooleanValue());
         // set the protein inference methods
         analysisModel.addSetting(PIASettings.PROTEIN_INFERENCE_METHOD.getKey(),
-                m_protein_inference_method.getStringValue());
+                mProteinInferenceMethod.getStringValue());
         // set filters for the protein inference
         analysisModel.addSetting(PIASettings.PROTEIN_INFERENCE_FILTERS.getKey(),
-                m_protein_inference_filters.getStringArrayValue());
+                mProteinInferenceFilters.getStringArrayValue());
         // set the scoring used during the protein inference
         analysisModel.addSetting(PIASettings.PROTEIN_SCORING_METHOD.getKey(),
-                m_protein_scoring_method.getStringValue());
+                mProteinScoringMethod.getStringValue());
         // set the base score used by the protein inference
         analysisModel.addSetting(PIASettings.PROTEIN_SCORING_SCORE.getKey(),
-                m_protein_scoring_score.getStringValue());
+                mProteinScoringScore.getStringValue());
         // set the used PSMs for the scoring
         analysisModel.addSetting(PIASettings.PROTEIN_SCORING_USED_PSMS.getKey(),
-                m_protein_scoring_used_psms.getStringValue());
+                mProteinScoringUsedPSMs.getStringValue());
 
 
         // filter the export
         analysisModel.addSetting(PIASettings.EXPORT_FILTER.getKey(),
-                m_export_filter.getBooleanValue());
+                mExportFilter.getBooleanValue());
         // export format
         analysisModel.addSetting(PIASettings.EXPORT_FORMAT.getKey(),
-                m_export_format.getStringValue());
+                mExportFormat.getStringValue());
         // export level
         analysisModel.addSetting(PIASettings.EXPORT_LEVEL.getKey(),
-                m_export_level.getStringValue());
+                mExportLevel.getStringValue());
 
 
         // execute the PSM analysis
         List<String> errorMsgs = analysisModel.executePSMOperations();
 
-        if (errorMsgs.size() > 0) {
+        if (!errorMsgs.isEmpty()) {
             StringBuilder errors = new StringBuilder();
             for (String msg : errorMsgs) {
                 if (errors.length() > 0) {
@@ -395,7 +395,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         // execute the peptide analysis
         BufferedDataContainer pepContainer;
-        if (m_peptide_infer_peptides.getBooleanValue()) {
+        if (mPeptideInferPeptides.getBooleanValue()) {
             analysisModel.executePeptideOperations();
             pepContainer = createPeptideContainer(analysisModel, exec);
         } else {
@@ -405,7 +405,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         // execute the protein analysis
         BufferedDataContainer proteinContainer;
-        if (m_protein_infer_proteins.getBooleanValue()) {
+        if (mProteinInferProteins.getBooleanValue()) {
             analysisModel.executeProteinOperations();
             proteinContainer = createProteinContainer(analysisModel, exec);
         } else {
@@ -414,8 +414,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         }
 
         // export the selected level to selected format
-        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"), analysisModel,
-                m_export_filter.getBooleanValue());
+        FileStoreURIPortObject fsupo = exportToStoreObject(exec.createFileStore("PIA_export_file"), analysisModel);
 
         // create the PSM to spectra mapping
         psmToSpectrum = createPSMToSpectrumMapping((IURIPortObject) inObjects[2], analysisModel);
@@ -478,14 +477,14 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs)
             throws InvalidSettingsException {
-        PortObjectSpec[] out_spec = new PortObjectSpec[4];
+        PortObjectSpec[] outSpec = new PortObjectSpec[4];
 
-        out_spec[0] = getPSMTableSpec();
-        out_spec[1] = getPeptideTableSpec();
-        out_spec[2] = getProteinTableSpec();
-        out_spec[3] = new URIPortObjectSpec(new String[]{"csv", "mzIdentML", "mzTab", "idXML"});
+        outSpec[0] = getPSMTableSpec();
+        outSpec[1] = getPeptideTableSpec();
+        outSpec[2] = getProteinTableSpec();
+        outSpec[3] = new URIPortObjectSpec("csv", "mzIdentML", "mzTab", "idXML");
 
-        return out_spec;
+        return outSpec;
     }
 
 
@@ -494,33 +493,34 @@ public class PIAAnalysisNodeModel extends NodeModel {
      */
     @Override
     protected void saveSettingsTo(final NodeSettingsWO settings) {
-        m_input_column.saveSettingsTo(settings);
-        m_create_psm_sets.saveSettingsTo(settings);
-        m_consider_modifications.saveSettingsTo(settings);
-        m_export_filter.saveSettingsTo(settings);
-        m_export_level.saveSettingsTo(settings);
-        m_export_format.saveSettingsTo(settings);
+        mInputColumn.saveSettingsTo(settings);
+        mCreatePSMSets.saveSettingsTo(settings);
+        mConsiderModifications.saveSettingsTo(settings);
+        mExportFilter.saveSettingsTo(settings);
+        mExportLevel.saveSettingsTo(settings);
+        mExportFormat.saveSettingsTo(settings);
+        mExportFileBaseName.saveSettingsTo(settings);
 
-        m_psm_analysis_file_id.saveSettingsTo(settings);
-        m_calculate_all_fdr.saveSettingsTo(settings);
-        m_calculate_combined_fdr.saveSettingsTo(settings);
-        m_all_decoy_strategy.saveSettingsTo(settings);
-        m_all_decoy_pattern.saveSettingsTo(settings);
-        m_all_used_identifications.saveSettingsTo(settings);
-        m_fdr_preferred_scores.saveSettingsTo(settings);
-        m_psm_filters.saveSettingsTo(settings);
+        mPSMAnalysisFileId.saveSettingsTo(settings);
+        mCalculateAllFDR.saveSettingsTo(settings);
+        mCalculateCombinedFDR.saveSettingsTo(settings);
+        mAllDecoyStrategy.saveSettingsTo(settings);
+        mAllDecoyPattern.saveSettingsTo(settings);
+        mAllUsedIdentifications.saveSettingsTo(settings);
+        mFDRPreferredScores.saveSettingsTo(settings);
+        mPSMFilters.saveSettingsTo(settings);
 
-        m_peptide_infer_peptides.saveSettingsTo(settings);
-        m_peptide_analysis_file_id.saveSettingsTo(settings);
-        m_peptide_filters.saveSettingsTo(settings);
+        mPeptideInferPeptides.saveSettingsTo(settings);
+        mPeptideAnalysisFileId.saveSettingsTo(settings);
+        mPeptideFilters.saveSettingsTo(settings);
 
-        m_protein_infer_proteins.saveSettingsTo(settings);
-        m_protein_inference_method.saveSettingsTo(settings);
-        m_protein_inference_filters.saveSettingsTo(settings);
-        m_protein_scoring_method.saveSettingsTo(settings);
-        m_protein_scoring_score.saveSettingsTo(settings);
-        m_protein_scoring_used_psms.saveSettingsTo(settings);
-        m_protein_filters.saveSettingsTo(settings);
+        mProteinInferProteins.saveSettingsTo(settings);
+        mProteinInferenceMethod.saveSettingsTo(settings);
+        mProteinInferenceFilters.saveSettingsTo(settings);
+        mProteinScoringMethod.saveSettingsTo(settings);
+        mProteinScoringScore.saveSettingsTo(settings);
+        mProteinScoringUsedPSMs.saveSettingsTo(settings);
+        mProteinFilters.saveSettingsTo(settings);
     }
 
 
@@ -530,33 +530,34 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void loadValidatedSettingsFrom(final NodeSettingsRO settings)
             throws InvalidSettingsException {
-        m_input_column.loadSettingsFrom(settings);
-        m_create_psm_sets.loadSettingsFrom(settings);
-        m_consider_modifications.loadSettingsFrom(settings);
-        m_export_filter.setBooleanValue(settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean()));
-        m_export_level.loadSettingsFrom(settings);
-        m_export_format.loadSettingsFrom(settings);
+        mInputColumn.loadSettingsFrom(settings);
+        mCreatePSMSets.loadSettingsFrom(settings);
+        mConsiderModifications.loadSettingsFrom(settings);
+        mExportFilter.setBooleanValue(settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean()));
+        mExportLevel.loadSettingsFrom(settings);
+        mExportFormat.loadSettingsFrom(settings);
+        mExportFileBaseName.setStringValue(settings.getString(PIASettings.EXPORT_FILEBASENAME.getKey(), PIASettings.EXPORT_FILEBASENAME.getDefaultString()));
 
-        m_psm_analysis_file_id.loadSettingsFrom(settings);
-        m_calculate_all_fdr.loadSettingsFrom(settings);
-        m_calculate_combined_fdr.loadSettingsFrom(settings);
-        m_all_decoy_strategy.loadSettingsFrom(settings);
-        m_all_decoy_pattern.loadSettingsFrom(settings);
-        m_all_used_identifications.loadSettingsFrom(settings);
-        m_fdr_preferred_scores.loadSettingsFrom(settings);
-        m_psm_filters.loadSettingsFrom(settings);
+        mPSMAnalysisFileId.loadSettingsFrom(settings);
+        mCalculateAllFDR.loadSettingsFrom(settings);
+        mCalculateCombinedFDR.loadSettingsFrom(settings);
+        mAllDecoyStrategy.loadSettingsFrom(settings);
+        mAllDecoyPattern.loadSettingsFrom(settings);
+        mAllUsedIdentifications.loadSettingsFrom(settings);
+        mFDRPreferredScores.loadSettingsFrom(settings);
+        mPSMFilters.loadSettingsFrom(settings);
 
-        m_peptide_infer_peptides.loadSettingsFrom(settings);
-        m_peptide_analysis_file_id.loadSettingsFrom(settings);
-        m_peptide_filters.loadSettingsFrom(settings);
+        mPeptideInferPeptides.loadSettingsFrom(settings);
+        mPeptideAnalysisFileId.loadSettingsFrom(settings);
+        mPeptideFilters.loadSettingsFrom(settings);
 
-        m_protein_infer_proteins.loadSettingsFrom(settings);
-        m_protein_inference_method.loadSettingsFrom(settings);
-        m_protein_inference_filters.loadSettingsFrom(settings);
-        m_protein_scoring_method.loadSettingsFrom(settings);
-        m_protein_scoring_score.loadSettingsFrom(settings);
-        m_protein_scoring_used_psms.loadSettingsFrom(settings);
-        m_protein_filters.loadSettingsFrom(settings);
+        mProteinInferProteins.loadSettingsFrom(settings);
+        mProteinInferenceMethod.loadSettingsFrom(settings);
+        mProteinInferenceFilters.loadSettingsFrom(settings);
+        mProteinScoringMethod.loadSettingsFrom(settings);
+        mProteinScoringScore.loadSettingsFrom(settings);
+        mProteinScoringUsedPSMs.loadSettingsFrom(settings);
+        mProteinFilters.loadSettingsFrom(settings);
     }
 
 
@@ -566,33 +567,34 @@ public class PIAAnalysisNodeModel extends NodeModel {
     @Override
     protected void validateSettings(final NodeSettingsRO settings)
             throws InvalidSettingsException {
-        m_input_column.validateSettings(settings);
-        m_create_psm_sets.validateSettings(settings);
-        m_consider_modifications.validateSettings(settings);
+        mInputColumn.validateSettings(settings);
+        mCreatePSMSets.validateSettings(settings);
+        mConsiderModifications.validateSettings(settings);
         settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean());
-        m_export_level.validateSettings(settings);
-        m_export_format.validateSettings(settings);
+        mExportLevel.validateSettings(settings);
+        mExportFormat.validateSettings(settings);
+        settings.getString(PIASettings.EXPORT_FILEBASENAME.getKey(), PIASettings.EXPORT_FILEBASENAME.getDefaultString());
 
-        m_psm_analysis_file_id.validateSettings(settings);
-        m_calculate_all_fdr.validateSettings(settings);
-        m_calculate_combined_fdr.validateSettings(settings);
-        m_all_decoy_strategy.validateSettings(settings);
-        m_all_decoy_pattern.validateSettings(settings);
-        m_all_used_identifications.validateSettings(settings);
-        m_fdr_preferred_scores.validateSettings(settings);
-        m_psm_filters.validateSettings(settings);
+        mPSMAnalysisFileId.validateSettings(settings);
+        mCalculateAllFDR.validateSettings(settings);
+        mCalculateCombinedFDR.validateSettings(settings);
+        mAllDecoyStrategy.validateSettings(settings);
+        mAllDecoyPattern.validateSettings(settings);
+        mAllUsedIdentifications.validateSettings(settings);
+        mFDRPreferredScores.validateSettings(settings);
+        mPSMFilters.validateSettings(settings);
 
-        m_peptide_infer_peptides.validateSettings(settings);
-        m_peptide_analysis_file_id.validateSettings(settings);
-        m_peptide_filters.validateSettings(settings);
+        mPeptideInferPeptides.validateSettings(settings);
+        mPeptideAnalysisFileId.validateSettings(settings);
+        mPeptideFilters.validateSettings(settings);
 
-        m_protein_infer_proteins.validateSettings(settings);
-        m_protein_inference_method.validateSettings(settings);
-        m_protein_inference_filters.validateSettings(settings);
-        m_protein_scoring_method.validateSettings(settings);
-        m_protein_scoring_score.validateSettings(settings);
-        m_protein_scoring_used_psms.validateSettings(settings);
-        m_protein_filters.validateSettings(settings);
+        mProteinInferProteins.validateSettings(settings);
+        mProteinInferenceMethod.validateSettings(settings);
+        mProteinInferenceFilters.validateSettings(settings);
+        mProteinScoringMethod.validateSettings(settings);
+        mProteinScoringScore.validateSettings(settings);
+        mProteinScoringUsedPSMs.validateSettings(settings);
+        mProteinFilters.validateSettings(settings);
     }
 
 
@@ -648,7 +650,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         psmCols.add(new DataColumnSpecCreator("Source ID", StringCell.TYPE).createSpec());
         psmCols.add(new DataColumnSpecCreator("Spectrum title", StringCell.TYPE).createSpec());
 
-        if (m_psm_analysis_file_id.getIntValue() == 0) {
+        if (mPSMAnalysisFileId.getIntValue() == 0) {
             psmCols.add(new DataColumnSpecCreator("nrIdentifications", IntCell.TYPE).createSpec());
         }
 
@@ -656,9 +658,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         psmCols.add(new DataColumnSpecCreator("score names", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
         psmCols.add(new DataColumnSpecCreator("score shorts", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
-        DataTableSpec psmSpecTable = new DataTableSpec(psmCols.toArray(new DataColumnSpec[]{}));
-
-        return psmSpecTable;
+        return new DataTableSpec(psmCols.toArray(new DataColumnSpec[]{}));
     }
 
 
@@ -674,7 +674,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         Integer psmId = 0;
 
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
-        List<String> psmScoreShorts = analysisModel.getPSMScoreShorts(m_psm_analysis_file_id.getIntValue());
+        List<String> psmScoreShorts = analysisModel.getPSMScoreShorts(mPSMAnalysisFileId.getIntValue());
 
         List<PSMReportItem> psmList = getFilteredPSMList(analysisModel);
 
@@ -745,7 +745,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             }
 
             // number of identifications
-            if (m_psm_analysis_file_id.getIntValue() == 0) {
+            if (mPSMAnalysisFileId.getIntValue() == 0) {
                 psmCells.add(new IntCell(((ReportPSMSet)psm).getPSMs().size()));
             }
 
@@ -790,13 +790,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
         pepCols.add(new DataColumnSpecCreator("Sequence", StringCell.TYPE).createSpec());
         pepCols.add(new DataColumnSpecCreator("Accessions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
-        if (m_consider_modifications.getBooleanValue()) {
+        if (mConsiderModifications.getBooleanValue()) {
             pepCols.add(new DataColumnSpecCreator("Modifications", StringCell.TYPE).createSpec());
         }
 
         pepCols.add(new DataColumnSpecCreator("number Spectra", IntCell.TYPE).createSpec());
 
-        if (m_peptide_analysis_file_id.getIntValue() == 0) {
+        if (mPeptideAnalysisFileId.getIntValue() == 0) {
             pepCols.add(new DataColumnSpecCreator("number PSM sets", IntCell.TYPE).createSpec());
         } else {
             pepCols.add(new DataColumnSpecCreator("number PSMs", IntCell.TYPE).createSpec());
@@ -808,10 +808,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         pepCols.add(new DataColumnSpecCreator("score names", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
         pepCols.add(new DataColumnSpecCreator("score shorts", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
-
-        DataTableSpec pepSpecTable = new DataTableSpec(pepCols.toArray(new DataColumnSpec[]{}));
-
-        return pepSpecTable;
+        return new DataTableSpec(pepCols.toArray(new DataColumnSpec[]{}));
     }
 
 
@@ -827,7 +824,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         Integer pepId = 0;
 
         Map<String, String> scoreShortsToNames = analysisModel.getPSMModeller().getScoreShortsToScoreNames();
-        List<String> scoreShorts = analysisModel.getPSMScoreShorts(m_peptide_analysis_file_id.getIntValue());
+        List<String> scoreShorts = analysisModel.getPSMScoreShorts(mPeptideAnalysisFileId.getIntValue());
 
         List<ReportPeptide> peptideList = getFilteredPeptides(analysisModel);
 
@@ -848,7 +845,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
             pepCells.add(CollectionCellFactory.createListCell(accList));
 
             // modifications
-            if (m_consider_modifications.getBooleanValue()) {
+            if (mConsiderModifications.getBooleanValue()) {
                 String modString = pep.getPSMs().get(0).getModificationsString();
                 if (modString.trim().length() == 0) {
                     pepCells.add(DataType.getMissingCell());
@@ -909,14 +906,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
         protCols.add(new DataColumnSpecCreator("Descriptions", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
-        if (m_calculate_all_fdr.getBooleanValue() ||
-                m_calculate_combined_fdr.getBooleanValue()) {
+        if (mCalculateAllFDR.getBooleanValue() ||
+                mCalculateCombinedFDR.getBooleanValue()) {
             protCols.add(new DataColumnSpecCreator("Decoy", BooleanCell.TYPE).createSpec());
             protCols.add(new DataColumnSpecCreator("FDR q-value", DoubleCell.TYPE).createSpec());
         }
 
-        DataTableSpec protSpecTable = new DataTableSpec(protCols.toArray(new DataColumnSpec[]{}));
-        return protSpecTable;
+        return new DataTableSpec(protCols.toArray(new DataColumnSpec[]{}));
     }
 
 
@@ -978,13 +974,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
             proteinCells.add(new IntCell(protein.getNrSpectra()));
 
             // the cluster ID
-            proteinCells.add(new IntCell(new Long(protein.getAccessions().get(0).getGroup().getTreeID()).intValue()));
+            proteinCells.add(new IntCell((int)protein.getAccessions().get(0).getGroup().getTreeID()));
 
             // the protein description
             proteinCells.add(CollectionCellFactory.createListCell(descriptionList));
 
-            if (m_calculate_all_fdr.getBooleanValue() ||
-                    m_calculate_combined_fdr.getBooleanValue()) {
+            if (mCalculateAllFDR.getBooleanValue() ||
+                    mCalculateCombinedFDR.getBooleanValue()) {
                 // decoy state
                 proteinCells.add(BooleanCellFactory.create(protein.getIsDecoy()));
 
@@ -1013,7 +1009,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 analysisModel = PIAAnalysisModel.loadModelFromInternal(piaAnalysisModelFile, piaAnalysisSettingsFile);
             }
         } catch (IOException e) {
-            analysisModel = null;
             LOGGER.error("Could not get analysis model", e);
         }
 
@@ -1056,11 +1051,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     public List<PSMReportItem> getFilteredPSMList(PIAAnalysisModel analysisModel) {
-        if (analysisModel != null) {
-            if (filteredPSMs == null) {
-                filteredPSMs = analysisModel.getFilteredReportPSMs(
-                        m_psm_analysis_file_id.getIntValue(), m_psm_filters.getStringArrayValue());
-            }
+        if ((analysisModel != null) && (filteredPSMs == null)) {
+            filteredPSMs = analysisModel.getFilteredReportPSMs(
+                    mPSMAnalysisFileId.getIntValue(), mPSMFilters.getStringArrayValue());
         }
 
         return filteredPSMs;
@@ -1073,11 +1066,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     public List<ReportPeptide> getFilteredPeptides(PIAAnalysisModel analysisModel) {
-        if (analysisModel != null) {
-            if (filteredPeptides == null) {
-                filteredPeptides = analysisModel.getFilteredReportPeptides(
-                        m_peptide_analysis_file_id.getIntValue(), m_peptide_filters.getStringArrayValue());
-            }
+        if ((analysisModel != null) && (filteredPeptides == null)) {
+            filteredPeptides = analysisModel.getFilteredReportPeptides(
+                    mPeptideAnalysisFileId.getIntValue(), mPeptideFilters.getStringArrayValue());
         }
 
         return filteredPeptides;
@@ -1090,11 +1081,9 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      */
     public List<ReportProtein> getFilteredProteinList(PIAAnalysisModel analysisModel) {
-        if (analysisModel != null) {
-            if (filteredProteins == null) {
-                filteredProteins =  analysisModel.getFilteredReportProteins(
-                        m_protein_filters.getStringArrayValue());
-            }
+        if ((analysisModel != null) && ( filteredProteins == null)) {
+            filteredProteins =  analysisModel.getFilteredReportProteins(
+                    mProteinFilters.getStringArrayValue());
         }
 
         return filteredProteins;
@@ -1136,35 +1125,45 @@ public class PIAAnalysisNodeModel extends NodeModel {
             }
         } else if (dataCell.getType().isCompatible(BinaryObjectDataValue.class)) {
             // it is a binary file , either GZipped or not
-            InputStream is = new BufferedInputStream(((BinaryObjectDataValue) dataCell).openInputStream());
-            byte[] buffer = new byte[1024];
+            InputStream is = null;
+            FileOutputStream fos = null;
 
-            is.mark(2);
-            int magic = 0;
-            magic = is.read() & 0xff | ((is.read() << 8) & 0xff00);
-            is.reset();
+            try {
+                is = new BufferedInputStream(((BinaryObjectDataValue) dataCell).openInputStream());
+                byte[] buffer = new byte[1024];
 
-            if (magic == GZIPInputStream.GZIP_MAGIC) {
-                // file is gzipped
-                LOGGER.info("binary input file is gzipped");
-                is = new GZIPInputStream(is);
+                is.mark(2);
+                int magic = 0;
+                magic = is.read() & 0xff | ((is.read() << 8) & 0xff00);
+                is.reset();
+
+                if (magic == GZIPInputStream.GZIP_MAGIC) {
+                    // file is gzipped
+                    LOGGER.info("binary input file is gzipped");
+                    is = new GZIPInputStream(is);
+                }
+
+                piaXMLTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
+                piaXMLTmpFile.deleteOnExit();
+
+                fos = new FileOutputStream(piaXMLTmpFile, false);
+                LOGGER.debug("writing unzipped file to " + piaXMLTmpFile.getAbsolutePath());
+                int len;
+                while((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+            } finally {
+                //close resources
+                if (fos != null) {
+                    fos.close();
+                    LOGGER.debug("outputStream closed");
+                }
+
+                if (is != null) {
+                    is.close();
+                    LOGGER.debug("inputStream closed");
+                }
             }
-
-            piaXMLTmpFile = File.createTempFile("piaIntermediateFile", "pia.xml");
-            piaXMLTmpFile.deleteOnExit();
-
-            FileOutputStream fos = new FileOutputStream(piaXMLTmpFile, false);
-
-            LOGGER.debug("writing unzipped file to " + piaXMLTmpFile.getAbsolutePath());
-            int len;
-            while((len = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-            }
-            //close resources
-            fos.close();
-            LOGGER.debug("outputStream closed");
-            is.close();
-            LOGGER.debug("inputStream closed");
 
             fileName = piaXMLTmpFile.getAbsolutePath();
         }
@@ -1180,34 +1179,32 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @return
      * @throws IOException
      */
-    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore, PIAAnalysisModel analysisModel,
-            boolean filterExport)
+    private FileStoreURIPortObject exportToStoreObject(FileStore fileStore, PIAAnalysisModel analysisModel)
             throws IOException {
         FileStoreURIPortObject fsupo = new FileStoreURIPortObject(fileStore);
 
-        if (!m_export_level.getStringValue().equals(ExportLevels.none.toString())) {
-            String file_basename = "piaExport";
-            File file = fsupo.registerFile(file_basename + "."
-                    + m_export_format.getStringValue());
-            file.createNewFile();
+        boolean exportOK = false;
+
+        if (!mExportLevel.getStringValue().equals(ExportLevels.none.toString())) {
+            File file = fsupo.registerFile(buildExportFilename());
 
             Long fileID;
-            ExportLevels exportLvl = ExportLevels.valueOf(m_export_level.getStringValue());
+            ExportLevels exportLvl = ExportLevels.valueOf(mExportLevel.getStringValue());
             switch (exportLvl) {
             case PSM:
-                fileID = (long)(m_psm_analysis_file_id.getIntValue());
+                fileID = (long)(mPSMAnalysisFileId.getIntValue());
                 break;
 
             case peptide:
-                fileID = (long)(m_peptide_analysis_file_id.getIntValue());
-                if (!m_peptide_infer_peptides.getBooleanValue()) {
+                fileID = (long)(mPeptideAnalysisFileId.getIntValue());
+                if (!mPeptideInferPeptides.getBooleanValue()) {
                     LOGGER.warn("Peptide inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
                 }
                 break;
 
             case protein:
                 fileID = 0L;
-                if (!m_protein_infer_proteins.getBooleanValue()) {
+                if (!mProteinInferProteins.getBooleanValue()) {
                     LOGGER.warn("Protein inference is deactivated, but peptide level export on. The export is performed, but might not be as expected!");
                 }
                 break;
@@ -1217,16 +1214,44 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 fileID = -1L;
             }
 
-            exportReportTo(file, analysisModel.getPIAModeller(),
-                    ExportFormats.valueOf(m_export_format.getStringValue()),
-                    exportLvl, filterExport, fileID);
+            if (file.createNewFile()) {
+                exportReportTo(file, analysisModel.getPIAModeller(),
+                        ExportFormats.valueOf(mExportFormat.getStringValue()),
+                        exportLvl, mExportFilter.getBooleanValue(), fileID);
+                exportOK = true;
+            } else {
+                exportOK = false;
+            }
+        }
 
-        } else {
+        if (!exportOK) {
             File file = fsupo.registerFile("emptyfile.txt");
             file.createNewFile();
         }
 
         return fsupo;
+    }
+
+
+    /**
+     * creates the export filename from teh given base name
+     * @return
+     */
+    private String buildExportFilename() {
+        StringBuilder fileNameSB = new StringBuilder();
+        if ((mExportFileBaseName.getStringValue() == null) || mExportFileBaseName.getStringValue().isEmpty()) {
+            fileNameSB.append(PIASettings.EXPORT_FILEBASENAME.getDefaultString());
+        } else {
+            fileNameSB.append(mExportFileBaseName.getStringValue());
+        }
+
+        if (!fileNameSB.toString().contains(".")) {
+            // append the file suffix
+            fileNameSB.append('.');
+            fileNameSB.append(mExportFormat.getStringValue());
+        }
+
+        return fileNameSB.toString();
     }
 
 
@@ -1244,17 +1269,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
         LOGGER.debug("Exporting to " + exportFormat + " (" + file.getAbsolutePath() + "), "
                 + exportLevel + " (" + fileID + "), filter=" + filterExport);
 
-        long exportFileID = -1L;
         if (filterExport) {
             if (exportLevel.equals(ExportLevels.PSM)) {
-                exportFileID = m_psm_analysis_file_id.getIntValue();
-                updatePSMFilters(exportFileID, piaModeller);
+                updatePSMFilters(fileID, piaModeller);
             } else if (exportLevel.equals(ExportLevels.peptide)) {
-                exportFileID = m_peptide_analysis_file_id.getIntValue();
                 updatePeptideFilters(fileID, piaModeller);
             } else {
-                // on proteins, the file is always 0 (overview)
-                exportFileID = 0L;
                 updateProteinFilters(piaModeller);
             }
         }
@@ -1293,7 +1313,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param piaModeller
      */
     private void updatePSMFilters(Long fileId, PIAModeller piaModeller) {
-        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_psm_filters.getStringArrayValue());
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(mPSMFilters.getStringArrayValue());
         List<AbstractFilter> filters = piaModeller.getPSMModeller().getFilters(fileId);
         filters.clear();
         filters.addAll(newFilters);
@@ -1307,7 +1327,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param piaModeller
      */
     private void updatePeptideFilters(Long fileId, PIAModeller piaModeller) {
-        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_peptide_filters.getStringArrayValue());
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(mPeptideFilters.getStringArrayValue());
         piaModeller.getPeptideModeller().removeAllFilters();
         for (AbstractFilter filter : newFilters) {
             piaModeller.getPeptideModeller().addFilter(fileId, filter);
@@ -1321,7 +1341,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
      * @param piaModeller
      */
     private void updateProteinFilters(PIAModeller piaModeller) {
-        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(m_protein_filters.getStringArrayValue());
+        List<AbstractFilter> newFilters = PIAAnalysisModel.unserializeFilters(mProteinFilters.getStringArrayValue());
         List<AbstractFilter> filters = piaModeller.getProteinModeller().getReportFilters();
         filters.clear();
         filters.addAll(newFilters);

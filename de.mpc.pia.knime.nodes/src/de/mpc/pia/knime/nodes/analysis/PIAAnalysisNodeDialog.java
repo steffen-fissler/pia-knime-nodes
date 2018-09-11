@@ -70,6 +70,8 @@ public class PIAAnalysisNodeDialog extends DataAwareNodeDialogPane {
                 (String)settingsMap.get(PIASettings.EXPORT_LEVEL.getKey()));
         settings.addString(PIASettings.EXPORT_FORMAT.getKey(),
                 (String)settingsMap.get(PIASettings.EXPORT_FORMAT.getKey()));
+        settings.addString(PIASettings.EXPORT_FILEBASENAME.getKey(),
+                (String)settingsMap.get(PIASettings.EXPORT_FILEBASENAME.getKey()));
 
         // used file ID for PSM export
         settings.addInt(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(),

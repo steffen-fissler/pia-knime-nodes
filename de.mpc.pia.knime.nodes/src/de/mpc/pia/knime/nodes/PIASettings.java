@@ -15,16 +15,16 @@ import de.mpc.pia.modeller.score.ScoreModelEnum;
  *
  */
 public enum PIASettings {
+    ERROR_ON_NO_DECOYS(Boolean.TRUE),
+    CREATE_PSMSETS(Boolean.TRUE),
+    CONSIDER_MODIFICATIONS(Boolean.FALSE),
 
-    ERROR_ON_NO_DECOYS(new Boolean(true)),
-    CREATE_PSMSETS(new Boolean(true)),
-    CONSIDER_MODIFICATIONS(new Boolean(false)),
-
-    EXPORT_FILTER(new Boolean(false)),
+    EXPORT_FILTER(Boolean.FALSE),
     EXPORT_LEVEL(ExportLevels.none.toString()),
     EXPORT_FORMAT(ExportFormats.mzIdentML.toString()),
+    EXPORT_FILEBASENAME("piaExport"),
 
-    FDR_THRESHOLD(new Double(0.01)),
+    FDR_THRESHOLD(Double.valueOf(0.01)),
 
     ALL_DECOY_STRATEGY(FDRData.DecoyStrategy.ACCESSIONPATTERN.toString()),
     ALL_DECOY_PATTERN("rev_.*"),
@@ -32,18 +32,18 @@ public enum PIASettings {
 
     FDR_PREFERRED_SCORES(new String[]{}),
 
-    CALCULATE_ALL_FDR(new Boolean(true)),
-    CALCULATE_COMBINED_FDR_SCORE(new Boolean(true)),
+    CALCULATE_ALL_FDR(Boolean.TRUE),
+    CALCULATE_COMBINED_FDR_SCORE(Boolean.TRUE),
 
     PSM_ANALYSIS_FILE_ID(0),
 
     PSM_FILTERS(new String[]{}),
 
-    PEPTIDE_INFER_PEPTIDES(new Boolean(true)),
+    PEPTIDE_INFER_PEPTIDES(Boolean.TRUE),
     PEPTIDE_ANALYSIS_FILE_ID(0),
     PEPTIDE_FILTERS(new String[]{}),
 
-    PROTEIN_INFER_PROTEINS(new Boolean(true)),
+    PROTEIN_INFER_PROTEINS(Boolean.TRUE),
     PROTEIN_INFERENCE_METHOD(ProteinInferenceMethod.REPORT_SPECTRUM_EXTRACTOR.getShortName()),
     PROTEIN_INFERENCE_FILTERS(new String[]{}),
     PROTEIN_SCORING_METHOD(ScoringType.MULTIPLICATIVE_SCORING.getShortName()),
@@ -56,11 +56,11 @@ public enum PIASettings {
     ;
 
 
-    private Object default_value;
+    private Object defaultValue;
 
 
-    private PIASettings(Object default_value) {
-        this.default_value = default_value;
+    private PIASettings(Object defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
 
@@ -70,45 +70,45 @@ public enum PIASettings {
 
 
     public Object getDefaultValue() {
-        return default_value;
+        return defaultValue;
     }
 
 
     public Boolean getDefaultBoolean() {
-        if (default_value instanceof Boolean) {
-            return (Boolean)default_value;
+        if (defaultValue instanceof Boolean) {
+            return (Boolean)defaultValue;
         }
         return null;
     }
 
 
     public Double getDefaultDouble() {
-        if (default_value instanceof Double) {
-            return (Double)default_value;
+        if (defaultValue instanceof Double) {
+            return (Double)defaultValue;
         }
         return null;
     }
 
 
     public Integer getDefaultInteger() {
-        if (default_value instanceof Integer) {
-            return (Integer)default_value;
+        if (defaultValue instanceof Integer) {
+            return (Integer)defaultValue;
         }
         return null;
     }
 
 
     public String getDefaultString() {
-        if (default_value instanceof String) {
-            return (String)default_value;
+        if (defaultValue instanceof String) {
+            return (String)defaultValue;
         }
         return null;
     }
 
 
     public String[] getDefaultStringArray() {
-        if (default_value instanceof String[]) {
-            return (String[])default_value;
+        if (defaultValue instanceof String[]) {
+            return (String[])defaultValue;
         }
         return null;
     }

@@ -104,6 +104,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     private JComboBox<ExportFormats> comboExportFormat;
     /** filter export to file */
     private JCheckBox checkExportFilter;
+    /** the export file basename*/
+    private JTextField fieldExportFileBasename;
 
 
     /** text field for the selected file, for which the PSM export should be performed */
@@ -288,6 +290,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         settings.put(PIASettings.EXPORT_LEVEL.getKey(), comboExportLevel.getSelectedItem().toString());
         settings.put(PIASettings.EXPORT_FORMAT.getKey(), comboExportFormat.getSelectedItem() != null ?
                 comboExportFormat.getSelectedItem().toString() : null);
+        settings.put(PIASettings.EXPORT_FILEBASENAME.getKey(), fieldExportFileBasename.getText().trim());
 
         // PSM file ID
         settings.put(PIASettings.PSM_ANALYSIS_FILE_ID.getKey(), Integer.parseInt(fieldPSMAnalysisFileID.getText()));
@@ -414,6 +417,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
 
         checkExportFilter.setSelected(settings.getBoolean(PIASettings.EXPORT_FILTER.getKey(), PIASettings.EXPORT_FILTER.getDefaultBoolean()));
         updateFilterExportPossible();
+
+        fieldExportFileBasename.setText(settings.getString(PIASettings.EXPORT_FILEBASENAME.getKey(), PIASettings.EXPORT_FILEBASENAME.getDefaultString()));
 
         // PSM file ID
         fieldPSMAnalysisFileID.setValue(
@@ -1259,6 +1264,20 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.gridwidth = 2;
         c.weightx = 1.0;
         exportSettingsPanel.add(checkExportFilter, c);
+
+
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        exportSettingsPanel.add(new JLabel("Filename for export:"), c);
+
+        fieldExportFileBasename = new JTextField(PIASettings.EXPORT_FILEBASENAME.getDefaultString(), 10);
+        c.gridx = 1;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.weightx = 1.0;
+        exportSettingsPanel.add(fieldExportFileBasename, c);
 
         c.gridx = 0;
         c.gridy = row++;
