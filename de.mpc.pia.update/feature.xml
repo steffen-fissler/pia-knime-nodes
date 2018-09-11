@@ -2,7 +2,7 @@
 <feature
       id="de.mpc.pia.update"
       label="Update site for PIA"
-      version="1.3.7.qualifier">
+      version="1.3.8.qualifier">
 
    <includes
          id="de.mpc.pia.feature"
