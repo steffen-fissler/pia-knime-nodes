@@ -341,7 +341,6 @@ public class PIAAnalysisModel {
         piaModeller.getPSMModeller().setAllTopIdentifications(
                 getSettingInteger(PIASettings.ALL_USED_IDENTIFICATIONS));
 
-
         // set the preferred scores for FDR calculation
         String[] preferredScores = getSettingStringArray(PIASettings.FDR_PREFERRED_SCORES);
         piaModeller.getPSMModeller().resetPreferredFDRScores();
@@ -349,6 +348,8 @@ public class PIAAnalysisModel {
             piaModeller.getPSMModeller().addPreferredFDRScore(preferredScores[i]);
         }
 
+        // at least set the decoy state of the selected file
+        piaModeller.getPSMModeller().updateDecoyStates(getSettingInteger(PIASettings.PSM_ANALYSIS_FILE_ID).longValue());
 
         // calculate the FDR
         if (getSettingBoolean(PIASettings.CALCULATE_ALL_FDR)) {
