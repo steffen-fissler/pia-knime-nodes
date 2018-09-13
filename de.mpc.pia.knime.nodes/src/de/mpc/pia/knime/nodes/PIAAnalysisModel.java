@@ -473,6 +473,11 @@ public class PIAAnalysisModel {
         for (AbstractFilter filter : unserializeFilters(serializedInferenceFilters)) {
             piaModeller.getPeptideModeller().addFilter(fileID, filter);
         }
+
+        if (getSettingBoolean(PIASettings.CALCULATE_ALL_FDR) ||
+                getSettingBoolean(PIASettings.CALCULATE_COMBINED_FDR_SCORE)) {
+            piaModeller.getPeptideModeller().calculateFDR(fileID);
+        }
     }
 
 

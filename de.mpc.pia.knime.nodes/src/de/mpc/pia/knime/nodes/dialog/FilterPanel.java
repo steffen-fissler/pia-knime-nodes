@@ -82,7 +82,7 @@ public class FilterPanel extends JPanel implements ActionListener {
 
 
     /** placeholder text shown for the empty score selection */
-    public final static String TEXT_SELECT_SCORE_HERE = "-- select score for filter here --";
+    public static final String TEXT_SELECT_SCORE_HERE = "-- select score for filter here --";
 
 
     /**

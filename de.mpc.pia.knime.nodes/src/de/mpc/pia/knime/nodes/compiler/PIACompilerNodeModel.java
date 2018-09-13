@@ -91,10 +91,10 @@ public class PIACompilerNodeModel extends NodeModel {
     protected static final String DEFAULT_NAME = "compilation";
 
     /** the model of the input files' URLs */
-    private final SettingsModelString m_input_column =
+    private final SettingsModelString mInputColumn =
             new SettingsModelString(PIACompilerNodeModel.CFGKEY_INPUT_COLUMN, PIACompilerNodeModel.DEFAULT_INPUT_COLUMN);
     /** the model of the compilation's name */
-    private final SettingsModelString m_name =
+    private final SettingsModelString mName =
             new SettingsModelString(PIACompilerNodeModel.CFGKEY_NAME, PIACompilerNodeModel.DEFAULT_NAME);
 
     /** information parsed from the created PIA XML file */
@@ -131,12 +131,12 @@ public class PIACompilerNodeModel extends NodeModel {
                 PIANodesPlugin.getVisitorCid());
 
         // get the input files
-        RowIterator row_it = inData[0].iterator();
-        int url_idx  = inData[0].getDataTableSpec().findColumnIndex(m_input_column.getStringValue());
+        RowIterator rowIt = inData[0].iterator();
+        int urlIdx  = inData[0].getDataTableSpec().findColumnIndex(mInputColumn.getStringValue());
 
-        while (row_it.hasNext()) {
-            DataRow row = row_it.next();
-            DataCell urlCell = row.getCell(url_idx);
+        while (rowIt.hasNext()) {
+            DataRow row = rowIt.next();
+            DataCell urlCell = row.getCell(urlIdx);
 
             String fileURL = ((StringValue) urlCell).getStringValue();
             File file = null;
@@ -167,7 +167,7 @@ public class PIACompilerNodeModel extends NodeModel {
         piaCompiler.buildIntermediateStructure();
 
         // set the compilations name (if given)
-        String piaName = m_name.getStringValue();
+        String piaName = mName.getStringValue();
         if ((piaName != null) && (piaName.trim().length() > 0)) {
             piaCompiler.setName(piaName);
         } else {
@@ -299,9 +299,8 @@ public class PIACompilerNodeModel extends NodeModel {
 
         List<DataColumnSpec> compilerCols = new ArrayList<>();
         compilerCols.add(new DataColumnSpecCreator("gzipped PIA XML file", type).createSpec());
-        DataTableSpec compilerSpecTable = new DataTableSpec(compilerCols.toArray(new DataColumnSpec[]{}));
 
-        return compilerSpecTable;
+        return new DataTableSpec(compilerCols.toArray(new DataColumnSpec[]{}));
     }
 
 
@@ -310,8 +309,8 @@ public class PIACompilerNodeModel extends NodeModel {
      */
     @Override
     protected void saveSettingsTo(final NodeSettingsWO settings) {
-        m_input_column.saveSettingsTo(settings);
-        m_name.saveSettingsTo(settings);
+        mInputColumn.saveSettingsTo(settings);
+        mName.saveSettingsTo(settings);
     }
 
 
@@ -321,8 +320,8 @@ public class PIACompilerNodeModel extends NodeModel {
     @Override
     protected void loadValidatedSettingsFrom(final NodeSettingsRO settings)
             throws InvalidSettingsException {
-        m_input_column.loadSettingsFrom(settings);
-        m_name.loadSettingsFrom(settings);
+        mInputColumn.loadSettingsFrom(settings);
+        mName.loadSettingsFrom(settings);
     }
 
 
@@ -332,8 +331,8 @@ public class PIACompilerNodeModel extends NodeModel {
     @Override
     protected void validateSettings(final NodeSettingsRO settings)
             throws InvalidSettingsException {
-        m_input_column.validateSettings(settings);
-        m_name.validateSettings(settings);
+        mInputColumn.validateSettings(settings);
+        mName.validateSettings(settings);
     }
 
 

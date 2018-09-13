@@ -36,11 +36,7 @@ public class PIACompilerNodeDialog extends DefaultNodeSettingsPane {
 
                     @Override
                     public boolean includeColumn(DataColumnSpec colSpec) {
-                        if (colSpec.getType().isCompatible(StringValue.class)) {
-                                return true;
-                        }
-
-                        return false;
+                        return colSpec.getType().isCompatible(StringValue.class);
                     }
 
                     @Override

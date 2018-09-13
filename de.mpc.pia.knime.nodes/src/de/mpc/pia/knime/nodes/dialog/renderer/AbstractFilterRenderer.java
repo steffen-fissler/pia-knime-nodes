@@ -44,7 +44,7 @@ public class AbstractFilterRenderer extends JLabel implements ListCellRenderer<A
             setForeground(list.getForeground());
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (value instanceof PSMScoreFilter) {
             sb.append(ScoreModelEnum.getName(((PSMScoreFilter) value).getScoreShortName()));

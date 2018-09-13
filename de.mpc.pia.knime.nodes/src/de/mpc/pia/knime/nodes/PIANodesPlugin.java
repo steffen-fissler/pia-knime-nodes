@@ -62,9 +62,7 @@ public class PIANodesPlugin extends AbstractUIPlugin {
      */
     public static boolean isUsageStatisticsDisabled() {
         IPreferenceStore store = PIANodesPlugin.getDefault().getPreferenceStore();
-        boolean isUsageStatisticsDisabled = store.getBoolean(PreferenceInitializer.PREF_USAGE_STATISTICS_OFF);
-
-        return isUsageStatisticsDisabled;
+        return store.getBoolean(PreferenceInitializer.PREF_USAGE_STATISTICS_OFF);
     }
 
 

@@ -131,9 +131,9 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
     private JList<String> selectedPreferredFDRScoresList;
 
     /** button which adds a score from the available to selected scores for FDR calculation */
-    private JButton addToPreferred_button;
+    private JButton addToPreferredButton;
     /** button which removes a score from the selected scores for FDR calculation */
-    private JButton removeFromPreferred_button;
+    private JButton removeFromPreferredButton;
 
     /** panel for the filters on the PSM level */
     private FilterPanel filtersPSMLevel;
@@ -198,12 +198,12 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
                 // inference method clicked
                 updateAvailableInferenceFilters();
             }
-        } else if (e.getSource().equals(addToPreferred_button) && (availablePreferredFDRScoresList.getSelectedIndex() > -1)) {
+        } else if (e.getSource().equals(addToPreferredButton) && (availablePreferredFDRScoresList.getSelectedIndex() > -1)) {
             ((DefaultListModel<String>)selectedPreferredFDRScoresList.getModel()).addElement(
                     availablePreferredFDRScoresList.getSelectedValue());
             ((DefaultListModel<String>)availablePreferredFDRScoresList.getModel()).remove(
                     availablePreferredFDRScoresList.getSelectedIndex());
-        } else if (e.getSource().equals(removeFromPreferred_button) && (selectedPreferredFDRScoresList.getSelectedIndex() > -1)) {
+        } else if (e.getSource().equals(removeFromPreferredButton) && (selectedPreferredFDRScoresList.getSelectedIndex() > -1)) {
             ((DefaultListModel<String>)availablePreferredFDRScoresList.getModel()).addElement(
                     selectedPreferredFDRScoresList.getSelectedValue());
             ((DefaultListModel<String>)selectedPreferredFDRScoresList.getModel()).remove(
@@ -663,32 +663,32 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.gridwidth = 1;
         psmAnalysisPanel.add(new JLabel("How to define decoys:"), c);
 
-        JRadioButton allDecoyStrategy_pattern = new JRadioButton("accession pattern");
-        allDecoyStrategy_pattern.setActionCommand(FDRData.DecoyStrategy.ACCESSIONPATTERN.toString());
-        allDecoyStrategy_pattern.addActionListener(this);
-        allDecoyStrategy_pattern.setSelected(PIASettings.ALL_DECOY_STRATEGY.getDefaultString().equals(allDecoyStrategy_pattern.getActionCommand()));
-        allDecoyStrategy_pattern.addActionListener(this);
+        JRadioButton allDecoyStrategyPattern = new JRadioButton("accession pattern");
+        allDecoyStrategyPattern.setActionCommand(FDRData.DecoyStrategy.ACCESSIONPATTERN.toString());
+        allDecoyStrategyPattern.addActionListener(this);
+        allDecoyStrategyPattern.setSelected(PIASettings.ALL_DECOY_STRATEGY.getDefaultString().equals(allDecoyStrategyPattern.getActionCommand()));
+        allDecoyStrategyPattern.addActionListener(this);
 
-        JRadioButton allDecoyStrategy_searchengine = new JRadioButton("by searchengine");
-        allDecoyStrategy_searchengine.setActionCommand(FDRData.DecoyStrategy.SEARCHENGINE.toString());
-        allDecoyStrategy_searchengine.addActionListener(this);
-        allDecoyStrategy_searchengine.setSelected(PIASettings.ALL_DECOY_STRATEGY.getDefaultString().equals(allDecoyStrategy_searchengine.getActionCommand()));
-        allDecoyStrategy_searchengine.addActionListener(this);
+        JRadioButton allDecoyStrategySearchengine = new JRadioButton("by searchengine");
+        allDecoyStrategySearchengine.setActionCommand(FDRData.DecoyStrategy.SEARCHENGINE.toString());
+        allDecoyStrategySearchengine.addActionListener(this);
+        allDecoyStrategySearchengine.setSelected(PIASettings.ALL_DECOY_STRATEGY.getDefaultString().equals(allDecoyStrategySearchengine.getActionCommand()));
+        allDecoyStrategySearchengine.addActionListener(this);
 
         allDecoyStrategy = new ButtonGroup();
-        allDecoyStrategy.add(allDecoyStrategy_pattern);
-        allDecoyStrategy.add(allDecoyStrategy_searchengine);
+        allDecoyStrategy.add(allDecoyStrategyPattern);
+        allDecoyStrategy.add(allDecoyStrategySearchengine);
 
         c.insets = new Insets(0, 5, 0, 5);
         c.gridx = 1;
         c.gridy = row++;
         c.gridwidth = 1;
-        psmAnalysisPanel.add(allDecoyStrategy_pattern, c);
+        psmAnalysisPanel.add(allDecoyStrategyPattern, c);
 
         c.gridx = 1;
         c.gridy = row++;
         c.gridwidth = 1;
-        psmAnalysisPanel.add(allDecoyStrategy_searchengine, c);
+        psmAnalysisPanel.add(allDecoyStrategySearchengine, c);
 
         c.insets = new Insets(5, 5, 5, 5);
         c.gridx = 0;
@@ -698,7 +698,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         psmAnalysisPanel.add(new JLabel("Decoy pattern:"), c);
 
         fieldAllDecoyPattern = new JTextField(PIASettings.ALL_DECOY_PATTERN.getDefaultString(), 10);
-        fieldAllDecoyPattern.setEnabled(allDecoyStrategy_pattern.isSelected());
+        fieldAllDecoyPattern.setEnabled(allDecoyStrategyPattern.isSelected());
         c.gridx = 1;
         c.gridy = row;
         c.gridwidth = 1;
@@ -717,26 +717,26 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.gridwidth = 1;
         psmAnalysisPanel.add(new JLabel("Used identifications:"), c);
 
-        JRadioButton usedIdentifications_top = new JRadioButton("only top identification per spectrum (all other identifications will be discarded)");
-        usedIdentifications_top.setActionCommand("1");
-        usedIdentifications_top.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 1 );
-        JRadioButton usedIdentifications_all = new JRadioButton("all identifications per spectrum");
-        usedIdentifications_all.setActionCommand("0");
-        usedIdentifications_all.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 0);
+        JRadioButton usedIdentificationsTop = new JRadioButton("only top identification per spectrum (all other identifications will be discarded)");
+        usedIdentificationsTop.setActionCommand("1");
+        usedIdentificationsTop.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 1 );
+        JRadioButton usedIdentificationsAll = new JRadioButton("all identifications per spectrum");
+        usedIdentificationsAll.setActionCommand("0");
+        usedIdentificationsAll.setSelected(PIASettings.ALL_USED_IDENTIFICATIONS.getDefaultInteger() == 0);
 
         allUsedTopIdentifications = new ButtonGroup();
-        allUsedTopIdentifications.add(usedIdentifications_top);
-        allUsedTopIdentifications.add(usedIdentifications_all);
+        allUsedTopIdentifications.add(usedIdentificationsTop);
+        allUsedTopIdentifications.add(usedIdentificationsAll);
 
         c.insets = new Insets(0, 5, 0, 5);
         c.gridx = 1;
         c.gridy = row++;
         c.gridwidth = 2;
-        psmAnalysisPanel.add(usedIdentifications_top, c);
+        psmAnalysisPanel.add(usedIdentificationsTop, c);
 
         c.gridx = 1;
         c.gridy = row++;
-        psmAnalysisPanel.add(usedIdentifications_all, c);
+        psmAnalysisPanel.add(usedIdentificationsAll, c);
         c.insets = new Insets(5, 5, 5, 5);
         // AllTopIdentifications <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -795,17 +795,17 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         psmScoreButtonsPanel.setLayout(new BoxLayout(psmScoreButtonsPanel, BoxLayout.Y_AXIS));
         psmScoreButtonsPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        addToPreferred_button = new JButton("Add >>");
-        addToPreferred_button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        addToPreferred_button.addActionListener(this);
-        psmScoreButtonsPanel.add(addToPreferred_button);
+        addToPreferredButton = new JButton("Add >>");
+        addToPreferredButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addToPreferredButton.addActionListener(this);
+        psmScoreButtonsPanel.add(addToPreferredButton);
 
         psmScoreButtonsPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        removeFromPreferred_button = new JButton("Remove <<");
-        removeFromPreferred_button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        removeFromPreferred_button.addActionListener(this);
-        psmScoreButtonsPanel.add(removeFromPreferred_button);
+        removeFromPreferredButton = new JButton("Remove <<");
+        removeFromPreferredButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        removeFromPreferredButton.addActionListener(this);
+        psmScoreButtonsPanel.add(removeFromPreferredButton);
 
         layoutFdrScorePanel.gridx = 1;
         layoutFdrScorePanel.gridy = 1;
@@ -845,7 +845,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.NORTH;
-        psmAnalysisPanel.add(new JLabel("Selected filters do not impact the inference, but only the export of PSMs."), c);
+        psmAnalysisPanel.add(new JLabel("Selected filters do not impact the peptide and protein inference, but only the export of PSMs."), c);
         // PSMLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     }
 
@@ -927,7 +927,7 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.NORTH;
-        peptideAnalysisPanel.add(new JLabel("Selected filters do not impact the inference, but only the export of peptides."), c);
+        peptideAnalysisPanel.add(new JLabel("Selected filters and FDR calculations do not impact the protein inference, but only the export of peptides."), c);
         // PeptideLevelFilters <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         inferePeptidesChanged();
@@ -1164,13 +1164,8 @@ public class AnalysisDialog extends JTabbedPane implements ActionListener, Chang
             inputColumnBox.setColumnFilter(new ColumnFilter() {
                 @Override
                 public boolean includeColumn(DataColumnSpec colSpec) {
-                    if (colSpec.getType().isCompatible(StringValue.class)) {
-                        return true;
-                    } else if (colSpec.getType().isCompatible(BinaryObjectDataValue.class)) {
-                        return true;
-                    }
-
-                    return false;
+                    return colSpec.getType().isCompatible(StringValue.class)
+                            || colSpec.getType().isCompatible(BinaryObjectDataValue.class);
                 }
 
                 @Override

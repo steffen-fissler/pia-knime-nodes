@@ -39,8 +39,7 @@ public class PIACompilerNodeView extends NodeView<PIACompilerNodeModel> {
      */
     @Override
     protected void modelChanged() {
-        PIACompilerNodeModel nodeModel =
-                (PIACompilerNodeModel)getNodeModel();
+        PIACompilerNodeModel nodeModel = getNodeModel();
         assert nodeModel != null;
 
         informationArea.setText(nodeModel.getInformationString());
