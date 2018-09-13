@@ -808,6 +808,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
         pepCols.add(new DataColumnSpecCreator("score names", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
         pepCols.add(new DataColumnSpecCreator("score shorts", ListCell.getCollectionType(StringCell.TYPE)).createSpec());
 
+        if (mCalculateAllFDR.getBooleanValue()) {
+            pepCols.add(new DataColumnSpecCreator("FDR Score", DoubleCell.TYPE).createSpec());
+        }
+
         return new DataTableSpec(pepCols.toArray(new DataColumnSpec[]{}));
     }
 
@@ -876,6 +880,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
             pepCells.add(CollectionCellFactory.createListCell(scoresList));
             pepCells.add(CollectionCellFactory.createListCell(scoreNamesList));
             pepCells.add(CollectionCellFactory.createListCell(scoreShortsList));
+
+            // FDR is calculated on peptide level
+            if (mCalculateAllFDR.getBooleanValue()) {
+                pepCells.add(new DoubleCell(pep.getFDRScore().getValue()));
+            }
 
             container.addRowToTable(new DefaultRow(key, pepCells));
         }
@@ -1282,7 +1291,7 @@ public class PIAAnalysisNodeModel extends NodeModel {
         switch (exportFormat) {
         case idXML:
             IdXMLExporter idXMLexporter = new IdXMLExporter(piaModeller);
-            idXMLexporter.exportToIdXML(fileID, file, exportLevel.equals(ExportLevels.protein));
+            idXMLexporter.exportToIdXML(fileID, file, exportLevel.equals(ExportLevels.protein), filterExport);
             break;
 
         case mzIdentML:

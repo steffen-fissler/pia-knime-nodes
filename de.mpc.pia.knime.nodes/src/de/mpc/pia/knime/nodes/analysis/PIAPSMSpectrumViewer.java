@@ -14,9 +14,7 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeView;
 
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
-import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.visualization.psmspectrumviewer.PSMSpectrumViewerPanel;
-import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 
 /**
  * View for the PSM spectrum visualization. Visualizes all identified (filtered)
@@ -64,8 +62,7 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
 
     @Override
     protected void modelChanged() {
-        PIAAnalysisNodeModel nodeModel =
-            (PIAAnalysisNodeModel)getNodeModel();
+        PIAAnalysisNodeModel nodeModel = getNodeModel();
         assert nodeModel != null;
 
         currentNodeModel = nodeModel;
@@ -87,6 +84,7 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
 
     @Override
     protected void onOpen() {
+        // nothing to do on opening
     }
 
 
@@ -99,8 +97,7 @@ public class PIAPSMSpectrumViewer extends NodeView<PIAAnalysisNodeModel> {
         SwingWorker<PIAAnalysisModel, Void> worker = new SwingWorker<PIAAnalysisModel, Void>() {
             @Override
             public PIAAnalysisModel doInBackground() {
-                final PIAAnalysisModel innerModel = currentNodeModel.loadAnalysisModelFromFile();
-                return innerModel;
+                return currentNodeModel.loadAnalysisModelFromFile();
             }
 
             @Override

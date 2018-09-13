@@ -65,8 +65,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void modelChanged() {
-        PIAAnalysisNodeModel nodeModel =
-            (PIAAnalysisNodeModel)getNodeModel();
+        PIAAnalysisNodeModel nodeModel = getNodeModel();
         assert nodeModel != null;
 
         currentNodeModel = nodeModel;
@@ -93,7 +92,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
      */
     @Override
     protected void onOpen() {
-
+        // nothing to do on opening
     }
 
 
@@ -105,8 +104,7 @@ public class PIAAnalysisNodeView extends NodeView<PIAAnalysisNodeModel> {
         SwingWorker<PIAAnalysisModel, Void> worker = new SwingWorker<PIAAnalysisModel, Void>() {
             @Override
             public PIAAnalysisModel doInBackground() {
-                final PIAAnalysisModel innerModel = currentNodeModel.loadAnalysisModelFromFile();
-                return innerModel;
+                return currentNodeModel.loadAnalysisModelFromFile();
             }
 
             @Override
