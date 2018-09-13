@@ -134,6 +134,11 @@ public class PIACompilerNodeModel extends NodeModel {
         RowIterator rowIt = inData[0].iterator();
         int urlIdx  = inData[0].getDataTableSpec().findColumnIndex(mInputColumn.getStringValue());
 
+        if (urlIdx < 0) {
+            // if no input column is selected, try the first column
+            urlIdx = 0;
+        }
+
         while (rowIt.hasNext()) {
             DataRow row = rowIt.next();
             DataCell urlCell = row.getCell(urlIdx);
@@ -528,7 +533,7 @@ public class PIACompilerNodeModel extends NodeModel {
 
 
                     for (SpectrumIdentificationProtocol prot : inputFileXML.getAnalysisProtocolCollection().getSpectrumIdentificationProtocol()) {
-                        textSB.append("\nused software: ");
+                        textSB.append("\nspectrum identification software: ");
                         textSB.append(softwareMap.get(prot.getAnalysisSoftwareRef()));
 
                         if (prot.getEnzymes() != null) {
