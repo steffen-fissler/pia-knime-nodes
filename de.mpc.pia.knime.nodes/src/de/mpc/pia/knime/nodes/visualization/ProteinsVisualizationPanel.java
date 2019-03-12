@@ -492,7 +492,7 @@ public class ProteinsVisualizationPanel extends JPanel
         setPeps = new HashSet<>();
         setSpectra = new HashSet<>();
         for (ReportProtein otherProt : proteinTableModel.getProteins()) {
-            if (doneAccs.contains(otherProt.getAccessions().get(0).getAccession())) {
+            if (doneAccs.contains(otherProt.getAccessions().get(0).getID())) {
                 continue;
             }
 

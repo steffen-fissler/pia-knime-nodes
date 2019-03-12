@@ -1,10 +1,6 @@
 package de.mpc.pia.knime.nodes.utils;
 
-import java.io.FileNotFoundException;
-
 import javax.swing.SwingWorker;
-import javax.xml.bind.JAXBException;
-import javax.xml.stream.XMLStreamException;
 
 import org.knime.core.node.NodeLogger;
 
@@ -44,14 +40,13 @@ public class LoadPIAFileWorker extends SwingWorker<PIAModeller, Void> {
 
 
     @Override
-    public PIAModeller doInBackground() {
+    public PIAModeller doInBackground() throws InterruptedException {
         if (fileName == null) {
             logger.error("No valid file given.");
             return null;
         }
 
         PIAModeller modeller;
-        Object notifier = new Object();
 
         modeller = new PIAModeller();
         progress[0] = 1L;
@@ -59,10 +54,7 @@ public class LoadPIAFileWorker extends SwingWorker<PIAModeller, Void> {
 
         loadingStatus = "started parsing...";
 
-        NotifierThread nThread = new NotifierThread(progress, notifier);
-        nThread.start();
-
-        if (modeller.loadFileName(fileName, progress, notifier)) {
+        if (modeller.loadFileName(fileName, progress)) {
             progress[0] = 100L;
             setProgress(100);
         } else {
@@ -71,9 +63,7 @@ public class LoadPIAFileWorker extends SwingWorker<PIAModeller, Void> {
             modeller = null;
         }
 
-        synchronized (notifier) {
-            notifier.notifyAll();
-        }
+
         return modeller;
     }
 
@@ -106,39 +96,5 @@ public class LoadPIAFileWorker extends SwingWorker<PIAModeller, Void> {
      */
     public String getLoadingStatus() {
         return loadingStatus;
-    }
-
-
-
-    /**
-     * A mini thread, which will follow the notifier object and update the progress.
-     *
-     * @author julian
-     *
-     */
-    private class NotifierThread extends Thread {
-
-        private Long[] progressArr;
-        private Object notifier;
-
-        public NotifierThread(Long[] progress, Object notifier) {
-            this.progressArr = progress;
-            this.notifier = notifier;
-        }
-
-        @Override
-        public void run() {
-
-            try {
-                while ((notifier != null) && (progressArr[0] < 100L)) {
-                    synchronized (notifier) {
-                        notifier.wait(100);
-                        setProgress(progress[0].intValue());
-                    }
-                }
-            } catch (InterruptedException e) {
-                // ok, just get no more notifications
-            }
-        }
     }
 }
