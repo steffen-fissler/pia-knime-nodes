@@ -1381,10 +1381,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
                 LOGGER.info("Matching PSMs to spectra in file " + portFile.getAbsolutePath());
                 psmToSpec = new PiaPsmToSpectrum<>(portFile, getAllReportPSMs(analysisModel));
 
-                if (psmToSpec.getNrNullMatches() > 0) {
-                    LOGGER.warn("There were " + psmToSpec.getNrNullMatches() + " PSMs, that could not be matched to spectra.");
-                }
-
                 if (uriIter.hasNext()) {
                     LOGGER.warn("Only the first suitable entry in the port for spectra file is used.");
                 }

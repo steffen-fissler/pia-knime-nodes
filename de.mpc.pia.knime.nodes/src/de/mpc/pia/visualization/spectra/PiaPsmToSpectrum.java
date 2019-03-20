@@ -36,11 +36,8 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
     /** the data access controller for the file containing the MZ data */
     private DataAccessController daController;
 
-    /** mapping from the psm IDs to the spectrum IDs */
-    private Map<Long, Comparable> psmToSpectrum;
-
-    /** number of PSMs, which did not match a spectrum */
-    private int nrNullMatches;
+    /** mapping from the bin nr (= mz / BIN_WIDTH) to the actual spectra ID in the controller  */
+    private Map<Integer, List<Comparable>> mzToSpectraBins;
 
 
     /** the allowed delta in the spectrum matching */
@@ -73,7 +70,7 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
             }
         }
 
-        matchPSMsToSpectra(psms);
+        mzToSpectraBins = preBinSpectra();
     }
 
 
@@ -102,60 +99,17 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
             daController = new PeakControllerImpl(spectraFile);
         }
 
-        return !(daController == null);
+        return daController != null;
     }
 
 
     /**
-     * tries to match all PSMs to the spectra in the file handled by the
-     * {@link DataAccessController}
-     *
+     * Calculate the bin number (in the map) given the PSM (or its masstocharge)
      * @param psms
+     * @return
      */
-    private void matchPSMsToSpectra(Collection<P> psms) {
-        LOGGER.info("Indexing PSMs to spectra");
-
-        Map<Integer, List<Comparable>> mzToSpectraBins = preBinSpectra();
-
-        psmToSpectrum = new HashMap<>();
-
-        Iterator<P> psmIter = psms.iterator();
-        int count = 0;
-        nrNullMatches = 0;
-        while (psmIter.hasNext()) {
-            P psm = psmIter.next();
-
-            Integer mzBin = (int)(psm.getMassToCharge() / BIN_WIDTH);
-
-            List<Comparable> binsSpectraIDs = new ArrayList<>(mzToSpectraBins.get(mzBin));
-            if (mzToSpectraBins.containsKey(mzBin-1)) {
-                binsSpectraIDs.addAll(mzToSpectraBins.get(mzBin-1));
-            }
-            if (mzToSpectraBins.containsKey(mzBin+1)) {
-                binsSpectraIDs.addAll(mzToSpectraBins.get(mzBin+1));
-            }
-
-            Comparable specID = findMatchingSpectrumId(psm, binsSpectraIDs);
-
-            if (psm instanceof PeptideSpectrumMatch) {
-                psmToSpectrum.put(((PeptideSpectrumMatch) psm).getID(), specID);
-            } else if (psm instanceof ReportPSM) {
-                psmToSpectrum.put(((ReportPSM) psm).getId(), specID);
-            } else {
-                LOGGER.error("not supported PSM type");
-            }
-
-            if (specID == null) {
-                nrNullMatches++;
-            }
-
-            count++;
-            if (count % 1000 == 0) {
-                LOGGER.debug(count + " / " + psms.size() + " PSMs");
-            }
-        }
-
-        LOGGER.info("done " + psmToSpectrum.size() + " (nullmatches=" + nrNullMatches + ")");
+    private Integer calculateBinNumber(P psm) {
+        return (int)(psm.getMassToCharge() / BIN_WIDTH);
     }
 
 
@@ -166,17 +120,17 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
      */
     private Map<Integer, List<Comparable>> preBinSpectra() {
         LOGGER.debug("pre binning the spectra");
-        Map<Integer, List<Comparable>> mzToSpectraBins = new HashMap<>();
+        Map<Integer, List<Comparable>> mzNrToSpectraBins = new HashMap<>();
 
         for (Comparable specID : daController.getSpectrumIds()) {
             int mzBin = (int) (daController.getSpectrumPrecursorMz(specID) / BIN_WIDTH);
-            List<Comparable> specIDs = mzToSpectraBins.computeIfAbsent(mzBin, k -> new ArrayList<>());
+            List<Comparable> specIDs = mzNrToSpectraBins.computeIfAbsent(mzBin, k -> new ArrayList<>());
 
             specIDs.add(specID);
         }
 
-        LOGGER.debug("binned " + daController.getNumberOfSpectra() + " spectra into " + mzToSpectraBins.size() + " bins");
-        return mzToSpectraBins;
+        LOGGER.debug("binned " + daController.getNumberOfSpectra() + " spectra into " + mzNrToSpectraBins.size() + " bins");
+        return mzNrToSpectraBins;
     }
 
 
@@ -243,12 +197,20 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
 
 
     /**
-     * returns the number of PSMs, which could not be matched against a spectrum
+     * Get the spectrum from the controller without having to map it before
      *
+     * @param psm
      * @return
      */
-    public int getNrNullMatches() {
-        return nrNullMatches;
+    private Spectrum getSpectrumFromController(P psm) {
+        Integer mzBinNr = calculateBinNumber(psm);
+        Comparable specID = findMatchingSpectrumId(psm, mzToSpectraBins.get(mzBinNr));
+
+        if (specID != null) {
+            return daController.getSpectrumById(specID);
+        } else {
+            return null;
+        }
     }
 
 
@@ -259,18 +221,8 @@ public class PiaPsmToSpectrum<P extends PSMItem> {
      * @return the matching spectrum or null, if none matches
      */
     public Spectrum getSpectrumForPSM(P psm) {
-        Comparable specID = null;
-
-        if (psm instanceof PeptideSpectrumMatch) {
-            specID = psmToSpectrum.get(((PeptideSpectrumMatch) psm).getID());
-        } else if (psm instanceof ReportPSM) {
-            specID = psmToSpectrum.get(((ReportPSM) psm).getId());
-        } else if (psm == null) {
-            LOGGER.error("psm is null");
-        }
-
-        if (specID != null) {
-            return daController.getSpectrumById(specID);
+        if (psm != null) {
+            return getSpectrumFromController(psm);
         } else {
             return null;
         }
