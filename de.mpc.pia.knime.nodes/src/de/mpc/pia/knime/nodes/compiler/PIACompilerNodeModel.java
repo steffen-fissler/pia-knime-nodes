@@ -507,10 +507,14 @@ public class PIACompilerNodeModel extends NodeModel {
                     AnalysisSoftware software = softwareIter.next();
 
                     String name = null;
-                    if (software.getSoftwareName().getCvParam() != null) {
-                        name = software.getSoftwareName().getCvParam().getName();
-                    } else if (software.getSoftwareName().getUserParam() != null) {
-                        name = software.getSoftwareName().getUserParam().getName();
+                    if (software.getSoftwareName() != null) {
+                        if (software.getSoftwareName().getCvParam() != null) {
+                            name = software.getSoftwareName().getCvParam().getName();
+                        } else if (software.getSoftwareName().getUserParam() != null) {
+                            name = software.getSoftwareName().getUserParam().getName();
+                        }
+                    } else {
+                        name = software.getName();
                     }
 
                     softwareMap.put(software.getId(), name);
