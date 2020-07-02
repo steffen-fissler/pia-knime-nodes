@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse version="3.0"?><plugin>
+<?eclipse version="3.0"?>
+<plugin>
 
    <!-- This is an example for providing an own category 
       <extension
@@ -17,13 +18,11 @@
 <node
       category-path="/community/PIA"
       deprecated="false"
-      factory-class="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"
-      id="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"/>
+      factory-class="de.mpc.pia.knime.nodes.compiler.PIACompilerNodeFactory"/>
 <node
       category-path="/community/PIA"
       deprecated="false"
-      factory-class="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory"
-      id="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory">
+      factory-class="de.mpc.pia.knime.nodes.analysis.PIAAnalysisNodeFactory">
 </node>
 </extension>
    <extension point="org.knime.product.splashExtension">
