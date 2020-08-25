@@ -25,15 +25,8 @@ public class PIACompilerTest {
     @Before
     public void initialize() throws Exception {
         // get the test files as input file port objects
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-
-        URL url = classloader.getResource("/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid");
-        URI uri = FileLocator.resolve(url).toURI();
-        inputFile1 = new File(uri);
-
-        url = classloader.getResource("/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid");
-        uri = FileLocator.resolve(url).toURI();
-        inputFile2 = new File(uri);
+        inputFile1 = new File(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid").getPath());
+        inputFile2 = new File(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid").getPath());
     }
 
 
@@ -53,10 +46,12 @@ public class PIACompilerTest {
 
         assertEquals("Mascot file could not be parsed", true,
                 piaCompiler.getDataFromFile("file1", inputFile1.getAbsolutePath(), null, null));
-
+        
         assertEquals("X!Tandem file could not be parsed", true,
                 piaCompiler.getDataFromFile("file2", inputFile2.getAbsolutePath(), null, null));
 
+        System.err.println("file written");
+        
         piaCompiler.buildClusterList();
         piaCompiler.buildIntermediateStructure();
 
