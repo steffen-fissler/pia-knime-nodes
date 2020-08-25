@@ -1257,7 +1257,12 @@ public class PIAAnalysisNodeModel extends NodeModel {
         if (!fileNameSB.toString().contains(".")) {
             // append the file suffix
             fileNameSB.append('.');
-            fileNameSB.append(mExportFormat.getStringValue());
+            if (ExportFormats.mzIdentML.toString().equalsIgnoreCase(mExportFormat.getStringValue())) {
+            	// save mzIdentML files as the recommended ".mzid"
+                fileNameSB.append("mzid");
+            } else {
+                fileNameSB.append(mExportFormat.getStringValue());
+            }
         }
 
         return fileNameSB.toString();
