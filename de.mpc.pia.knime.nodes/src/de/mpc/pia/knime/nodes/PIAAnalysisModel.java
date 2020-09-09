@@ -73,7 +73,12 @@ public class PIAAnalysisModel {
      * @throws IOException
      */
     public void saveModelTo(final File piaModelFile) throws IOException {
-        PIAModeller.serializeToFile(piaModeller, piaModelFile);
+    	try {
+    		PIAModeller.serializeToFile(piaModeller, piaModelFile);
+    	} catch (Exception ex) {
+    		LOGGER.error("Could not save the PIA model.");
+    		throw new IOException(ex.getMessage());
+    	}
     }
 
 

@@ -184,7 +184,10 @@ public class PIAAnalysisNodeModel extends NodeModel {
     private final SettingsModelStringArray mProteinFilters =
             new SettingsModelStringArray(PIASettings.PROTEIN_FILTERS.getKey(), PIASettings.PROTEIN_FILTERS.getDefaultStringArray());
 
+    /** warning if serialization did not work */
+    private static final String SERIALIZATION_ERROR_WARNING = "Could not serialize the PIA model. All analyses are successful, but viewer will be empty.";
 
+    
     /** temporary created file, delete on reset */
     private File piaXMLTmpFile;
 
@@ -422,7 +425,13 @@ public class PIAAnalysisNodeModel extends NodeModel {
         // save the model and settings to disk
         piaAnalysisModelFile = File.createTempFile("piaAnalysisModel-", "");
         piaAnalysisModelFile.deleteOnExit();
-        analysisModel.saveModelTo(piaAnalysisModelFile);
+        try {
+        	analysisModel.saveModelTo(piaAnalysisModelFile);
+        } catch (Exception ex) {
+        	LOGGER.error(SERIALIZATION_ERROR_WARNING);
+        	setWarningMessage(SERIALIZATION_ERROR_WARNING);
+        	piaAnalysisModelFile.delete();
+        }
 
         piaAnalysisSettingsFile = File.createTempFile("piaAnalysisModelSettings-", "");
         piaAnalysisSettingsFile.deleteOnExit();
@@ -883,7 +892,11 @@ public class PIAAnalysisNodeModel extends NodeModel {
 
             // FDR is calculated on peptide level
             if (mCalculateAllFDR.getBooleanValue()) {
-                pepCells.add(new DoubleCell(pep.getFDRScore().getValue()));
+            	if (pep.getFDRScore() != null) {
+            		pepCells.add(new DoubleCell(pep.getFDRScore().getValue()));
+            	} else {
+            		pepCells.add(DataType.getMissingCell());
+            	}
             }
 
             container.addRowToTable(new DefaultRow(key, pepCells));
