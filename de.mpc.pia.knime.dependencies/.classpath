@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/commons-collections4-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/inspector-mzgraph-browser-2.0.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/inspector-swing-utils-2.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/istack-commons-runtime-2.16.jar"/>
