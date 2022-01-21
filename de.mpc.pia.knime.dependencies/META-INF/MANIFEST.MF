@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PIA KNIME node dependencies plugin
 Bundle-SymbolicName: de.mpc.pia.knime.dependencies;singleton:=true
-Bundle-Version: 1.4.2.qualifier
+Bundle-Version: 1.4.5.qualifier
 Bundle-ClassPath: libs/pia/pia-1.4.5.jar,
  libs/pia/lib/aircompressor-0.19.jar,
  libs/pia/lib/archive-data-provider-api-2.0.7.jar,
