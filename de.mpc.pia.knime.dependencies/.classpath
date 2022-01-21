@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/commons-collections4-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/inspector-mzgraph-browser-2.0.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/inspector-swing-utils-2.0.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pride/istack-commons-runtime-2.16.jar"/>
@@ -28,6 +27,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/biojava-ontology-5.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/braf-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/chardet-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/commons-collections4-4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/commons-math-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/commons-net-2.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/cpdetector-1.0.7.jar"/>
@@ -53,11 +53,11 @@
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/jsparklines-1.0.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/jsuffixarrays-0.1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/kryo-5.0.0-RC9.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-1.2-api-2.14.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-api-2.14.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-core-2.14.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-jcl-2.14.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-slf4j-impl-2.14.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-1.2-api-2.17.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-api-2.17.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-core-2.17.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-jcl-2.17.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/log4j-slf4j-impl-2.17.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/logback-classic-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/logback-core-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/looks-2.2.2.jar"/>
@@ -90,11 +90,11 @@
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/swingx-0.9.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/utilities-5.0.24.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/web-service-model-0.2.12.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/lib/xpp3-1.1.3.4-RC3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/lib/xpp3-1.1.4c.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/xsdlib-20050913.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/xtandem-parser-1.13.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/pia/lib/xxindex-0.23.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pia/pia-1.4.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/pia/pia-1.4.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
