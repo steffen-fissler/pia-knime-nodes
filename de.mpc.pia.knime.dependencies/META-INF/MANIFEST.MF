@@ -99,7 +99,7 @@ Bundle-ClassPath: libs/pia/pia-1.4.5.jar,
  libs/pride/ms-data-core-api-2.0.30.jar
 Bundle-Vendor: 
  Medizinisches Proteom-Center, Medical Bioinformatics
-Require-Bundle: org.knime.core;bundle-version="[4.0.0,5.0.0)",
+Require-Bundle: org.knime.base;bundle-version="[4.0.0,5.0.0)",
  org.knime.base.filehandling;bundle-version="[4.0.0,5.0.0)";visibility:=reexport,
  org.apache.axis;bundle-version="1.4.0",
  org.apache.commons.cli;bundle-version="1.4.0",
