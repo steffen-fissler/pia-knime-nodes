@@ -49,8 +49,6 @@ import de.mpc.pia.intermediate.compiler.PIACompiler;
 import de.mpc.pia.intermediate.compiler.PIASimpleCompiler;
 import de.mpc.pia.intermediate.piaxml.FilesListXML;
 import de.mpc.pia.intermediate.piaxml.PIAInputFileXML;
-import de.mpc.pia.knime.nodes.PIANodesPlugin;
-import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import uk.ac.ebi.jmzidml.model.mzidml.AbstractParam;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftware;
 import uk.ac.ebi.jmzidml.model.mzidml.AnalysisSoftwareList;
@@ -123,12 +121,6 @@ public class PIACompilerNodeModel extends NodeModel {
     protected BufferedDataTable[] execute(final BufferedDataTable[] inData,
             final ExecutionContext exec) throws IOException, InterruptedException  {
         PIACompiler piaCompiler = new PIASimpleCompiler();
-
-        PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
-        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                PIAMatomoTracker.PIA_TRACKING_COMPILER_NAME,
-                PIAMatomoTracker.PIA_TRACKING_COMPILER_STARTED, null,
-                PIANodesPlugin.getVisitorCid());
 
         // get the input files
         RowIterator rowIt = inData[0].iterator();
@@ -214,12 +206,6 @@ public class PIACompilerNodeModel extends NodeModel {
         informationString += "\n"
                 + "\ntotal number PSMs:     " + piaCompiler.getNrPeptideSpectrumMatches()
                 + "\ntotal number peptides: " + piaCompiler.getNrPeptides();
-
-
-        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                PIAMatomoTracker.PIA_TRACKING_COMPILER_NAME,
-                PIAMatomoTracker.PIA_TRACKING_COMPILER_FINISHED, null,
-                PIANodesPlugin.getVisitorCid());
 
         return new BufferedDataTable[]{container.getTable()};
     }
