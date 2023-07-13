@@ -24,18 +24,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.visualization.ReportTableCellRenderer;
 import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
-import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 import uk.ac.ebi.pride.utilities.data.core.Spectrum;
 
 
 /**
- * This panel shows the PSMs (all, not in sets) andvisualizes the annotated
+ * This panel shows the PSMs (all, not in sets) and visualizes the annotated
  * spectra.
  *
  * @author julian
@@ -87,12 +85,6 @@ public class PSMSpectrumViewerPanel extends JPanel implements ListSelectionListe
             }
 
             initialize();
-
-            PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
-            PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                    PIAMatomoTracker.PIA_TRACKING_VIEWER_NAME,
-                    PIAMatomoTracker.PIA_TRACKING_VIEWER_KNIME_SPECTRA, null,
-                    PIANodesPlugin.getVisitorCid());
         }
     }
 

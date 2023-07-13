@@ -37,7 +37,6 @@ import org.knime.core.node.NodeLogger;
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.intermediate.Group;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
-import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.visualization.peptides.PeptideTableModel;
 import de.mpc.pia.knime.nodes.visualization.proteins.ProteinTableModel;
@@ -49,7 +48,6 @@ import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
 import de.mpc.pia.modeller.score.ScoreModel;
-import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import de.mpc.pia.visualization.graph.AmbiguityGroupVisualizationHandler;
 import de.mpc.pia.visualization.graph.VertexRelation;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
@@ -143,12 +141,6 @@ public class ProteinsVisualizationPanel extends JPanel
             this.psmToSpectrum = psmToSpectrum;
 
             initializeVisualization(proteinList);
-
-            PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
-            PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                    PIAMatomoTracker.PIA_TRACKING_VIEWER_NAME,
-                    PIAMatomoTracker.PIA_TRACKING_VIEWER_KNIME_ANALYSIS, null,
-                    PIANodesPlugin.getVisitorCid());
         }
     }
 
@@ -171,7 +163,6 @@ public class ProteinsVisualizationPanel extends JPanel
         proteinTable.setRowSorter(proteinSorter);
 
         JScrollPane proteinScrollPane = new JScrollPane(proteinTable);
-        //proteinScrollPane.setLayout(new BoxLayout(proteinScrollPane, BoxLayout.Y_AXIS));
         proteinScrollPane.setPreferredSize(new Dimension(800, 200));
         // ProteinTable <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

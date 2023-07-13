@@ -1,13 +1,7 @@
 package de.mpc.pia.knime.nodes;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import de.mpc.pia.knime.nodes.preferences.PreferenceInitializer;
 
 
 /**
@@ -54,34 +48,6 @@ public class PIANodesPlugin extends AbstractUIPlugin {
      */
     public static PIANodesPlugin getDefault() {
         return piaPlugin;
-    }
-
-
-    /**
-     * @return isUsageStatisticsDisabled
-     */
-    public static boolean isUsageStatisticsDisabled() {
-        IPreferenceStore store = PIANodesPlugin.getDefault().getPreferenceStore();
-        return store.getBoolean(PreferenceInitializer.PREF_USAGE_STATISTICS_OFF);
-    }
-
-
-    /**
-     * @return the visitorCid
-     */
-    public static String getVisitorCid() {
-        IPreferenceStore store = PIANodesPlugin.getDefault().getPreferenceStore();
-        String visitorCid = store.getString(PreferenceInitializer.PREF_USAGE_STATISTICS_VISITOR_CID);
-
-        if (visitorCid.length() < 16) {
-            // initialize a new visitorCid
-            SecureRandom random = new SecureRandom();
-            visitorCid = new BigInteger(64, random).toString(16);
-
-            store.setValue(PreferenceInitializer.PREF_USAGE_STATISTICS_VISITOR_CID, visitorCid);
-        }
-
-        return visitorCid;
     }
 }
 

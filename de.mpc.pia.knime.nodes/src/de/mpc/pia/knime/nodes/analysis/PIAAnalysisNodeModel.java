@@ -54,7 +54,6 @@ import org.knime.core.node.port.PortType;
 
 import de.mpc.pia.intermediate.Accession;
 import de.mpc.pia.knime.nodes.PIAAnalysisModel;
-import de.mpc.pia.knime.nodes.PIANodesPlugin;
 import de.mpc.pia.knime.nodes.PIASettings;
 import de.mpc.pia.knime.nodes.dialog.ExportFormats;
 import de.mpc.pia.knime.nodes.dialog.ExportLevels;
@@ -69,7 +68,6 @@ import de.mpc.pia.modeller.psm.PSMReportItem;
 import de.mpc.pia.modeller.psm.ReportPSM;
 import de.mpc.pia.modeller.psm.ReportPSMSet;
 import de.mpc.pia.modeller.report.filter.AbstractFilter;
-import de.mpc.pia.tools.matomo.PIAMatomoTracker;
 import de.mpc.pia.visualization.spectra.PiaPsmToSpectrum;
 
 import org.knime.core.node.ExecutionContext;
@@ -294,12 +292,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
                     + "datatable (e.g. from PIA Compiler or List Files) or port (Input File)");
         }
 
-        PIAMatomoTracker.disableTracking(PIANodesPlugin.isUsageStatisticsDisabled());
-        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                PIAMatomoTracker.PIA_TRACKING_MODELLER_NAME,
-                PIAMatomoTracker.PIA_TRACKING_MODELLER_KNIME_STARTED, null,
-                PIANodesPlugin.getVisitorCid());
-
         // create modeller and load the file
         PIAModeller piaModeller = new PIAModeller(piaXmlFileName);
         PIAAnalysisModel analysisModel = new PIAAnalysisModel(piaModeller);
@@ -436,11 +428,6 @@ public class PIAAnalysisNodeModel extends NodeModel {
         piaAnalysisSettingsFile = File.createTempFile("piaAnalysisModelSettings-", "");
         piaAnalysisSettingsFile.deleteOnExit();
         analysisModel.saveSettingsTo(piaAnalysisSettingsFile);
-
-        PIAMatomoTracker.trackPIAEvent(PIAMatomoTracker.PIA_TRACKING_KNIME_CATEGORY,
-                PIAMatomoTracker.PIA_TRACKING_MODELLER_NAME,
-                PIAMatomoTracker.PIA_TRACKING_MODELLER_FINISHED, null,
-                PIANodesPlugin.getVisitorCid());
 
         return new PortObject[]{psmContainer.getTable(),
                 pepContainer.getTable(),
