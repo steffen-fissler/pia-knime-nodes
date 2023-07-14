@@ -1,0 +1,8 @@
+**/bin/
+**/target/
+**/build/
+**/.flattened-pom.xml
+
+# Mac finder stuff
+*.DS_Store
+de.mpc.pia.knime.nodes/pia-knime.jar

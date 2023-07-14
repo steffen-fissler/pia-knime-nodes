@@ -1,11 +1,9 @@
 package de.mpc.pia.knime.nodes.compiler;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.junit.After;
@@ -25,8 +23,11 @@ public class PIACompilerTest {
     @Before
     public void initialize() throws Exception {
         // get the test files as input file port objects
-        inputFile1 = new File(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid").getPath());
-        inputFile2 = new File(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid").getPath());
+    	
+        inputFile1 = new File(FileLocator.toFileURL(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_mascot_full.mzid")).getPath());
+        inputFile2 = new File(FileLocator.toFileURL(PIACompilerTest.class.getResource("/de/mpc/pia/knime/nodes/resources/55merge_tandem.mzid")).getPath());
+        
+     
     }
 
 

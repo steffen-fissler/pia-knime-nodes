@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="de.mpc.pia.feature" version="0.0.0">
+       <category name="pia-knime-nodes" />
+   </feature>
+   <category-def name="pia-knime-nodes" label="Build artifacts from pia-knime-nodes">
+       <description>Build artifacts from pia-knime-nodes</description>
+   </category-def>
+</site>
