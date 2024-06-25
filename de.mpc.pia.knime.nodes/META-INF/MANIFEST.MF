@@ -12,5 +12,5 @@ Require-Bundle: org.knime.core;bundle-version="[5.3.0,6.0.0)",
  de.mpc.pia.knime.dependencies;bundle-version="1.4.7"
 Bundle-ActivationPolicy: lazy
 Export-Package: de.mpc.pia.knime.nodes
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 

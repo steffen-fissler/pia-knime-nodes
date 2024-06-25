@@ -163,5 +163,5 @@ Export-Package: de.mpc.pia,
  uk.ac.ebi.pride.utilities.iongen.impl,
  uk.ac.ebi.pride.utilities.iongen.model,
  uk.ac.ebi.pride.utilities.mol
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 
